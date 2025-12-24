@@ -13,8 +13,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #0a0a0a;
-            color: #e4e4e7;
+            background: #f5f5f5;
+            color: #333;
             line-height: 1.6;
         }
 
@@ -26,52 +26,27 @@
 
         header {
             text-align: center;
-            padding: 40px 0;
-            border-bottom: 1px solid #27272a;
+            padding: 30px 0;
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            color: #a1a1aa;
-            font-size: 1.1rem;
-        }
-
-        .controls {
-            margin: 30px 0;
-            padding: 20px;
-            background: #18181b;
-            border-radius: 12px;
-            border: 1px solid #27272a;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 12px 16px;
-            background: #27272a;
-            border: 1px solid #3f3f46;
-            border-radius: 8px;
-            color: #e4e4e7;
+            color: #7f8c8d;
             font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        .search-bar:focus {
-            outline: none;
-            border-color: #fbbf24;
         }
 
         .stats {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             margin: 20px 0;
             flex-wrap: wrap;
         }
@@ -80,33 +55,51 @@
             flex: 1;
             min-width: 150px;
             padding: 15px;
-            background: #18181b;
+            background: white;
             border-radius: 8px;
-            border: 1px solid #27272a;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
-            color: #fbbf24;
+            color: #3498db;
         }
 
         .stat-label {
-            color: #a1a1aa;
+            color: #7f8c8d;
             font-size: 0.9rem;
             margin-top: 5px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #3498db;
         }
 
         .loading {
             text-align: center;
             padding: 60px 20px;
-            color: #a1a1aa;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .spinner {
-            border: 3px solid #27272a;
-            border-top: 3px solid #fbbf24;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -120,105 +113,123 @@
         }
 
         .problems-list {
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .problem-item {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: white;
+            border: 1px solid #e1e8ed;
             border-radius: 8px;
             margin-bottom: 12px;
             overflow: hidden;
-            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .problem-item:hover {
-            border-color: #3f3f46;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .problem-header {
             display: flex;
             align-items: center;
             padding: 16px 20px;
-            cursor: pointer;
             gap: 15px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .problem-index {
-            font-size: 1rem;
-            color: #a1a1aa;
-            min-width: 40px;
+            font-weight: 600;
+            color: #7f8c8d;
+            min-width: 50px;
         }
 
         .problem-title {
             flex: 1;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
-            color: #e4e4e7;
+            color: #2c3e50;
         }
 
         .tag {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
             font-weight: 500;
-            text-transform: uppercase;
         }
 
-        .tag.leetcode {
-            background: rgba(251, 191, 36, 0.1);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.3);
+        .tag.easy {
+            background: #d4edda;
+            color: #155724;
         }
 
-        .tag.hackerrank {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.3);
+        .tag.medium {
+            background: #fff3cd;
+            color: #856404;
         }
 
-        .tag.python {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+        .tag.hard {
+            background: #f8d7da;
+            color: #721c24;
         }
 
         .tag.database {
-            background: rgba(168, 85, 247, 0.1);
-            color: #a855f7;
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-
-        .tag.default {
-            background: rgba(161, 161, 170, 0.1);
-            color: #a1a1aa;
-            border: 1px solid rgba(161, 161, 170, 0.3);
+            background: #d1ecf1;
+            color: #0c5460;
         }
 
         .show-btn {
-            padding: 8px 16px;
-            background: #27272a;
-            border: 1px solid #3f3f46;
-            border-radius: 6px;
-            color: #fbbf24;
+            padding: 6px 16px;
+            background: #3498db;
+            border: none;
+            border-radius: 4px;
+            color: white;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
 
         .show-btn:hover {
-            background: #3f3f46;
-            border-color: #fbbf24;
+            background: #2980b9;
+        }
+
+        .show-btn.active {
+            background: #e74c3c;
+        }
+
+        .question-content {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .question-content h2,
+        .question-content h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .question-content pre,
+        .question-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .question-content pre {
+            padding: 12px;
+            overflow-x: auto;
+            margin: 10px 0;
         }
 
         .solution-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            background: #0a0a0a;
-            border-top: 1px solid #27272a;
+            background: #2d2d2d;
         }
 
         .solution-content.expanded {
@@ -232,49 +243,41 @@
             max-height: 550px;
         }
 
-        pre {
+        pre.solution-code {
             margin: 0;
             font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             font-size: 0.9rem;
             line-height: 1.5;
-            color: #e4e4e7;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            color: #f8f8f2;
+            white-space: pre;
         }
 
         .error {
-            color: #ef4444;
+            color: #e74c3c;
             text-align: center;
-            padding: 40px;
-            background: rgba(239, 68, 68, 0.1);
+            padding: 20px;
+            background: #fadbd8;
             border-radius: 8px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
             margin: 20px 0;
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #a1a1aa;
-        }
-
-        .empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            opacity: 0.5;
+            color: #7f8c8d;
+            background: white;
+            border-radius: 8px;
         }
 
         footer {
             text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid #27272a;
-            color: #71717a;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #7f8c8d;
         }
 
         footer a {
-            color: #fbbf24;
+            color: #3498db;
             text-decoration: none;
         }
 
@@ -283,17 +286,8 @@
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
             .problem-header {
                 flex-wrap: wrap;
-                padding: 12px 15px;
-            }
-
-            .problem-index {
-                min-width: 30px;
             }
 
             .problem-title {
@@ -301,29 +295,15 @@
                 order: 3;
                 margin-top: 8px;
             }
-
-            .stats {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Problem Solutions Showcase</h1>
-            <p class="subtitle">Dynamic GitHub Repository Scanner</p>
+            <h1>🎯 Coding Problems & Solutions</h1>
+            <p class="subtitle">GitHub Repository Scanner</p>
         </header>
-
-        <div class="controls">
-            <label for="search" style="color: #a1a1aa; display: block; margin-bottom: 8px;">🔍 Search Problems</label>
-            <input 
-                type="text" 
-                id="search" 
-                class="search-bar" 
-                placeholder="Search by problem name or platform..."
-            >
-        </div>
 
         <div class="stats">
             <div class="stat-card">
@@ -334,11 +314,14 @@
                 <div class="stat-number" id="totalRepos">0</div>
                 <div class="stat-label">Repositories</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="platformCount">0</div>
-                <div class="stat-label">Platforms</div>
-            </div>
         </div>
+
+        <input 
+            type="text" 
+            id="search" 
+            class="search-bar" 
+            placeholder="🔍 Search problems..."
+        >
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
@@ -350,17 +333,18 @@
         <div id="problemsList" class="problems-list"></div>
 
         <footer>
-            <p>Built with ❤️ | GitHub: <a href="https://github.com/vikasvooradi" target="_blank">@vikasvooradi</a></p>
+            <p>GitHub: <a href="https://github.com/vikasvooradi" target="_blank">@vikasvooradi</a></p>
         </footer>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
     <script>
         // ==================== CONFIGURATION ====================
         const CONFIG = {
             username: 'vikasvooradi',
-            // Add your repository names here (comma-separated list)
+            // ADD YOUR REPOSITORIES HERE (comma-separated)
             repositories: ['leetcode-oracle'],
-            supportedExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.md', '.txt', '.ts', '.go', '.rb', '.php', '.swift', '.kt', '.rs']
+            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php']
         };
 
         // ==================== STATE ====================
@@ -368,108 +352,134 @@
         let solutionCache = {};
 
         // ==================== UTILITY FUNCTIONS ====================
-        function getPlatformFromRepo(repoName) {
-            const name = repoName.toLowerCase();
-            if (name.includes('leetcode')) return { name: 'LeetCode', class: 'leetcode' };
-            if (name.includes('hackerrank')) return { name: 'HackerRank', class: 'hackerrank' };
-            if (name.includes('python')) return { name: 'Python', class: 'python' };
-            if (name.includes('sql') || name.includes('oracle') || name.includes('database')) return { name: 'Database', class: 'database' };
-            return { name: repoName, class: 'default' };
+        function extractDifficulty(text) {
+            const lower = text.toLowerCase();
+            if (lower.includes('easy')) return 'easy';
+            if (lower.includes('medium')) return 'medium';
+            if (lower.includes('hard')) return 'hard';
+            return 'database';
         }
 
-        function cleanFileName(fileName) {
-            return fileName
-                .replace(/\.(sql|py|java|js|cpp|c|md|txt|ts|go|rb|php|swift|kt|rs)$/i, '')
-                .replace(/[-_]/g, ' ')
-                .replace(/\b\w/g, c => c.toUpperCase());
+        function extractTitle(folderName) {
+            // Remove number prefix and clean up
+            return folderName.replace(/^\d+[-.]/, '').replace(/[-_]/g, ' ').trim();
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        async function fetchJSON(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
         }
 
-        // ==================== GITHUB API FUNCTIONS ====================
-        async function fetchRepoContents(username, repo, path = '') {
-            const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
+        async function fetchText(url) {
+            if (solutionCache[url]) return solutionCache[url];
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const text = await response.text();
+            solutionCache[url] = text;
+            return text;
+        }
+
+        // ==================== GITHUB SCANNING ====================
+        async function scanFolder(username, repo, folderPath) {
             try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch ${repo}: ${response.statusText}`);
-                }
-                return await response.json();
-            } catch (error) {
-                console.error(`Error fetching ${repo}:`, error);
-                return [];
-            }
-        }
+                const url = `https://api.github.com/repos/${username}/${repo}/contents/${folderPath}`;
+                const contents = await fetchJSON(url);
+                
+                let readmeFile = null;
+                let solutionFile = null;
 
-        async function fetchFileContent(downloadUrl) {
-            if (solutionCache[downloadUrl]) {
-                return solutionCache[downloadUrl];
-            }
-            
-            try {
-                const response = await fetch(downloadUrl);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch file content');
+                for (const item of contents) {
+                    if (item.type === 'file') {
+                        const name = item.name.toLowerCase();
+                        if (name === 'readme.md') {
+                            readmeFile = item;
+                        } else {
+                            const ext = name.substring(name.lastIndexOf('.'));
+                            if (CONFIG.solutionExtensions.includes(ext)) {
+                                solutionFile = item;
+                            }
+                        }
+                    }
                 }
-                const content = await response.text();
-                solutionCache[downloadUrl] = content;
-                return content;
+
+                if (readmeFile && solutionFile) {
+                    return {
+                        folderName: folderPath.split('/').pop(),
+                        readmeUrl: readmeFile.download_url,
+                        solutionUrl: solutionFile.download_url,
+                        solutionName: solutionFile.name,
+                        repo: repo
+                    };
+                }
+
+                return null;
             } catch (error) {
-                console.error('Error fetching file:', error);
-                return 'Error loading solution content.';
+                console.error(`Error scanning folder ${folderPath}:`, error);
+                return null;
             }
         }
 
         async function scanRepository(username, repo) {
-            const contents = await fetchRepoContents(username, repo);
-            const problems = [];
-            const platform = getPlatformFromRepo(repo);
-
-            for (const item of contents) {
-                if (item.type === 'file') {
-                    const ext = item.name.substring(item.name.lastIndexOf('.')).toLowerCase();
-                    if (CONFIG.supportedExtensions.includes(ext)) {
-                        problems.push({
-                            name: item.name,
-                            title: cleanFileName(item.name),
-                            platform: platform,
-                            downloadUrl: item.download_url,
-                            repo: repo,
-                            path: item.path
-                        });
+            try {
+                const url = `https://api.github.com/repos/${username}/${repo}/contents/`;
+                const contents = await fetchJSON(url);
+                
+                const folderScans = [];
+                for (const item of contents) {
+                    if (item.type === 'dir') {
+                        folderScans.push(scanFolder(username, repo, item.path));
                     }
                 }
-            }
 
-            return problems;
+                const results = await Promise.all(folderScans);
+                return results.filter(r => r !== null);
+            } catch (error) {
+                console.error(`Error scanning repository ${repo}:`, error);
+                return [];
+            }
         }
 
-        // ==================== UI RENDERING ====================
+        // ==================== RENDERING ====================
         function renderProblem(problem, index) {
+            const title = extractTitle(problem.folderName);
+            
             const div = document.createElement('div');
             div.className = 'problem-item';
-            div.dataset.title = problem.title.toLowerCase();
-            div.dataset.platform = problem.platform.name.toLowerCase();
+            div.dataset.title = title.toLowerCase();
+            div.dataset.folder = problem.folderName.toLowerCase();
             
             div.innerHTML = `
-                <div class="problem-header" onclick="toggleSolution('problem-${index}')">
-                    <span class="problem-index">#${index + 1}</span>
-                    <span class="problem-title">${problem.title}</span>
-                    <span class="tag ${problem.platform.class}">${problem.platform.name}</span>
-                    <button class="show-btn" id="btn-${index}">Show Solution</button>
+                <div class="problem-header">
+                    <span class="problem-index">${problem.folderName}</span>
+                    <span class="problem-title">${title}</span>
+                    <button class="show-btn" onclick="toggleSolution(${index})">Show Solution</button>
                 </div>
-                <div class="solution-content" id="problem-${index}">
+                <div class="question-content" id="question-${index}">
+                    <p style="text-align: center; color: #7f8c8d;">Loading question...</p>
+                </div>
+                <div class="solution-content" id="solution-${index}">
                     <div class="code-block">
-                        <pre id="code-${index}">Loading solution...</pre>
+                        <pre class="solution-code" id="code-${index}">Loading solution...</pre>
                     </div>
                 </div>
             `;
             
+            // Load question immediately
+            loadQuestion(index, problem.readmeUrl);
+            
             return div;
+        }
+
+        async function loadQuestion(index, readmeUrl) {
+            try {
+                const markdown = await fetchText(readmeUrl);
+                const html = marked.parse(markdown);
+                document.getElementById(`question-${index}`).innerHTML = html;
+            } catch (error) {
+                document.getElementById(`question-${index}`).innerHTML = 
+                    '<p style="color: #e74c3c;">Error loading question</p>';
+            }
         }
 
         function renderProblems(problems) {
@@ -479,11 +489,8 @@
             if (problems.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
                         <h3>No problems found</h3>
-                        <p>Try adjusting your search or check your repository configuration</p>
+                        <p>Check your repository configuration</p>
                     </div>
                 `;
                 return;
@@ -499,36 +506,38 @@
         function updateStats(problems) {
             document.getElementById('totalProblems').textContent = problems.length;
             document.getElementById('totalRepos').textContent = CONFIG.repositories.length;
-            
-            const platforms = new Set(problems.map(p => p.platform.name));
-            document.getElementById('platformCount').textContent = platforms.size;
         }
 
         // ==================== SOLUTION TOGGLE ====================
-        async function toggleSolution(elementId) {
-            const solutionDiv = document.getElementById(elementId);
-            const index = elementId.replace('problem-', '');
-            const btn = document.getElementById(`btn-${index}`);
+        async function toggleSolution(index) {
+            const solutionDiv = document.getElementById(`solution-${index}`);
+            const btn = event.target;
             const codeBlock = document.getElementById(`code-${index}`);
             
             if (solutionDiv.classList.contains('expanded')) {
                 solutionDiv.classList.remove('expanded');
                 btn.textContent = 'Show Solution';
+                btn.classList.remove('active');
             } else {
                 solutionDiv.classList.add('expanded');
                 btn.textContent = 'Hide Solution';
+                btn.classList.add('active');
                 
                 if (codeBlock.textContent === 'Loading solution...') {
-                    const problem = allProblems[index];
-                    const content = await fetchFileContent(problem.downloadUrl);
-                    codeBlock.textContent = content;
+                    try {
+                        const problem = allProblems[index];
+                        const content = await fetchText(problem.solutionUrl);
+                        codeBlock.textContent = content;
+                    } catch (error) {
+                        codeBlock.textContent = 'Error loading solution';
+                    }
                 }
             }
         }
 
         window.toggleSolution = toggleSolution;
 
-        // ==================== SEARCH FUNCTIONALITY ====================
+        // ==================== SEARCH ====================
         function setupSearch() {
             const searchInput = document.getElementById('search');
             searchInput.addEventListener('input', (e) => {
@@ -537,9 +546,9 @@
                 
                 let visibleCount = 0;
                 items.forEach(item => {
-                    const title = item.dataset.title;
-                    const platform = item.dataset.platform;
-                    const matches = title.includes(query) || platform.includes(query);
+                    const title = item.dataset.title || '';
+                    const folder = item.dataset.folder || '';
+                    const matches = title.includes(query) || folder.includes(query);
                     
                     item.style.display = matches ? 'block' : 'none';
                     if (matches) visibleCount++;
@@ -565,8 +574,11 @@
                 const results = await Promise.all(promises);
                 allProblems = results.flat();
 
+                // Sort by folder name
+                allProblems.sort((a, b) => a.folderName.localeCompare(b.folderName));
+
                 if (allProblems.length === 0) {
-                    throw new Error('No problems found in the specified repositories');
+                    throw new Error('No problems found. Make sure each folder has README.md and a solution file.');
                 }
 
                 renderProblems(allProblems);
@@ -574,14 +586,13 @@
                 loadingDiv.style.display = 'none';
 
             } catch (error) {
-                console.error('Initialization error:', error);
+                console.error('Error:', error);
                 loadingDiv.style.display = 'none';
                 errorDiv.style.display = 'block';
-                errorDiv.textContent = `⚠️ Error: ${error.message}. Please check the repository configuration.`;
+                errorDiv.textContent = `⚠️ ${error.message}`;
             }
         }
 
-        // Start the application
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
