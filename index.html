@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
             color: #333;
             line-height: 1.6;
@@ -44,33 +44,38 @@
             font-size: 1rem;
         }
 
-        .stats {
+        .repo-stats {
             display: flex;
             gap: 15px;
             margin: 20px 0;
             flex-wrap: wrap;
         }
 
-        .stat-card {
+        .repo-card {
             flex: 1;
-            min-width: 150px;
+            min-width: 200px;
             padding: 15px;
             background: white;
             border-radius: 8px;
-            text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .stat-number {
-            font-size: 2rem;
+        .repo-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .repo-count {
+            font-size: 1.8rem;
             font-weight: 700;
             color: #3498db;
         }
 
-        .stat-label {
+        .repo-label {
             color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            font-size: 0.85rem;
         }
 
         .search-bar {
@@ -125,22 +130,24 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .problem-item:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
         .problem-header {
             display: flex;
             align-items: center;
             padding: 16px 20px;
             gap: 15px;
-            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .problem-header:hover {
+            background: #f8f9fa;
         }
 
         .problem-index {
             font-weight: 600;
             color: #7f8c8d;
             min-width: 50px;
+            font-size: 0.9rem;
         }
 
         .problem-title {
@@ -153,32 +160,125 @@
         .tag {
             padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .tag.easy {
-            background: #d4edda;
-            color: #155724;
+        .tag.leetcode {
+            background: #ffa116;
+            color: white;
         }
 
-        .tag.medium {
-            background: #fff3cd;
-            color: #856404;
+        .tag.hackerrank {
+            background: #00ea64;
+            color: white;
         }
 
-        .tag.hard {
-            background: #f8d7da;
-            color: #721c24;
+        .tag.python {
+            background: #3776ab;
+            color: white;
         }
 
         .tag.database {
-            background: #d1ecf1;
-            color: #0c5460;
+            background: #9b59b6;
+            color: white;
+        }
+
+        .tag.sql {
+            background: #e67e22;
+            color: white;
+        }
+
+        .tag.default {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .expand-icon {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            transition: transform 0.3s;
+        }
+
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .question-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .question-section.expanded {
+            max-height: 2000px;
+        }
+
+        .question-content {
+            padding: 20px;
+        }
+
+        .question-content h1,
+        .question-content h2,
+        .question-content h3 {
+            margin: 15px 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .question-content p {
+            margin: 10px 0;
+        }
+
+        .question-content pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .question-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .question-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .question-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .question-content table th,
+        .question-content table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .question-content table th {
+            background: #f0f0f0;
+            font-weight: 600;
+        }
+
+        .solution-actions {
+            padding: 15px 20px;
+            border-top: 1px solid #f0f0f0;
+            background: white;
         }
 
         .show-btn {
-            padding: 6px 16px;
+            padding: 8px 20px;
             background: #3498db;
             border: none;
             border-radius: 4px;
@@ -197,34 +297,6 @@
             background: #e74c3c;
         }
 
-        .question-content {
-            padding: 20px;
-            border-bottom: 1px solid #f0f0f0;
-            background: #fafafa;
-        }
-
-        .question-content h2,
-        .question-content h3 {
-            margin-top: 15px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .question-content pre,
-        .question-content code {
-            background: #f5f5f5;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-            font-size: 0.9rem;
-        }
-
-        .question-content pre {
-            padding: 12px;
-            overflow-x: auto;
-            margin: 10px 0;
-        }
-
         .solution-content {
             max-height: 0;
             overflow: hidden;
@@ -238,14 +310,13 @@
 
         .code-block {
             padding: 20px;
-            overflow-x: auto;
-            overflow-y: auto;
+            overflow: auto;
             max-height: 550px;
         }
 
-        pre.solution-code {
+        .solution-code {
             margin: 0;
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-family: 'Monaco', 'Consolas', monospace;
             font-size: 0.9rem;
             line-height: 1.5;
             color: #f8f8f2;
@@ -261,14 +332,6 @@
             margin: 20px 0;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #7f8c8d;
-            background: white;
-            border-radius: 8px;
-        }
-
         footer {
             text-align: center;
             padding: 30px 0;
@@ -281,19 +344,9 @@
             text-decoration: none;
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 768px) {
             .problem-header {
                 flex-wrap: wrap;
-            }
-
-            .problem-title {
-                flex-basis: 100%;
-                order: 3;
-                margin-top: 8px;
             }
         }
     </style>
@@ -305,16 +358,7 @@
             <p class="subtitle">GitHub Repository Scanner</p>
         </header>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="totalProblems">0</div>
-                <div class="stat-label">Total Problems</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalRepos">0</div>
-                <div class="stat-label">Repositories</div>
-            </div>
-        </div>
+        <div id="repoStats" class="repo-stats"></div>
 
         <input 
             type="text" 
@@ -325,7 +369,8 @@
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Loading problems from GitHub...</p>
+            <p>Scanning GitHub repositories...</p>
+            <p id="loadingStatus" style="color: #7f8c8d; font-size: 0.9rem; margin-top: 10px;"></p>
         </div>
 
         <div id="error" class="error" style="display: none;"></div>
@@ -337,126 +382,205 @@
         </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
     <script>
         // ==================== CONFIGURATION ====================
         const CONFIG = {
             username: 'vikasvooradi',
-            // ADD YOUR REPOSITORIES HERE (comma-separated)
+            // ADD YOUR REPOSITORIES HERE
             repositories: ['leetcode-oracle'],
-            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php']
+            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php', '.swift']
         };
 
         // ==================== STATE ====================
         let allProblems = [];
-        let solutionCache = {};
+        let cache = {};
+        let repoStats = {};
 
-        // ==================== UTILITY FUNCTIONS ====================
-        function extractDifficulty(text) {
-            const lower = text.toLowerCase();
-            if (lower.includes('easy')) return 'easy';
-            if (lower.includes('medium')) return 'medium';
-            if (lower.includes('hard')) return 'hard';
-            return 'database';
+        // ==================== UTILITIES ====================
+        function updateLoadingStatus(msg) {
+            const elem = document.getElementById('loadingStatus');
+            if (elem) elem.textContent = msg;
+        }
+
+        function getPlatformTag(repoName) {
+            const name = repoName.toLowerCase();
+            if (name.includes('leetcode')) return { text: 'LeetCode', class: 'leetcode' };
+            if (name.includes('hackerrank')) return { text: 'HackerRank', class: 'hackerrank' };
+            if (name.includes('python')) return { text: 'Python', class: 'python' };
+            if (name.includes('sql') || name.includes('database')) return { text: 'Database', class: 'database' };
+            if (name.includes('oracle')) return { text: 'SQL', class: 'sql' };
+            return { text: repoName, class: 'default' };
         }
 
         function extractTitle(folderName) {
-            // Remove number prefix and clean up
-            return folderName.replace(/^\d+[-.]/, '').replace(/[-_]/g, ' ').trim();
+            return folderName.replace(/^\d+[-._]/, '').replace(/[-_]/g, ' ').trim();
         }
 
-        async function fetchJSON(url) {
+        async function fetchAPI(url) {
             const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
             return response.json();
         }
 
         async function fetchText(url) {
-            if (solutionCache[url]) return solutionCache[url];
+            if (cache[url]) return cache[url];
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const text = await response.text();
-            solutionCache[url] = text;
+            cache[url] = text;
             return text;
         }
 
+        function parseMarkdown(markdown) {
+            let html = markdown
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+
+            const parts = html.split(/(```[\s\S]*?```)/);
+            html = parts.map(part => {
+                if (part.startsWith('```')) {
+                    const code = part.replace(/```\w*\n?/, '').replace(/```$/, '');
+                    return `<pre><code>${code}</code></pre>`;
+                }
+                return part;
+            }).join('');
+
+            return `<p>${html}</p>`;
+        }
+
         // ==================== GITHUB SCANNING ====================
-        async function scanFolder(username, repo, folderPath) {
+        async function scanFolder(username, repo, folderPath, folderName) {
             try {
                 const url = `https://api.github.com/repos/${username}/${repo}/contents/${folderPath}`;
-                const contents = await fetchJSON(url);
+                const contents = await fetchAPI(url);
                 
-                let readmeFile = null;
-                let solutionFile = null;
+                let readme = null;
+                let solution = null;
 
                 for (const item of contents) {
                     if (item.type === 'file') {
                         const name = item.name.toLowerCase();
                         if (name === 'readme.md') {
-                            readmeFile = item;
+                            readme = item;
                         } else {
                             const ext = name.substring(name.lastIndexOf('.'));
                             if (CONFIG.solutionExtensions.includes(ext)) {
-                                solutionFile = item;
+                                solution = item;
                             }
                         }
                     }
                 }
 
-                if (readmeFile && solutionFile) {
+                if (readme && solution) {
                     return {
-                        folderName: folderPath.split('/').pop(),
-                        readmeUrl: readmeFile.download_url,
-                        solutionUrl: solutionFile.download_url,
-                        solutionName: solutionFile.name,
-                        repo: repo
+                        folderName: folderName,
+                        readmeUrl: readme.download_url,
+                        solutionUrl: solution.download_url,
+                        solutionName: solution.name,
+                        repo: repo,
+                        platform: getPlatformTag(repo)
                     };
                 }
 
                 return null;
             } catch (error) {
-                console.error(`Error scanning folder ${folderPath}:`, error);
+                console.error(`Error in ${folderPath}:`, error);
                 return null;
+            }
+        }
+
+        async function scanRepositoryRecursive(username, repo, path = '', depth = 0) {
+            if (depth > 3) return [];
+            
+            try {
+                const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
+                const contents = await fetchAPI(url);
+                
+                let problems = [];
+                const folders = contents.filter(item => item.type === 'dir');
+                
+                for (const folder of folders) {
+                    const folderName = folder.name;
+                    const folderPath = folder.path;
+                    
+                    const problem = await scanFolder(username, repo, folderPath, folderName);
+                    if (problem) {
+                        problems.push(problem);
+                        repoStats[repo] = (repoStats[repo] || 0) + 1;
+                        updateLoadingStatus(`Found: ${repoStats[repo]} problems in ${repo}`);
+                    } else {
+                        const subProblems = await scanRepositoryRecursive(username, repo, folderPath, depth + 1);
+                        problems = problems.concat(subProblems);
+                    }
+                }
+                
+                return problems;
+            } catch (error) {
+                console.error(`Error scanning ${path}:`, error);
+                return [];
             }
         }
 
         async function scanRepository(username, repo) {
             try {
-                const url = `https://api.github.com/repos/${username}/${repo}/contents/`;
-                const contents = await fetchJSON(url);
-                
-                const folderScans = [];
-                for (const item of contents) {
-                    if (item.type === 'dir') {
-                        folderScans.push(scanFolder(username, repo, item.path));
-                    }
-                }
-
-                const results = await Promise.all(folderScans);
-                return results.filter(r => r !== null);
+                console.log(`Starting scan: ${repo}`);
+                repoStats[repo] = 0;
+                updateLoadingStatus(`Scanning ${repo}...`);
+                return await scanRepositoryRecursive(username, repo);
             } catch (error) {
-                console.error(`Error scanning repository ${repo}:`, error);
+                console.error(`Error in ${repo}:`, error);
                 return [];
             }
         }
 
         // ==================== RENDERING ====================
+        function renderRepoStats() {
+            const container = document.getElementById('repoStats');
+            container.innerHTML = '';
+
+            for (const [repo, count] of Object.entries(repoStats)) {
+                const platform = getPlatformTag(repo);
+                const card = document.createElement('div');
+                card.className = 'repo-card';
+                card.innerHTML = `
+                    <div class="repo-name">${platform.text}</div>
+                    <div class="repo-count">${count}</div>
+                    <div class="repo-label">Problems Solved</div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
         function renderProblem(problem, index) {
             const title = extractTitle(problem.folderName);
             
             const div = document.createElement('div');
             div.className = 'problem-item';
             div.dataset.title = title.toLowerCase();
-            div.dataset.folder = problem.folderName.toLowerCase();
+            div.dataset.repo = problem.repo.toLowerCase();
             
             div.innerHTML = `
-                <div class="problem-header">
+                <div class="problem-header" onclick="toggleQuestion(${index})">
                     <span class="problem-index">${problem.folderName}</span>
                     <span class="problem-title">${title}</span>
-                    <button class="show-btn" onclick="toggleSolution(${index})">Show Solution</button>
+                    <span class="tag ${problem.platform.class}">${problem.platform.text}</span>
+                    <span class="expand-icon" id="expand-${index}">▼</span>
                 </div>
-                <div class="question-content" id="question-${index}">
-                    <p style="text-align: center; color: #7f8c8d;">Loading question...</p>
+                <div class="question-section" id="question-${index}">
+                    <div class="question-content" id="content-${index}">
+                        <p style="color: #7f8c8d;">Loading question...</p>
+                    </div>
+                    <div class="solution-actions">
+                        <button class="show-btn" onclick="toggleSolution(${index}, event)">Show Solution</button>
+                    </div>
                 </div>
                 <div class="solution-content" id="solution-${index}">
                     <div class="code-block">
@@ -465,20 +589,18 @@
                 </div>
             `;
             
-            // Load question immediately
-            loadQuestion(index, problem.readmeUrl);
-            
             return div;
         }
 
-        async function loadQuestion(index, readmeUrl) {
+        async function loadQuestion(index, url) {
             try {
-                const markdown = await fetchText(readmeUrl);
-                const html = marked.parse(markdown);
-                document.getElementById(`question-${index}`).innerHTML = html;
+                const markdown = await fetchText(url);
+                const html = parseMarkdown(markdown);
+                const elem = document.getElementById(`content-${index}`);
+                if (elem) elem.innerHTML = html;
             } catch (error) {
-                document.getElementById(`question-${index}`).innerHTML = 
-                    '<p style="color: #e74c3c;">Error loading question</p>';
+                const elem = document.getElementById(`content-${index}`);
+                if (elem) elem.innerHTML = '<p style="color: #e74c3c;">Error loading question</p>';
             }
         }
 
@@ -487,12 +609,7 @@
             container.innerHTML = '';
 
             if (problems.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No problems found</h3>
-                        <p>Check your repository configuration</p>
-                    </div>
-                `;
+                container.innerHTML = '<div class="error">No problems found</div>';
                 return;
             }
 
@@ -500,16 +617,32 @@
                 container.appendChild(renderProblem(problem, index));
             });
 
-            updateStats(problems);
+            renderRepoStats();
         }
 
-        function updateStats(problems) {
-            document.getElementById('totalProblems').textContent = problems.length;
-            document.getElementById('totalRepos').textContent = CONFIG.repositories.length;
+        // ==================== TOGGLE FUNCTIONS ====================
+        function toggleQuestion(index) {
+            const questionDiv = document.getElementById(`question-${index}`);
+            const expandIcon = document.getElementById(`expand-${index}`);
+            
+            if (questionDiv.classList.contains('expanded')) {
+                questionDiv.classList.remove('expanded');
+                expandIcon.classList.remove('rotated');
+            } else {
+                questionDiv.classList.add('expanded');
+                expandIcon.classList.add('rotated');
+                
+                const content = document.getElementById(`content-${index}`);
+                if (content && content.textContent.includes('Loading question')) {
+                    const problem = allProblems[index];
+                    loadQuestion(index, problem.readmeUrl);
+                }
+            }
         }
 
-        // ==================== SOLUTION TOGGLE ====================
-        async function toggleSolution(index) {
+        async function toggleSolution(index, event) {
+            event.stopPropagation();
+            
             const solutionDiv = document.getElementById(`solution-${index}`);
             const btn = event.target;
             const codeBlock = document.getElementById(`code-${index}`);
@@ -535,61 +668,54 @@
             }
         }
 
+        window.toggleQuestion = toggleQuestion;
         window.toggleSolution = toggleSolution;
 
         // ==================== SEARCH ====================
-        function setupSearch() {
-            const searchInput = document.getElementById('search');
-            searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                const items = document.querySelectorAll('.problem-item');
-                
-                let visibleCount = 0;
-                items.forEach(item => {
-                    const title = item.dataset.title || '';
-                    const folder = item.dataset.folder || '';
-                    const matches = title.includes(query) || folder.includes(query);
-                    
-                    item.style.display = matches ? 'block' : 'none';
-                    if (matches) visibleCount++;
-                });
-
-                document.getElementById('totalProblems').textContent = visibleCount;
+        document.getElementById('search').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.problem-item');
+            
+            items.forEach(item => {
+                const title = item.dataset.title || '';
+                const repo = item.dataset.repo || '';
+                const match = title.includes(query) || repo.includes(query);
+                item.style.display = match ? 'block' : 'none';
             });
-        }
+        });
 
-        // ==================== INITIALIZATION ====================
+        // ==================== INIT ====================
         async function init() {
-            const loadingDiv = document.getElementById('loading');
-            const errorDiv = document.getElementById('error');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
             
             try {
-                loadingDiv.style.display = 'block';
-                errorDiv.style.display = 'none';
+                loading.style.display = 'block';
+                error.style.display = 'none';
 
-                const promises = CONFIG.repositories.map(repo => 
+                const scans = CONFIG.repositories.map(repo => 
                     scanRepository(CONFIG.username, repo)
                 );
 
-                const results = await Promise.all(promises);
-                allProblems = results.flat();
+                const results = await Promise.all(scans);
+                allProblems = results.flat().sort((a, b) => 
+                    a.folderName.localeCompare(b.folderName)
+                );
 
-                // Sort by folder name
-                allProblems.sort((a, b) => a.folderName.localeCompare(b.folderName));
+                console.log(`Total problems found: ${allProblems.length}`);
 
                 if (allProblems.length === 0) {
-                    throw new Error('No problems found. Make sure each folder has README.md and a solution file.');
+                    throw new Error('No problems found. Check repository structure.');
                 }
 
                 renderProblems(allProblems);
-                setupSearch();
-                loadingDiv.style.display = 'none';
+                loading.style.display = 'none';
 
-            } catch (error) {
-                console.error('Error:', error);
-                loadingDiv.style.display = 'none';
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = `⚠️ ${error.message}`;
+            } catch (err) {
+                console.error('Error:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = `⚠️ ${err.message}`;
             }
         }
 
