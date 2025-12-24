@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL Problems Viewer</title>
+    <title>Vikas Vooradi - SQL Problems</title>
     <style>
         * {
             margin: 0;
@@ -43,152 +43,20 @@
             font-size: 1.1rem;
         }
 
-        .setup-section {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .setup-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .step-card {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
-        .step-number {
+        .github-link {
             display: inline-block;
-            background: #667eea;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #24292e;
             color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            font-weight: 700;
-            margin-right: 10px;
-        }
-
-        .step-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .step-content {
-            color: #495057;
-            line-height: 1.6;
-        }
-
-        .code-box {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-            position: relative;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #5568d3;
-        }
-
-        .copy-btn.copied {
-            background: #28a745;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .help-text {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-
-        .help-text a {
-            color: #667eea;
             text-decoration: none;
-        }
-
-        .help-text a:hover {
-            text-decoration: underline;
-        }
-
-        .load-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
+            border-radius: 6px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            width: 100%;
         }
 
-        .load-btn:hover:not(:disabled) {
+        .github-link:hover {
+            background: #1a1e22;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .load-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         .stats {
@@ -256,24 +124,6 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        .error {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .success {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
         }
 
         .problems-list {
@@ -443,158 +293,64 @@
             white-space: pre;
         }
 
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: white;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .problem-header { flex-wrap: wrap; }
             .problem-number { min-width: 50px; }
-        }
-
-        .hidden {
-            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎯 Learn SQL </h1>
-            <p class="subtitle">View your solutions directly from GitHub</p>
+            <h1>🎯 Vikas Vooradi</h1>
+            <p class="subtitle">LeetCode SQL Solutions</p>
+            <a href="https://github.com/vikasvooradi/leetcode-oracle" target="_blank" class="github-link">
+                📚 View on GitHub
+            </a>
         </header>
 
-        <!-- Setup Section -->
-        <div id="setupSection" class="setup-section">
-            <div class="setup-title">
-                ⚙️ Configuration
-            </div>
+        <div id="stats" class="stats"></div>
 
-            <div class="step-card">
-                <div class="step-title">
-                    <span class="step-number">1</span>
-                    Get Your GitHub Token (Required)
-                </div>
-                <div class="step-content">
-                    <p>Create a token to avoid rate limits:</p>
-                    <ol style="margin: 10px 0 10px 20px;">
-                        <li>Go to <a href="https://github.com/settings/tokens/new" target="_blank">GitHub Token Settings</a></li>
-                        <li>Click "Generate new token (classic)"</li>
-                        <li>Name it "LeetCode Viewer"</li>
-                        <li>Select scope: <strong>repo</strong> (for private repos) or just <strong>public_repo</strong></li>
-                        <li>Click "Generate token"</li>
-                        <li>Copy the token and paste it below</li>
-                    </ol>
-                </div>
-            </div>
+        <input 
+            type="text" 
+            id="searchBar" 
+            class="search-bar" 
+            placeholder="🔍 Search problems by number or title..."
+        >
 
-            <div class="input-group">
-                <label class="input-label">GitHub Username:</label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    class="input-field" 
-                    value="vikasvooradi"
-                    placeholder="your-username"
-                >
-                <div class="help-text">Your GitHub username</div>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">Repository Name:</label>
-                <input 
-                    type="text" 
-                    id="repository" 
-                    class="input-field" 
-                    value="leetcode-oracle"
-                    placeholder="leetcode-oracle"
-                >
-                <div class="help-text">The repository containing your solutions</div>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">GitHub Token:</label>
-                <input 
-                    type="password" 
-                    id="token" 
-                    class="input-field" 
-                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                >
-                <div class="help-text">
-                    Your personal access token from GitHub
-                    <a href="https://github.com/settings/tokens/new" target="_blank">Create one here</a>
-                </div>
-            </div>
-
-            <button id="loadBtn" class="load-btn" onclick="loadProblems()">
-                🚀 Load Problems
-            </button>
-
-            <div id="setupError" class="error hidden"></div>
-            <div id="setupSuccess" class="success hidden"></div>
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="font-size: 1.2rem; color: #2c3e50;">Loading problems...</p>
         </div>
 
-        <!-- Main Content (Hidden initially) -->
-        <div id="mainContent" class="hidden">
-            <div id="stats" class="stats"></div>
+        <div id="problemsList" class="problems-list"></div>
 
-            <input 
-                type="text" 
-                id="searchBar" 
-                class="search-bar" 
-                placeholder="🔍 Search problems by number or title..."
-            >
-
-            <div id="loading" class="loading hidden">
-                <div class="spinner"></div>
-                <p style="font-size: 1.2rem; color: #2c3e50; margin-bottom: 10px;">Loading problems...</p>
-                <p id="loadingStatus" style="color: #7f8c8d; font-size: 0.9rem;"></p>
-            </div>
-
-            <div id="problemsList" class="problems-list"></div>
-        </div>
+        <footer>
+            <p>Made with ❤️ by <a href="https://github.com/vikasvooradi" target="_blank">Vikas Vooradi</a></p>
+        </footer>
     </div>
 
     <script>
-        let CONFIG = {};
         let allProblems = [];
         let problemStates = {};
-
-        function showElement(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function hideElement(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function showError(message) {
-            const errorEl = document.getElementById('setupError');
-            errorEl.textContent = '⚠️ ' + message;
-            showElement('setupError');
-            hideElement('setupSuccess');
-        }
-
-        function showSuccess(message) {
-            const successEl = document.getElementById('setupSuccess');
-            successEl.textContent = '✅ ' + message;
-            showElement('setupSuccess');
-            hideElement('setupError');
-        }
-
-        function updateStatus(message) {
-            const elem = document.getElementById('loadingStatus');
-            if (elem) elem.textContent = message;
-        }
-
-        function extractProblemNumber(folderName) {
-            const match = folderName.match(/^(\d+)/);
-            return match ? match[1] : '';
-        }
-
-        function extractProblemTitle(folderName) {
-            return folderName
-                .replace(/^\d+[-._]\s*/, '')
-                .replace(/[-_]/g, ' ')
-                .trim();
-        }
 
         function escapeHtml(text) {
             const div = document.createElement('div');
@@ -626,77 +382,6 @@
             html = html.replace(/\n/g, '<br>');
             
             return '<p>' + html + '</p>';
-        }
-
-        async function githubFetch(url) {
-            const headers = {
-                'Accept': 'application/vnd.github.v3+json'
-            };
-            
-            if (CONFIG.token) {
-                headers['Authorization'] = `Bearer ${CONFIG.token}`;
-            }
-
-            const response = await fetch(url, { headers });
-            
-            if (!response.ok) {
-                if (response.status === 403) {
-                    throw new Error('Rate limit exceeded. Please add a valid GitHub token.');
-                }
-                throw new Error(`GitHub API error: ${response.status}`);
-            }
-            
-            return response.json();
-        }
-
-        async function scanRepository() {
-            updateStatus('Connecting to GitHub...');
-            
-            const repoUrl = `https://api.github.com/repos/${CONFIG.username}/${CONFIG.repository}/contents`;
-            const contents = await githubFetch(repoUrl);
-            
-            const folders = contents.filter(item => item.type === 'dir');
-            updateStatus(`Found ${folders.length} folders. Scanning...`);
-            
-            const problems = [];
-            
-            for (let i = 0; i < folders.length; i++) {
-                const folder = folders[i];
-                updateStatus(`Scanning ${i + 1}/${folders.length}: ${folder.name}`);
-                
-                try {
-                    const folderContents = await githubFetch(folder.url);
-                    
-                    let readmeFile = null;
-                    let sqlFile = null;
-                    
-                    for (const file of folderContents) {
-                        if (file.type === 'file') {
-                            const fileName = file.name.toLowerCase();
-                            if (fileName === 'readme.md') {
-                                readmeFile = file;
-                            } else if (fileName.endsWith('.sql')) {
-                                sqlFile = file;
-                            }
-                        }
-                    }
-                    
-                    if (readmeFile && sqlFile) {
-                        problems.push({
-                            folderName: folder.name,
-                            number: extractProblemNumber(folder.name),
-                            title: extractProblemTitle(folder.name),
-                            readmeUrl: readmeFile.download_url,
-                            sqlUrl: sqlFile.download_url,
-                            sqlFileName: sqlFile.name
-                        });
-                    }
-                } catch (error) {
-                    console.error(`Error scanning ${folder.name}:`, error);
-                }
-            }
-            
-            return problems;
         }
 
         function renderStats() {
@@ -817,7 +502,7 @@
         window.toggleQuestion = toggleQuestion;
         window.toggleSolution = toggleSolution;
 
-        document.getElementById('searchBar')?.addEventListener('input', (e) => {
+        document.getElementById('searchBar').addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
             const cards = document.querySelectorAll('.problem-card');
             
@@ -827,84 +512,31 @@
             });
         });
 
-        async function loadProblems() {
-            const username = document.getElementById('username').value.trim();
-            const repository = document.getElementById('repository').value.trim();
-            const token = document.getElementById('token').value.trim();
-
-            if (!username || !repository) {
-                showError('Please enter both username and repository name');
-                return;
-            }
-
-            if (!token) {
-                showError('GitHub token is required to avoid rate limits');
-                return;
-            }
-
-            CONFIG = { username, repository, token };
-
-            // Disable button
-            const btn = document.getElementById('loadBtn');
-            btn.disabled = true;
-            btn.textContent = 'Loading...';
-
-            hideElement('setupError');
-            hideElement('setupSuccess');
-
+        async function init() {
             try {
-                // Hide setup, show main content
-                hideElement('setupSection');
-                showElement('mainContent');
-                showElement('loading');
-
-                const problems = await scanRepository();
-
-                allProblems = problems.sort((a, b) => {
+                // Load problems data from pre-built JSON file
+                const response = await fetch('problems.json');
+                const data = await response.json();
+                
+                allProblems = data.problems.sort((a, b) => {
                     const numA = parseInt(a.number) || 0;
                     const numB = parseInt(b.number) || 0;
                     return numA - numB;
                 });
 
-                hideElement('loading');
+                document.getElementById('loading').classList.add('hidden');
                 renderProblems();
 
                 console.log(`✅ Loaded ${allProblems.length} problems successfully`);
 
             } catch (error) {
-                console.error('Error:', error);
-                hideElement('loading');
-                showElement('setupSection');
-                hideElement('mainContent');
-                showError(error.message);
-                btn.disabled = false;
-                btn.textContent = '🚀 Load Problems';
+                console.error('Error loading problems:', error);
+                document.getElementById('loading').innerHTML = 
+                    '<p style="color: #dc3545;">Error loading problems. Please try again later.</p>';
             }
         }
 
-        window.loadProblems = loadProblems;
-
-        // Save config to localStorage
-        window.addEventListener('beforeunload', () => {
-            if (CONFIG.username && CONFIG.repository) {
-                localStorage.setItem('leetcode-viewer-config', JSON.stringify({
-                    username: CONFIG.username,
-                    repository: CONFIG.repository
-                }));
-            }
-        });
-
-        // Load saved config
-        window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('leetcode-viewer-config');
-            if (saved) {
-                try {
-                    const config = JSON.parse(saved);
-                    if (config.username) document.getElementById('username').value = config.username;
-                    if (config.repository) document.getElementById('repository').value = config.repository;
-                } catch (e) {}
-            }
-        });
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
