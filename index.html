@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problem Solutions Showcase</title>
+    <title>SQL Problem Solutions</title>
     <style>
         * {
             margin: 0;
@@ -13,101 +13,94 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
         }
 
         header {
             text-align: center;
-            padding: 30px 0;
+            padding: 40px 20px;
             background: white;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #2c3e50;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .subtitle {
             color: #7f8c8d;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
-        .repo-stats {
+        .stats {
             display: flex;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
-        .repo-card {
-            flex: 1;
-            min-width: 200px;
-            padding: 15px;
+        .stat-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
-        .repo-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-
-        .repo-count {
-            font-size: 1.8rem;
+        .stat-number {
+            font-size: 2.5rem;
             font-weight: 700;
-            color: #3498db;
+            color: #667eea;
         }
 
-        .repo-label {
+        .stat-label {
             color: #7f8c8d;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
 
         .search-bar {
             width: 100%;
-            padding: 12px 16px;
+            padding: 15px 20px;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: none;
+            border-radius: 12px;
             font-size: 1rem;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .search-bar:focus {
             outline: none;
-            border-color: #3498db;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
         .loading {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
@@ -117,236 +110,226 @@
             100% { transform: rotate(360deg); }
         }
 
-        .problems-list {
-            margin-top: 20px;
+        .loading-text {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
 
-        .problem-item {
+        .loading-status {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .error {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .problem-card {
             background: white;
-            border: 1px solid #e1e8ed;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .problem-header {
             display: flex;
             align-items: center;
-            padding: 16px 20px;
+            padding: 20px;
             gap: 15px;
             cursor: pointer;
-            transition: background 0.2s;
+            user-select: none;
         }
 
-        .problem-header:hover {
-            background: #f8f9fa;
-        }
-
-        .problem-index {
-            font-weight: 600;
-            color: #7f8c8d;
-            min-width: 50px;
+        .problem-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
             font-size: 0.9rem;
+            padding: 8px 15px;
+            border-radius: 8px;
+            min-width: 60px;
+            text-align: center;
         }
 
         .problem-title {
             flex: 1;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        .tag {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .tag.leetcode {
-            background: #ffa116;
-            color: white;
-        }
-
-        .tag.hackerrank {
-            background: #00ea64;
-            color: white;
-        }
-
-        .tag.python {
-            background: #3776ab;
-            color: white;
-        }
-
-        .tag.database {
-            background: #9b59b6;
-            color: white;
-        }
-
-        .tag.sql {
-            background: #e67e22;
-            color: white;
-        }
-
-        .tag.default {
-            background: #95a5a6;
-            color: white;
+            color: #2c3e50;
         }
 
         .expand-icon {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            transition: transform 0.3s;
+            font-size: 1.5rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
         }
 
-        .expand-icon.rotated {
+        .expand-icon.expanded {
             transform: rotate(180deg);
         }
 
-        .question-section {
+        .problem-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
-            border-top: 1px solid #f0f0f0;
-            background: #fafafa;
+            transition: max-height 0.4s ease;
         }
 
-        .question-section.expanded {
-            max-height: 2000px;
+        .problem-content.expanded {
+            max-height: 3000px;
         }
 
-        .question-content {
+        .question-section {
             padding: 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
         }
 
-        .question-content h1,
-        .question-content h2,
-        .question-content h3 {
-            margin: 15px 0 10px 0;
+        .question-section h1,
+        .question-section h2,
+        .question-section h3 {
             color: #2c3e50;
+            margin: 15px 0 10px 0;
         }
 
-        .question-content p {
+        .question-section h1 { font-size: 1.8rem; }
+        .question-section h2 { font-size: 1.5rem; }
+        .question-section h3 { font-size: 1.2rem; }
+
+        .question-section p {
             margin: 10px 0;
+            line-height: 1.6;
+            color: #495057;
         }
 
-        .question-content pre {
+        .question-section pre {
             background: #2d2d2d;
             color: #f8f8f2;
-            padding: 12px;
-            border-radius: 4px;
+            padding: 15px;
+            border-radius: 8px;
             overflow-x: auto;
-            margin: 10px 0;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
         }
 
-        .question-content code {
-            background: #f5f5f5;
+        .question-section code {
+            background: #e9ecef;
             padding: 2px 6px;
-            border-radius: 3px;
-            font-family: monospace;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
         }
 
-        .question-content pre code {
+        .question-section pre code {
             background: none;
             padding: 0;
+            color: #f8f8f2;
         }
 
-        .question-content table {
-            border-collapse: collapse;
+        .question-section table {
             width: 100%;
+            border-collapse: collapse;
             margin: 15px 0;
         }
 
-        .question-content table th,
-        .question-content table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .question-section th,
+        .question-section td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
             text-align: left;
         }
 
-        .question-content table th {
-            background: #f0f0f0;
+        .question-section th {
+            background: #667eea;
+            color: white;
             font-weight: 600;
         }
 
-        .solution-actions {
-            padding: 15px 20px;
-            border-top: 1px solid #f0f0f0;
+        .solution-button-section {
+            padding: 20px;
             background: white;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
         }
 
-        .show-btn {
-            padding: 8px 20px;
-            background: #3498db;
+        .solution-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             color: white;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.2s;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .show-btn:hover {
-            background: #2980b9;
+        .solution-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
-        .show-btn.active {
-            background: #e74c3c;
+        .solution-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
-        .solution-content {
+        .solution-section {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
             background: #2d2d2d;
         }
 
-        .solution-content.expanded {
-            max-height: 600px;
+        .solution-section.expanded {
+            max-height: 800px;
         }
 
-        .code-block {
+        .solution-content {
             padding: 20px;
             overflow: auto;
-            max-height: 550px;
+            max-height: 750px;
         }
 
         .solution-code {
             margin: 0;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: #f8f8f2;
             white-space: pre;
         }
 
-        .error {
-            color: #e74c3c;
-            text-align: center;
-            padding: 20px;
-            background: #fadbd8;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 40px;
-            color: #7f8c8d;
-        }
-
-        footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
         @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
             .problem-header {
                 flex-wrap: wrap;
+            }
+
+            .problem-number {
+                min-width: 50px;
             }
         }
     </style>
@@ -355,91 +338,127 @@
     <div class="container">
         <header>
             <h1>🎯 Coding Problems & Solutions</h1>
-            <p class="subtitle">GitHub Repository Scanner</p>
+            <p class="subtitle">LeetCode SQL Problems</p>
         </header>
 
-        <div id="repoStats" class="repo-stats"></div>
+        <div id="stats" class="stats"></div>
 
         <input 
             type="text" 
-            id="search" 
+            id="searchBar" 
             class="search-bar" 
-            placeholder="🔍 Search problems..."
+            placeholder="🔍 Search problems by number or title..."
         >
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Scanning GitHub repositories...</p>
-            <p id="loadingStatus" style="color: #7f8c8d; font-size: 0.9rem; margin-top: 10px;"></p>
+            <p class="loading-text">Loading problems...</p>
+            <p id="loadingStatus" class="loading-status"></p>
         </div>
 
         <div id="error" class="error" style="display: none;"></div>
 
         <div id="problemsList" class="problems-list"></div>
-
-        <footer>
-            <p>GitHub: <a href="https://github.com/vikasvooradi" target="_blank">@vikasvooradi</a></p>
-        </footer>
     </div>
 
     <script>
         // ==================== CONFIGURATION ====================
         const CONFIG = {
             username: 'vikasvooradi',
-            // ADD YOUR REPOSITORIES HERE
-            repositories: ['leetcode-oracle'],
-            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php', '.swift'],
-            githubToken: null // Optional: Add token for higher rate limits
+            repository: 'leetcode-oracle',
+            githubToken: null // Optional: Add your GitHub personal access token here for higher rate limits
         };
 
         // ==================== STATE ====================
         let allProblems = [];
-        let cache = {};
-        let repoStats = {};
+        let problemStates = {}; // Track which problems are expanded
 
         // ==================== UTILITIES ====================
-        function updateLoadingStatus(msg) {
+        function updateStatus(message) {
             const elem = document.getElementById('loadingStatus');
-            if (elem) elem.textContent = msg;
+            if (elem) elem.textContent = message;
         }
 
-        function getPlatformTag(repoName) {
-            const name = repoName.toLowerCase();
-            if (name.includes('leetcode')) return { text: 'LeetCode', class: 'leetcode' };
-            if (name.includes('hackerrank')) return { text: 'HackerRank', class: 'hackerrank' };
-            if (name.includes('python')) return { text: 'Python', class: 'python' };
-            if (name.includes('sql') || name.includes('database')) return { text: 'Database', class: 'database' };
-            if (name.includes('oracle')) return { text: 'SQL', class: 'sql' };
-            return { text: repoName, class: 'default' };
+        function showError(message) {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            loading.style.display = 'none';
+            error.style.display = 'block';
+            error.innerHTML = `⚠️ ${message}`;
         }
 
-        function extractTitle(folderName) {
-            return folderName.replace(/^\d+[-._]/, '').replace(/[-_]/g, ' ').trim();
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
         }
 
-        async function fetchAPI(url) {
-            const headers = {};
-            if (CONFIG.githubToken) {
-                headers['Authorization'] = `token ${CONFIG.githubToken}`;
-            }
+        function extractProblemNumber(folderName) {
+            const match = folderName.match(/^(\d+)/);
+            return match ? match[1] : '';
+        }
+
+        function extractProblemTitle(folderName) {
+            // Remove number prefix and clean up
+            return folderName
+                .replace(/^\d+[-._]\s*/, '')
+                .replace(/[-_]/g, ' ')
+                .trim();
+        }
+
+        async function githubFetch(url) {
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json'
+            };
             
+            if (CONFIG.githubToken) {
+                headers['Authorization'] = `Bearer ${CONFIG.githubToken}`;
+            }
+
             const response = await fetch(url, { headers });
+            
             if (!response.ok) {
                 if (response.status === 403) {
-                    throw new Error('GitHub API rate limit exceeded. Please add a GitHub token or try again later.');
+                    const resetTime = response.headers.get('X-RateLimit-Reset');
+                    const resetDate = resetTime ? new Date(resetTime * 1000).toLocaleTimeString() : 'later';
+                    throw new Error(`GitHub API rate limit exceeded. Resets at ${resetDate}. Add a GitHub token to avoid this.`);
                 }
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
             }
+            
             return response.json();
         }
 
-        async function fetchText(url) {
-            if (cache[url]) return cache[url];
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const text = await response.text();
-            cache[url] = text;
-            return text;
+        function parseMarkdown(markdown) {
+            // Convert markdown to HTML
+            let html = markdown;
+            
+            // Headers
+            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+            
+            // Bold and italic
+            html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            
+            // Code blocks (before inline code)
+            const parts = html.split(/(```[\s\S]*?```)/g);
+            html = parts.map(part => {
+                if (part.startsWith('```')) {
+                    const code = part.replace(/```[\w]*\n?/g, '').replace(/```$/g, '');
+                    return '<pre><code>' + escapeHtml(code) + '</code></pre>';
+                }
+                return part;
+            }).join('');
+            
+            // Inline code
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+            
+            // Line breaks and paragraphs
+            html = html.replace(/\n\n/g, '</p><p>');
+            html = html.replace(/\n/g, '<br>');
+            
+            return '<p>' + html + '</p>';
         }
 
         function escapeHtml(text) {
@@ -448,211 +467,144 @@
             return div.innerHTML;
         }
 
-        function parseMarkdown(markdown) {
-            let html = markdown
-                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                .replace(/`([^`]+)`/g, '<code>$1</code>');
-
-            // Handle code blocks
-            const parts = html.split(/(```[\s\S]*?```)/);
-            html = parts.map(part => {
-                if (part.startsWith('```')) {
-                    const code = part.replace(/```\w*\n?/, '').replace(/```$/, '');
-                    return `<pre><code>${escapeHtml(code)}</code></pre>`;
-                }
-                return part;
-            }).join('');
-
-            // Handle paragraphs
-            html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+        // ==================== GITHUB API ====================
+        async function scanRepository() {
+            updateStatus('Connecting to GitHub...');
             
-            return `<p>${html}</p>`;
-        }
-
-        // ==================== GITHUB SCANNING ====================
-        async function scanFolder(username, repo, folderPath, folderName) {
-            try {
-                const url = `https://api.github.com/repos/${username}/${repo}/contents/${folderPath}`;
-                const contents = await fetchAPI(url);
+            const repoUrl = `https://api.github.com/repos/${CONFIG.username}/${CONFIG.repository}/contents`;
+            const contents = await githubFetch(repoUrl);
+            
+            // Filter only directories
+            const folders = contents.filter(item => item.type === 'dir');
+            updateStatus(`Found ${folders.length} folders. Scanning...`);
+            
+            const problems = [];
+            
+            for (let i = 0; i < folders.length; i++) {
+                const folder = folders[i];
+                updateStatus(`Scanning ${i + 1}/${folders.length}: ${folder.name}`);
                 
-                let readme = null;
-                let solution = null;
-
-                for (const item of contents) {
-                    if (item.type === 'file') {
-                        const name = item.name.toLowerCase();
-                        if (name === 'readme.md') {
-                            readme = item;
-                        } else {
-                            const ext = name.substring(name.lastIndexOf('.'));
-                            if (CONFIG.solutionExtensions.includes(ext)) {
-                                solution = item;
+                try {
+                    const folderContents = await githubFetch(folder.url);
+                    
+                    let readmeFile = null;
+                    let sqlFile = null;
+                    
+                    for (const file of folderContents) {
+                        if (file.type === 'file') {
+                            const fileName = file.name.toLowerCase();
+                            if (fileName === 'readme.md') {
+                                readmeFile = file;
+                            } else if (fileName.endsWith('.sql')) {
+                                sqlFile = file;
                             }
                         }
                     }
-                }
-
-                if (readme && solution) {
-                    return {
-                        folderName: folderName,
-                        readmeUrl: readme.download_url,
-                        solutionUrl: solution.download_url,
-                        solutionName: solution.name,
-                        repo: repo,
-                        platform: getPlatformTag(repo)
-                    };
-                }
-
-                return null;
-            } catch (error) {
-                console.error(`Error in ${folderPath}:`, error);
-                return null;
-            }
-        }
-
-        async function scanRepositoryRecursive(username, repo, path = '', depth = 0) {
-            if (depth > 3) return [];
-            
-            try {
-                const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
-                const contents = await fetchAPI(url);
-                
-                let problems = [];
-                const folders = contents.filter(item => item.type === 'dir');
-                
-                for (const folder of folders) {
-                    const folderName = folder.name;
-                    const folderPath = folder.path;
                     
-                    const problem = await scanFolder(username, repo, folderPath, folderName);
-                    if (problem) {
-                        problems.push(problem);
-                        repoStats[repo] = (repoStats[repo] || 0) + 1;
-                        updateLoadingStatus(`Found: ${repoStats[repo]} problems in ${repo}`);
-                    } else {
-                        const subProblems = await scanRepositoryRecursive(username, repo, folderPath, depth + 1);
-                        problems = problems.concat(subProblems);
+                    if (readmeFile && sqlFile) {
+                        problems.push({
+                            folderName: folder.name,
+                            number: extractProblemNumber(folder.name),
+                            title: extractProblemTitle(folder.name),
+                            readmeUrl: readmeFile.download_url,
+                            sqlUrl: sqlFile.download_url,
+                            sqlFileName: sqlFile.name
+                        });
                     }
+                } catch (error) {
+                    console.error(`Error scanning ${folder.name}:`, error);
                 }
-                
-                return problems;
-            } catch (error) {
-                console.error(`Error scanning ${path}:`, error);
-                throw error; // Propagate error to handle rate limiting
             }
-        }
-
-        async function scanRepository(username, repo) {
-            try {
-                console.log(`Starting scan: ${repo}`);
-                repoStats[repo] = 0;
-                updateLoadingStatus(`Scanning ${repo}...`);
-                return await scanRepositoryRecursive(username, repo);
-            } catch (error) {
-                console.error(`Error in ${repo}:`, error);
-                throw error;
-            }
+            
+            return problems;
         }
 
         // ==================== RENDERING ====================
-        function renderRepoStats() {
-            const container = document.getElementById('repoStats');
-            container.innerHTML = '';
-
-            for (const [repo, count] of Object.entries(repoStats)) {
-                const platform = getPlatformTag(repo);
-                const card = document.createElement('div');
-                card.className = 'repo-card';
-                card.innerHTML = `
-                    <div class="repo-name">${escapeHtml(platform.text)}</div>
-                    <div class="repo-count">${count}</div>
-                    <div class="repo-label">Problems Solved</div>
-                `;
-                container.appendChild(card);
-            }
+        function renderStats() {
+            const container = document.getElementById('stats');
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${allProblems.length}</div>
+                    <div class="stat-label">Problems Solved</div>
+                </div>
+            `;
         }
 
         function renderProblem(problem, index) {
-            const title = extractTitle(problem.folderName);
+            const card = document.createElement('div');
+            card.className = 'problem-card';
+            card.dataset.searchText = `${problem.number} ${problem.title}`.toLowerCase();
             
-            const div = document.createElement('div');
-            div.className = 'problem-item';
-            div.dataset.title = title.toLowerCase();
-            div.dataset.repo = problem.repo.toLowerCase();
-            
-            div.innerHTML = `
+            card.innerHTML = `
                 <div class="problem-header" onclick="toggleQuestion(${index})">
-                    <span class="problem-index">${escapeHtml(problem.folderName)}</span>
-                    <span class="problem-title">${escapeHtml(title)}</span>
-                    <span class="tag ${problem.platform.class}">${escapeHtml(problem.platform.text)}</span>
-                    <span class="expand-icon" id="expand-${index}">▼</span>
+                    <div class="problem-number">#${problem.number}</div>
+                    <div class="problem-title">${escapeHtml(problem.title)}</div>
+                    <div class="expand-icon" id="icon-${index}">▼</div>
                 </div>
-                <div class="question-section" id="question-${index}">
-                    <div class="question-content" id="content-${index}">
-                        <p style="color: #7f8c8d;">Loading question...</p>
+                <div class="problem-content" id="content-${index}">
+                    <div class="question-section" id="question-${index}">
+                        <p style="color: #6c757d; text-align: center;">Loading question...</p>
                     </div>
-                    <div class="solution-actions">
-                        <button class="show-btn" onclick="toggleSolution(${index}, event)">Show Solution</button>
+                    <div class="solution-button-section">
+                        <button class="solution-btn" onclick="toggleSolution(${index}, event)">
+                            Show Solution
+                        </button>
                     </div>
-                </div>
-                <div class="solution-content" id="solution-${index}">
-                    <div class="code-block">
-                        <pre class="solution-code" id="code-${index}">Loading solution...</pre>
+                    <div class="solution-section" id="solution-${index}">
+                        <div class="solution-content">
+                            <pre class="solution-code" id="code-${index}">Loading solution...</pre>
+                        </div>
                     </div>
                 </div>
             `;
             
-            return div;
+            return card;
         }
 
-        async function loadQuestion(index, url) {
-            try {
-                const markdown = await fetchText(url);
-                const html = parseMarkdown(markdown);
-                const elem = document.getElementById(`content-${index}`);
-                if (elem) elem.innerHTML = html;
-            } catch (error) {
-                const elem = document.getElementById(`content-${index}`);
-                if (elem) elem.innerHTML = '<p style="color: #e74c3c;">Error loading question</p>';
-            }
-        }
-
-        function renderProblems(problems) {
+        function renderProblems() {
             const container = document.getElementById('problemsList');
             container.innerHTML = '';
-
-            if (problems.length === 0) {
-                container.innerHTML = '<div class="error">No problems found</div>';
+            
+            if (allProblems.length === 0) {
+                showError('No problems found in the repository');
                 return;
             }
-
-            problems.forEach((problem, index) => {
+            
+            allProblems.forEach((problem, index) => {
                 container.appendChild(renderProblem(problem, index));
             });
-
-            renderRepoStats();
+            
+            renderStats();
         }
 
         // ==================== TOGGLE FUNCTIONS ====================
-        function toggleQuestion(index) {
-            const questionDiv = document.getElementById(`question-${index}`);
-            const expandIcon = document.getElementById(`expand-${index}`);
+        async function toggleQuestion(index) {
+            const content = document.getElementById(`content-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+            const question = document.getElementById(`question-${index}`);
             
-            if (questionDiv.classList.contains('expanded')) {
-                questionDiv.classList.remove('expanded');
-                expandIcon.classList.remove('rotated');
+            const isExpanded = content.classList.contains('expanded');
+            
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                icon.classList.remove('expanded');
             } else {
-                questionDiv.classList.add('expanded');
-                expandIcon.classList.add('rotated');
+                content.classList.add('expanded');
+                icon.classList.add('expanded');
                 
-                const content = document.getElementById(`content-${index}`);
-                if (content && content.textContent.includes('Loading question')) {
-                    const problem = allProblems[index];
-                    loadQuestion(index, problem.readmeUrl);
+                // Load question if not loaded
+                if (!problemStates[index]?.questionLoaded) {
+                    try {
+                        const response = await fetch(allProblems[index].readmeUrl);
+                        const markdown = await response.text();
+                        const html = parseMarkdown(markdown);
+                        question.innerHTML = html;
+                        
+                        if (!problemStates[index]) problemStates[index] = {};
+                        problemStates[index].questionLoaded = true;
+                    } catch (error) {
+                        question.innerHTML = '<p style="color: #dc3545;">Error loading question</p>';
+                    }
                 }
             }
         }
@@ -661,23 +613,29 @@
             event.stopPropagation();
             
             const solutionDiv = document.getElementById(`solution-${index}`);
-            const btn = event.target;
+            const button = event.target;
             const codeBlock = document.getElementById(`code-${index}`);
             
-            if (solutionDiv.classList.contains('expanded')) {
+            const isExpanded = solutionDiv.classList.contains('expanded');
+            
+            if (isExpanded) {
                 solutionDiv.classList.remove('expanded');
-                btn.textContent = 'Show Solution';
-                btn.classList.remove('active');
+                button.textContent = 'Show Solution';
+                button.classList.remove('active');
             } else {
                 solutionDiv.classList.add('expanded');
-                btn.textContent = 'Hide Solution';
-                btn.classList.add('active');
+                button.textContent = 'Hide Solution';
+                button.classList.add('active');
                 
-                if (codeBlock.textContent === 'Loading solution...') {
+                // Load solution if not loaded
+                if (!problemStates[index]?.solutionLoaded) {
                     try {
-                        const problem = allProblems[index];
-                        const content = await fetchText(problem.solutionUrl);
-                        codeBlock.textContent = content;
+                        const response = await fetch(allProblems[index].sqlUrl);
+                        const code = await response.text();
+                        codeBlock.textContent = code;
+                        
+                        if (!problemStates[index]) problemStates[index] = {};
+                        problemStates[index].solutionLoaded = true;
                     } catch (error) {
                         codeBlock.textContent = 'Error loading solution';
                     }
@@ -685,57 +643,49 @@
             }
         }
 
+        // Make functions globally accessible
         window.toggleQuestion = toggleQuestion;
         window.toggleSolution = toggleSolution;
 
         // ==================== SEARCH ====================
-        document.getElementById('search').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const items = document.querySelectorAll('.problem-item');
+        document.getElementById('searchBar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.problem-card');
             
-            items.forEach(item => {
-                const title = item.dataset.title || '';
-                const repo = item.dataset.repo || '';
-                const match = title.includes(query) || repo.includes(query);
-                item.style.display = match ? 'block' : 'none';
+            cards.forEach(card => {
+                const searchText = card.dataset.searchText;
+                if (searchText.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
 
-        // ==================== INIT ====================
+        // ==================== INITIALIZATION ====================
         async function init() {
-            const loading = document.getElementById('loading');
-            const error = document.getElementById('error');
-            
             try {
-                loading.style.display = 'block';
-                error.style.display = 'none';
-
-                const scans = CONFIG.repositories.map(repo => 
-                    scanRepository(CONFIG.username, repo)
-                );
-
-                const results = await Promise.all(scans);
-                allProblems = results.flat().sort((a, b) => 
-                    a.folderName.localeCompare(b.folderName, undefined, { numeric: true })
-                );
-
-                console.log(`Total problems found: ${allProblems.length}`);
-
-                if (allProblems.length === 0) {
-                    throw new Error('No problems found. Check repository structure.');
-                }
-
-                renderProblems(allProblems);
-                loading.style.display = 'none';
-
-            } catch (err) {
-                console.error('Error:', err);
-                loading.style.display = 'none';
-                error.style.display = 'block';
-                error.textContent = `⚠️ ${err.message}`;
+                const problems = await scanRepository();
+                
+                // Sort problems by number
+                allProblems = problems.sort((a, b) => {
+                    const numA = parseInt(a.number) || 0;
+                    const numB = parseInt(b.number) || 0;
+                    return numA - numB;
+                });
+                
+                hideLoading();
+                renderProblems();
+                
+                console.log(`✅ Loaded ${allProblems.length} problems successfully`);
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError(error.message);
             }
         }
 
+        // Start when page loads
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
