@@ -388,7 +388,8 @@
             username: 'vikasvooradi',
             // ADD YOUR REPOSITORIES HERE
             repositories: ['leetcode-oracle'],
-            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php', '.swift']
+            solutionExtensions: ['.sql', '.py', '.java', '.js', '.cpp', '.c', '.ts', '.go', '.rb', '.php', '.swift'],
+            githubToken: null // Optional: Add token for higher rate limits
         };
 
         // ==================== STATE ====================
@@ -417,8 +418,16 @@
         }
 
         async function fetchAPI(url) {
-            const response = await fetch(url);
+            const headers = {};
+            if (CONFIG.githubToken) {
+                headers['Authorization'] = `token ${CONFIG.githubToken}`;
+            }
+            
+            const response = await fetch(url, { headers });
             if (!response.ok) {
+                if (response.status === 403) {
+                    throw new Error('GitHub API rate limit exceeded. Please add a GitHub token or try again later.');
+                }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             return response.json();
@@ -433,6 +442,12 @@
             return text;
         }
 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function parseMarkdown(markdown) {
             let html = markdown
                 .replace(/^### (.+)$/gm, '<h3>$1</h3>')
@@ -440,19 +455,21 @@
                 .replace(/^# (.+)$/gm, '<h1>$1</h1>')
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                .replace(/`([^`]+)`/g, '<code>$1</code>')
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/\n/g, '<br>');
+                .replace(/`([^`]+)`/g, '<code>$1</code>');
 
+            // Handle code blocks
             const parts = html.split(/(```[\s\S]*?```)/);
             html = parts.map(part => {
                 if (part.startsWith('```')) {
                     const code = part.replace(/```\w*\n?/, '').replace(/```$/, '');
-                    return `<pre><code>${code}</code></pre>`;
+                    return `<pre><code>${escapeHtml(code)}</code></pre>`;
                 }
                 return part;
             }).join('');
 
+            // Handle paragraphs
+            html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+            
             return `<p>${html}</p>`;
         }
 
@@ -525,7 +542,7 @@
                 return problems;
             } catch (error) {
                 console.error(`Error scanning ${path}:`, error);
-                return [];
+                throw error; // Propagate error to handle rate limiting
             }
         }
 
@@ -537,7 +554,7 @@
                 return await scanRepositoryRecursive(username, repo);
             } catch (error) {
                 console.error(`Error in ${repo}:`, error);
-                return [];
+                throw error;
             }
         }
 
@@ -551,7 +568,7 @@
                 const card = document.createElement('div');
                 card.className = 'repo-card';
                 card.innerHTML = `
-                    <div class="repo-name">${platform.text}</div>
+                    <div class="repo-name">${escapeHtml(platform.text)}</div>
                     <div class="repo-count">${count}</div>
                     <div class="repo-label">Problems Solved</div>
                 `;
@@ -569,9 +586,9 @@
             
             div.innerHTML = `
                 <div class="problem-header" onclick="toggleQuestion(${index})">
-                    <span class="problem-index">${problem.folderName}</span>
-                    <span class="problem-title">${title}</span>
-                    <span class="tag ${problem.platform.class}">${problem.platform.text}</span>
+                    <span class="problem-index">${escapeHtml(problem.folderName)}</span>
+                    <span class="problem-title">${escapeHtml(title)}</span>
+                    <span class="tag ${problem.platform.class}">${escapeHtml(problem.platform.text)}</span>
                     <span class="expand-icon" id="expand-${index}">▼</span>
                 </div>
                 <div class="question-section" id="question-${index}">
@@ -699,7 +716,7 @@
 
                 const results = await Promise.all(scans);
                 allProblems = results.flat().sort((a, b) => 
-                    a.folderName.localeCompare(b.folderName)
+                    a.folderName.localeCompare(b.folderName, undefined, { numeric: true })
                 );
 
                 console.log(`Total problems found: ${allProblems.length}`);
