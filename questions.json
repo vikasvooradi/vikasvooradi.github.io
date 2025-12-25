@@ -505,6 +505,18 @@
   },
   {
     "platform": "leetcode",
+    "title": "1393 Capital Gainloss",
+    "repo": "leetcode-oracle",
+    "path": "1393-capital-gainloss",
+    "sqlUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-oracle/main/1393-capital-gainloss/1393-capital-gainloss.sql",
+    "readmeUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-oracle/main/1393-capital-gainloss/README.md",
+    "tags": [
+      "DATABASE",
+      "ORACLE"
+    ]
+  },
+  {
+    "platform": "leetcode",
     "title": "1407 Top Travellers",
     "repo": "leetcode-oracle",
     "path": "1407-top-travellers",
