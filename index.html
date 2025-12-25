@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>Vikas Vooradi | SQL Practice Portfolio</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -12,13 +15,27 @@
   padding: 0;
 }
 
+:root {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #141933;
+  --bg-card: #1a1f3a;
+  --accent-primary: #00f0ff;
+  --accent-secondary: #7b2ff7;
+  --text-primary: #ffffff;
+  --text-secondary: #a0aec0;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #2d3748;
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
   padding: 20px;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(123, 47, 247, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.15) 0px, transparent 50%);
 }
 
 .container {
@@ -28,21 +45,34 @@ body {
 
 /* Header */
 .header {
-  background: white;
-  border-radius: 20px;
-  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 40px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 24px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  animation: slideDown 0.6s ease-out;
+  gap: 32px;
+  backdrop-filter: blur(10px);
+  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
 }
 
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-30px);
   }
   to {
     opacity: 1;
@@ -51,72 +81,85 @@ body {
 }
 
 .header img {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 4px solid #667eea;
-  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+  border: 3px solid var(--accent-primary);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
 .header-info h1 {
-  font-size: 32px;
+  font-size: 38px;
+  font-weight: 800;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -1px;
 }
 
 .header-info p {
-  color: #718096;
-  font-size: 15px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .stats {
   margin-left: auto;
   display: flex;
-  gap: 32px;
+  gap: 40px;
 }
 
 .stat-item {
   text-align: center;
+  padding: 12px 24px;
+  background: rgba(0, 240, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 240, 255, 0.2);
 }
 
 .stat-number {
-  font-size: 28px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .stat-label {
-  font-size: 12px;
-  color: #a0aec0;
+  font-size: 11px;
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   margin-top: 4px;
+  font-weight: 600;
 }
 
 /* Controls */
 .controls {
-  background: white;
-  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   padding: 24px;
   margin-bottom: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  animation: fadeIn 0.6s ease-out 0.2s both;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -132,71 +175,73 @@ body {
 
 .search-box input {
   width: 100%;
-  padding: 14px 16px 14px 44px;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-  background: #f7fafc;
-  color: #2d3748;
-  font-size: 14px;
+  padding: 16px 20px 16px 52px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 15px;
   outline: none;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .search-box input:focus {
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+  border-color: var(--accent-primary);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
 }
 
 .search-box::before {
   content: "🔍";
   position: absolute;
-  left: 14px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 20px;
 }
 
 select {
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-  background: #f7fafc;
-  color: #2d3748;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
   outline: none;
   transition: all 0.3s;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 select:hover {
-  border-color: #cbd5e0;
-  background: white;
+  border-color: var(--accent-primary);
+  background: var(--bg-primary);
 }
 
 select:focus {
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
 }
 
 button {
-  padding: 14px 24px;
-  border-radius: 12px;
+  padding: 16px 28px;
+  border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: var(--bg-primary);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3);
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.5);
 }
 
 button:active {
@@ -204,24 +249,26 @@ button:active {
 }
 
 button.secondary {
-  background: #e2e8f0;
-  color: #4a5568;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
   box-shadow: none;
+  border: 1px solid var(--border-color);
 }
 
 button.secondary:hover {
-  background: #cbd5e0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
 }
 
 /* Table */
 .table-container {
-  background: white;
-  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   overflow: hidden;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  animation: fadeIn 0.6s ease-out 0.4s both;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
 table {
@@ -230,27 +277,32 @@ table {
 }
 
 thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(123, 47, 247, 0.1) 100%);
+  border-bottom: 1px solid var(--border-color);
 }
 
 th {
-  padding: 18px 20px;
+  padding: 20px 24px;
   text-align: left;
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-primary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 td {
-  padding: 18px 20px;
-  border-bottom: 1px solid #f7fafc;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 15px;
 }
 
-tr:hover {
-  background: #f7fafc;
-  transition: background 0.2s;
+tbody tr {
+  transition: all 0.2s;
+}
+
+tbody tr:hover {
+  background: rgba(0, 240, 255, 0.03);
 }
 
 tr:last-child td {
@@ -259,48 +311,51 @@ tr:last-child td {
 
 .badge {
   display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 6px 16px;
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
 }
 
-.badge.leetcode { background: #fff3e0; color: #e65100; }
-.badge.hackerrank { background: #e8f5e9; color: #2e7d32; }
-.badge.codechef { background: #efebe9; color: #5d4037; }
-.badge.codewars { background: #ffebee; color: #c62828; }
-.badge.lintcode { background: #e3f2fd; color: #1565c0; }
-.badge.datalemur { background: #f3e5f5; color: #6a1b9a; }
+.badge.leetcode { background: rgba(255, 161, 22, 0.15); color: #ffa116; border: 1px solid rgba(255, 161, 22, 0.3); }
+.badge.hackerrank { background: rgba(0, 234, 141, 0.15); color: #00ea8d; border: 1px solid rgba(0, 234, 141, 0.3); }
+.badge.codechef { background: rgba(92, 66, 42, 0.15); color: #c9a176; border: 1px solid rgba(92, 66, 42, 0.3); }
+.badge.codewars { background: rgba(176, 62, 62, 0.15); color: #f56565; border: 1px solid rgba(176, 62, 62, 0.3); }
+.badge.lintcode { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.badge.datalemur { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
 
 .title-cell {
-  color: #2d3748;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .title-cell:hover {
-  color: #667eea;
+  color: var(--accent-primary);
 }
 
 .action-btn {
-  padding: 8px 16px;
+  padding: 10px 20px;
   font-size: 13px;
-  border-radius: 8px;
-  border: 2px solid #667eea;
-  background: white;
-  color: #667eea;
+  border-radius: 10px;
+  border: 1px solid var(--accent-primary);
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--accent-primary);
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .action-btn:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
 }
 
 /* Modal */
@@ -311,8 +366,8 @@ tr:last-child td {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px);
   z-index: 1000;
   overflow: auto;
   padding: 20px;
@@ -326,20 +381,21 @@ tr:last-child td {
 }
 
 .modal-content {
-  background: white;
-  border-radius: 20px;
-  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  max-width: 1000px;
   width: 100%;
   max-height: 90vh;
   overflow: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  animation: modalSlide 0.3s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalSlide {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(20px);
+    transform: scale(0.95) translateY(30px);
   }
   to {
     opacity: 1;
@@ -348,76 +404,82 @@ tr:last-child td {
 }
 
 .modal-header {
-  padding: 28px;
-  border-bottom: 2px solid #f7fafc;
+  padding: 32px;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--bg-card);
   z-index: 10;
+  backdrop-filter: blur(10px);
 }
 
 .modal-header h2 {
-  font-size: 22px;
-  color: #2d3748;
+  font-size: 24px;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   flex: 1;
+  font-weight: 800;
 }
 
 .close-btn {
-  background: #f7fafc;
-  border: none;
-  color: #718096;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   font-size: 28px;
   cursor: pointer;
   padding: 0;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.2s;
   flex-shrink: 0;
 }
 
 .close-btn:hover {
-  background: #e2e8f0;
-  color: #4a5568;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
   transform: rotate(90deg);
+  border-color: var(--accent-primary);
 }
 
 .modal-body {
-  padding: 28px;
+  padding: 32px;
 }
 
 .section {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .section h3 {
   font-size: 18px;
   margin-bottom: 16px;
-  color: #667eea;
+  color: var(--accent-primary);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 pre {
-  background: #f7fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
   overflow-x: auto;
-  font-size: 13px;
-  line-height: 1.7;
-  font-family: 'Monaco', 'Courier New', monospace;
-  color: #2d3748;
+  font-size: 14px;
+  line-height: 1.8;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
 }
 
 /* Pagination */
@@ -427,38 +489,40 @@ pre {
   align-items: center;
   gap: 8px;
   padding: 24px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  animation: fadeIn 0.6s ease-out 0.6s both;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
 }
 
 .page-btn {
-  min-width: 44px;
-  height: 44px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 2px solid #e2e8f0;
-  background: white;
-  color: #4a5568;
+  min-width: 48px;
+  height: 48px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: #667eea;
-  color: #667eea;
-  background: #f7fafc;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(0, 240, 255, 0.05);
   transform: translateY(-2px);
 }
 
 .page-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-color: transparent;
-  color: white;
-  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
 }
 
 .page-btn:disabled {
@@ -466,19 +530,19 @@ pre {
   cursor: not-allowed;
 }
 
-/* Loading */
-.loading {
+/* Loading & Empty States */
+.loading, .empty {
   text-align: center;
-  padding: 60px 20px;
-  color: #718096;
+  padding: 80px 20px;
+  color: var(--text-secondary);
 }
 
 .spinner {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #667eea;
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 20px;
@@ -488,49 +552,45 @@ pre {
   to { transform: rotate(360deg); }
 }
 
-.empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: #a0aec0;
-}
-
 .empty-icon {
-  font-size: 56px;
+  font-size: 72px;
   margin-bottom: 20px;
+  opacity: 0.5;
 }
 
 /* Info Banner */
 .info-banner {
-  background: rgba(102,126,234,0.1);
-  border: 2px solid rgba(102,126,234,0.3);
-  border-radius: 12px;
-  padding: 18px 24px;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 16px;
+  padding: 20px 28px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   animation: fadeIn 0.4s ease-out;
-  font-weight: 500;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
 }
 
 .info-banner.success {
-  background: rgba(72,187,120,0.1);
-  border-color: rgba(72,187,120,0.3);
-  color: #2f855a;
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
 }
 
 .info-banner.error {
-  background: rgba(245,101,101,0.1);
-  border-color: rgba(245,101,101,0.3);
-  color: #c53030;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
 }
 
 .info-banner.info {
-  color: #5a67d8;
+  color: var(--accent-primary);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 968px) {
   .stats {
     display: none;
   }
@@ -557,7 +617,7 @@ pre {
   }
   
   th, td {
-    padding: 14px 12px;
+    padding: 16px 12px;
   }
   
   .modal-content {
@@ -569,21 +629,21 @@ pre {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f7fafc;
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 5px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  background: var(--accent-primary);
 }
 </style>
 </head>
@@ -593,7 +653,7 @@ pre {
 
   <!-- Header -->
   <div class="header">
-    <img src="https://github.com/vikasvooradi.png" alt="Profile">
+    <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
     <div class="header-info">
       <h1>Vikas Vooradi</h1>
       <p>SQL Practice Problems • Data Engineering • Interview Preparation</p>
@@ -633,7 +693,6 @@ pre {
       <option value="100">100 per page</option>
     </select>
     <button onclick="refreshData()">🔄 Refresh</button>
-    <button class="secondary" onclick="clearAllCache()">Clear Cache</button>
   </div>
 
   <!-- Table -->
@@ -641,10 +700,10 @@ pre {
     <table>
       <thead>
         <tr>
-          <th style="width: 50px">#</th>
-          <th style="width: 150px">Platform</th>
+          <th style="width: 60px">#</th>
+          <th style="width: 160px">Platform</th>
           <th>Title</th>
-          <th style="width: 140px; text-align: center">Action</th>
+          <th style="width: 160px; text-align: center">Action</th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -684,12 +743,8 @@ pre {
 <script>
 // ==================== CONFIGURATION ====================
 const CONFIG = {
-  username: 'vikasvooradi',
-  platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
-  cacheKey: 'sql_dashboard_v4',
-  cacheExpiry: 24 * 60 * 60 * 1000, // 24 hours
-  itemsPerPage: 25,
-  requestDelay: 100 // milliseconds between requests
+  dataFile: 'questions.json', // Static data file
+  itemsPerPage: 25
 };
 
 // ==================== STATE ====================
@@ -698,195 +753,50 @@ let filteredQuestions = [];
 let currentPage = 1;
 let itemsPerPage = CONFIG.itemsPerPage;
 
-// ==================== GITHUB API (NO AUTH) ====================
-async function fetchPublic(url) {
-  try {
-    await sleep(CONFIG.requestDelay); // Rate limiting
-    const response = await fetch(url);
-    if (response.ok) {
-      return await response.json();
-    }
-    if (response.status === 404) {
-      return null;
-    }
-    console.warn(`API request failed: ${response.status}`);
-    return null;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    return null;
-  }
-}
-
-async function fetchContent(url) {
-  try {
-    await sleep(CONFIG.requestDelay);
-    const response = await fetch(url);
-    if (response.ok) {
-      return await response.text();
-    }
-    return null;
-  } catch (error) {
-    console.error('Content fetch error:', error);
-    return null;
-  }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // ==================== DATA LOADING ====================
 async function loadAllData() {
-  showBanner('Loading questions...', 'info');
-  
-  // Check cache first
-  const cached = loadFromCache();
-  if (cached) {
-    allQuestions = cached;
-    showBanner(`✓ Loaded ${allQuestions.length} questions from cache`, 'success', 3000);
-    applyFilters();
-    return;
-  }
-
-  // Fetch fresh data
   try {
-    const repos = await fetchPublic(`https://api.github.com/users/${CONFIG.username}/repos?per_page=100`);
+    showBanner('Loading questions...', 'info');
     
-    if (!repos || repos.length === 0) {
-      showBanner('❌ No repositories found', 'error');
-      showEmptyState('No repositories found for this user');
-      return;
-    }
-
-    const questions = [];
+    // Fetch pre-generated questions data
+    const response = await fetch(CONFIG.dataFile + '?t=' + Date.now());
     
-    // Filter SQL-related repos
-    const relevantRepos = repos.filter(repo => 
-      CONFIG.platforms.some(platform => 
-        repo.name.toLowerCase().includes(platform)
-      ) && repo.name.toLowerCase().includes('sql')
-    );
-
-    if (relevantRepos.length === 0) {
-      showBanner('❌ No SQL repositories found', 'error');
-      showEmptyState('No SQL practice repositories found');
+    if (!response.ok) {
+      throw new Error('Failed to load questions');
+    }
+    
+    allQuestions = await response.json();
+    
+    if (allQuestions.length === 0) {
+      showBanner('❌ No questions found', 'error');
+      showEmptyState('No SQL questions available');
       return;
     }
-
-    showBanner(`Found ${relevantRepos.length} repositories. Processing...`, 'info');
-
-    // Process each repo
-    for (const repo of relevantRepos) {
-      const platform = CONFIG.platforms.find(p => 
-        repo.name.toLowerCase().includes(p)
-      );
-
-      try {
-        const contents = await fetchPublic(
-          `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents`
-        );
-
-        if (!contents) continue;
-
-        // Get all directories
-        const dirs = contents.filter(item => item.type === 'dir');
-
-        // Check each directory for SQL files
-        for (const dir of dirs) {
-          try {
-            const files = await fetchPublic(
-              `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
-            );
-
-            if (!files) continue;
-
-            const sqlFile = files.find(f => 
-              f.name.toLowerCase().endsWith('.sql')
-            );
-            
-            if (sqlFile) {
-              const readmeFile = files.find(f => 
-                f.name.toLowerCase() === 'read.me' || 
-                f.name.toLowerCase() === 'readme.md'
-              );
-
-              questions.push({
-                platform: platform,
-                title: formatTitle(dir.name),
-                repo: repo.name,
-                path: dir.name,
-                sqlUrl: sqlFile.download_url,
-                readmeUrl: readmeFile ? readmeFile.download_url : null
-              });
-            }
-          } catch (error) {
-            console.error(`Error processing directory ${dir.name}:`, error);
-          }
-        }
-      } catch (error) {
-        console.error(`Error processing repo ${repo.name}:`, error);
-      }
-    }
-
-    if (questions.length === 0) {
-      showBanner('❌ No SQL questions found', 'error');
-      showEmptyState('No SQL files found in repositories');
-      return;
-    }
-
-    allQuestions = questions;
-    saveToCache(questions);
-    showBanner(`✓ Successfully loaded ${questions.length} questions!`, 'success', 3000);
+    
+    showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
+    initializeFilters();
     applyFilters();
-
+    
   } catch (error) {
     console.error('Error loading data:', error);
-    showBanner('❌ Error loading questions. Please try again.', 'error');
-    showEmptyState('Failed to load questions. Click Refresh to try again.');
+    showBanner('❌ Error loading questions. Please refresh the page.', 'error');
+    showEmptyState('Failed to load questions. Please try again.');
   }
 }
 
-// ==================== CACHE MANAGEMENT ====================
-function loadFromCache() {
-  try {
-    const cached = localStorage.getItem(CONFIG.cacheKey);
-    const expiry = localStorage.getItem(CONFIG.cacheKey + '_expiry');
-    
-    if (!cached || !expiry) return null;
-    
-    if (Date.now() > parseInt(expiry)) {
-      localStorage.removeItem(CONFIG.cacheKey);
-      localStorage.removeItem(CONFIG.cacheKey + '_expiry');
-      return null;
-    }
-    
-    return JSON.parse(cached);
-  } catch (error) {
-    console.error('Cache load error:', error);
-    return null;
-  }
+// ==================== FILTERS ====================
+function initializeFilters() {
+  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
+  const platformFilter = document.getElementById('platformFilter');
+  
+  platforms.forEach(platform => {
+    const option = document.createElement('option');
+    option.value = platform;
+    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
+    platformFilter.appendChild(option);
+  });
 }
 
-function saveToCache(data) {
-  try {
-    localStorage.setItem(CONFIG.cacheKey, JSON.stringify(data));
-    localStorage.setItem(
-      CONFIG.cacheKey + '_expiry',
-      (Date.now() + CONFIG.cacheExpiry).toString()
-    );
-  } catch (error) {
-    console.error('Cache save error:', error);
-  }
-}
-
-function clearAllCache() {
-  localStorage.removeItem(CONFIG.cacheKey);
-  localStorage.removeItem(CONFIG.cacheKey + '_expiry');
-  showBanner('✓ Cache cleared successfully', 'success', 2000);
-  refreshData();
-}
-
-// ==================== FILTERING & SORTING ====================
 function applyFilters() {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const platform = document.getElementById('platformFilter').value;
@@ -938,7 +848,7 @@ function renderTable() {
       <td><span class="badge ${q.platform}">${q.platform}</span></td>
       <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
       <td style="text-align: center">
-        <button class="action-btn" onclick="openQuestion(${start + index})">View Solution</button>
+        <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
       </td>
     </tr>
   `).join('');
@@ -955,7 +865,7 @@ function renderPagination() {
 
   let html = `
     <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-      ← Previous
+      ← Prev
     </button>
   `;
 
@@ -970,7 +880,7 @@ function renderPagination() {
   if (startPage > 1) {
     html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
     if (startPage > 2) {
-      html += `<span style="color: #a0aec0; padding: 0 8px;">...</span>`;
+      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
     }
   }
 
@@ -984,7 +894,7 @@ function renderPagination() {
 
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
-      html += `<span style="color: #a0aec0; padding: 0 8px;">...</span>`;
+      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
     }
     html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
   }
@@ -992,3 +902,149 @@ function renderPagination() {
   html += `
     <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
       Next →
+    </button>
+  `;
+
+  pagination.innerHTML = html;
+}
+
+// ==================== MODAL ====================
+async function openQuestion(index) {
+  const question = filteredQuestions[index];
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+
+  modal.classList.add('active');
+  modalTitle.innerHTML = `<span class="badge ${question.platform}">${question.platform}</span> ${escapeHtml(question.title)}`;
+  
+  modalBody.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading solution...</div></div>';
+
+  try {
+    // Fetch SQL content
+    const sqlResponse = await fetch(question.sqlUrl);
+    const sqlContent = await sqlResponse.text();
+
+    // Fetch README if available
+    let readmeContent = '';
+    if (question.readmeUrl) {
+      const readmeResponse = await fetch(question.readmeUrl);
+      readmeContent = await readmeResponse.text();
+    }
+
+    modalBody.innerHTML = `
+      ${readmeContent ? `
+        <div class="section">
+          <h3>📋 Problem Description</h3>
+          <pre>${escapeHtml(readmeContent)}</pre>
+        </div>
+      ` : ''}
+      
+      <div class="section">
+        <h3>💻 SQL Solution</h3>
+        <pre>${escapeHtml(sqlContent)}</pre>
+      </div>
+
+      <div class="section">
+        <h3>🔗 Links</h3>
+        <p>
+          <a href="${question.sqlUrl}" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">
+            View on GitHub →
+          </a>
+        </p>
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Error loading question:', error);
+    modalBody.innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div>Failed to load question content</div></div>';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+// Close modal on background click
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+
+// ==================== HELPERS ====================
+function changePage(page) {
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderTable();
+  renderPagination();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateStats() {
+  document.getElementById('totalCount').textContent = filteredQuestions.length;
+  const platforms = new Set(filteredQuestions.map(q => q.platform));
+  document.getElementById('platformCount').textContent = platforms.size;
+}
+
+function showBanner(message, type = 'info', duration = 0) {
+  const banner = document.getElementById('infoBanner');
+  banner.className = `info-banner ${type}`;
+  banner.textContent = message;
+  banner.style.display = 'flex';
+  
+  if (duration > 0) {
+    setTimeout(() => {
+      banner.style.display = 'none';
+    }, duration);
+  }
+}
+
+function showEmptyState(message) {
+  document.getElementById('tableBody').innerHTML = `
+    <tr>
+      <td colspan="4">
+        <div class="empty">
+          <div class="empty-icon">🔍</div>
+          <div>${escapeHtml(message)}</div>
+        </div>
+      </td>
+    </tr>
+  `;
+  document.getElementById('pagination').innerHTML = '';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function refreshData() {
+  location.reload();
+}
+
+// ==================== EVENT LISTENERS ====================
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('platformFilter').addEventListener('change', applyFilters);
+document.getElementById('sortBy').addEventListener('change', applyFilters);
+document.getElementById('perPageSelect').addEventListener('change', function() {
+  itemsPerPage = parseInt(this.value);
+  currentPage = 1;
+  applyFilters();
+});
+
+// ==================== INITIALIZATION ====================
+loadAllData();
+</script>
+
+</body>
+</html>
