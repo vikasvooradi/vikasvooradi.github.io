@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Vooradi | SQL Practice Dashboard</title>
+<title>Vikas Vooradi | SQL Practice Portfolio</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
@@ -14,52 +14,68 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  background: #0a0a0a;
-  color: #e5e7eb;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #2d3748;
   line-height: 1.6;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 /* Header */
 .header {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 24px;
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  gap: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .header img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  border: 3px solid #0ea5e9;
+  border: 4px solid #667eea;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
 }
 
 .header-info h1 {
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 8px;
-  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-info p {
-  color: #94a3b8;
-  font-size: 14px;
+  color: #718096;
+  font-size: 15px;
 }
 
 .stats {
   margin-left: auto;
   display: flex;
-  gap: 24px;
+  gap: 32px;
 }
 
 .stat-item {
@@ -67,28 +83,45 @@ body {
 }
 
 .stat-number {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  color: #0ea5e9;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-label {
   font-size: 12px;
-  color: #94a3b8;
+  color: #a0aec0;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
 }
 
 /* Controls */
 .controls {
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
   margin-bottom: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .search-box {
@@ -99,65 +132,71 @@ body {
 
 .search-box input {
   width: 100%;
-  padding: 12px 16px 12px 40px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: #fff;
+  padding: 14px 16px 14px 44px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #f7fafc;
+  color: #2d3748;
   font-size: 14px;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 
 .search-box input:focus {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
 }
 
 .search-box::before {
   content: "🔍";
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 16px;
+  font-size: 18px;
 }
 
 select {
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: #fff;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #f7fafc;
+  color: #2d3748;
   font-size: 14px;
   cursor: pointer;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  font-weight: 500;
 }
 
 select:hover {
-  border-color: #475569;
+  border-color: #cbd5e0;
+  background: white;
 }
 
 select:focus {
-  border-color: #0ea5e9;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
 }
 
 button {
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   border: none;
-  background: #0ea5e9;
-  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
 }
 
 button:hover {
-  background: #0284c7;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.4);
 }
 
 button:active {
@@ -165,20 +204,24 @@ button:active {
 }
 
 button.secondary {
-  background: #334155;
+  background: #e2e8f0;
+  color: #4a5568;
+  box-shadow: none;
 }
 
 button.secondary:hover {
-  background: #475569;
+  background: #cbd5e0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* Table */
 .table-container {
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  background: white;
+  border-radius: 16px;
   overflow: hidden;
   margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  animation: fadeIn 0.6s ease-out 0.4s both;
 }
 
 table {
@@ -187,71 +230,77 @@ table {
 }
 
 thead {
-  background: #0f172a;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 th {
-  padding: 16px;
+  padding: 18px 20px;
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  color: #94a3b8;
+  color: white;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 td {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 18px 20px;
+  border-bottom: 1px solid #f7fafc;
 }
 
 tr:hover {
-  background: rgba(255,255,255,0.02);
+  background: #f7fafc;
+  transition: background 0.2s;
+}
+
+tr:last-child td {
+  border-bottom: none;
 }
 
 .badge {
   display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
 }
 
-.badge.leetcode { background: #ffa116; color: #000; }
-.badge.hackerrank { background: #00ea64; color: #000; }
-.badge.codechef { background: #5b4638; color: #fff; }
-.badge.codewars { background: #b1361e; color: #fff; }
-.badge.lintcode { background: #0ea5e9; color: #fff; }
-.badge.datalemur { background: #8b5cf6; color: #fff; }
+.badge.leetcode { background: #fff3e0; color: #e65100; }
+.badge.hackerrank { background: #e8f5e9; color: #2e7d32; }
+.badge.codechef { background: #efebe9; color: #5d4037; }
+.badge.codewars { background: #ffebee; color: #c62828; }
+.badge.lintcode { background: #e3f2fd; color: #1565c0; }
+.badge.datalemur { background: #f3e5f5; color: #6a1b9a; }
 
 .title-cell {
-  color: #fff;
+  color: #2d3748;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .title-cell:hover {
-  color: #0ea5e9;
+  color: #667eea;
 }
 
 .action-btn {
-  padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 6px;
-  border: 1px solid #334155;
-  background: transparent;
-  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 8px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 600;
 }
 
 .action-btn:hover {
-  background: #334155;
-  color: #fff;
-  transform: none;
+  background: #667eea;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
 }
 
 /* Modal */
@@ -262,7 +311,8 @@ tr:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   overflow: auto;
   padding: 20px;
@@ -272,82 +322,102 @@ tr:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
+  background: white;
+  border-radius: 20px;
   max-width: 900px;
   width: 100%;
   max-height: 90vh;
   overflow: auto;
-  box-shadow: 0 20px 25px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: modalSlide 0.3s ease-out;
+}
+
+@keyframes modalSlide {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-header {
-  padding: 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 28px;
+  border-bottom: 2px solid #f7fafc;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
-  background: #1e293b;
+  background: white;
   z-index: 10;
 }
 
 .modal-header h2 {
-  font-size: 20px;
-  color: #fff;
+  font-size: 22px;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
 }
 
 .close-btn {
-  background: transparent;
+  background: #f7fafc;
   border: none;
-  color: #94a3b8;
+  color: #718096;
   font-size: 28px;
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .close-btn:hover {
-  background: #334155;
-  color: #fff;
+  background: #e2e8f0;
+  color: #4a5568;
+  transform: rotate(90deg);
 }
 
 .modal-body {
-  padding: 24px;
+  padding: 28px;
 }
 
 .section {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .section h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
-  color: #0ea5e9;
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #667eea;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 pre {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 16px;
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
   overflow-x: auto;
   font-size: 13px;
-  line-height: 1.6;
-  font-family: 'Courier New', monospace;
+  line-height: 1.7;
+  font-family: 'Monaco', 'Courier New', monospace;
+  color: #2d3748;
 }
 
 /* Pagination */
@@ -356,35 +426,39 @@ pre {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 20px;
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  animation: fadeIn 0.6s ease-out 0.6s both;
 }
 
 .page-btn {
-  min-width: 40px;
-  height: 40px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background: transparent;
-  color: #94a3b8;
+  min-width: 44px;
+  height: 44px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #4a5568;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 600;
 }
 
 .page-btn:hover:not(:disabled) {
-  background: #334155;
-  color: #fff;
-  transform: none;
+  border-color: #667eea;
+  color: #667eea;
+  background: #f7fafc;
+  transform: translateY(-2px);
 }
 
 .page-btn.active {
-  background: #0ea5e9;
-  border-color: #0ea5e9;
-  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
 }
 
 .page-btn:disabled {
@@ -396,18 +470,18 @@ pre {
 .loading {
   text-align: center;
   padding: 60px 20px;
-  color: #94a3b8;
+  color: #718096;
 }
 
 .spinner {
   display: inline-block;
-  width: 40px;
-  height: 40px;
-  border: 4px solid #334155;
-  border-top-color: #0ea5e9;
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
@@ -417,34 +491,42 @@ pre {
 .empty {
   text-align: center;
   padding: 60px 20px;
-  color: #64748b;
+  color: #a0aec0;
 }
 
 .empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  font-size: 56px;
+  margin-bottom: 20px;
 }
 
 /* Info Banner */
 .info-banner {
-  background: rgba(14,165,233,0.1);
-  border: 1px solid rgba(14,165,233,0.3);
+  background: rgba(102,126,234,0.1);
+  border: 2px solid rgba(102,126,234,0.3);
   border-radius: 12px;
-  padding: 16px;
+  padding: 18px 24px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
+  animation: fadeIn 0.4s ease-out;
+  font-weight: 500;
 }
 
 .info-banner.success {
-  background: rgba(34,197,94,0.1);
-  border-color: rgba(34,197,94,0.3);
+  background: rgba(72,187,120,0.1);
+  border-color: rgba(72,187,120,0.3);
+  color: #2f855a;
 }
 
 .info-banner.error {
-  background: rgba(239,68,68,0.1);
-  border-color: rgba(239,68,68,0.3);
+  background: rgba(245,101,101,0.1);
+  border-color: rgba(245,101,101,0.3);
+  color: #c53030;
+}
+
+.info-banner.info {
+  color: #5a67d8;
 }
 
 /* Responsive */
@@ -458,12 +540,24 @@ pre {
     text-align: center;
   }
   
+  .controls {
+    flex-direction: column;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  select, button {
+    width: 100%;
+  }
+  
   table {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   th, td {
-    padding: 12px 8px;
+    padding: 14px 12px;
   }
   
   .modal-content {
@@ -471,6 +565,25 @@ pre {
     max-height: 100vh;
     border-radius: 0;
   }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 </style>
 </head>
@@ -488,7 +601,7 @@ pre {
     <div class="stats">
       <div class="stat-item">
         <div class="stat-number" id="totalCount">0</div>
-        <div class="stat-label">Total</div>
+        <div class="stat-label">Questions</div>
       </div>
       <div class="stat-item">
         <div class="stat-number" id="platformCount">0</div>
@@ -531,7 +644,7 @@ pre {
           <th style="width: 50px">#</th>
           <th style="width: 150px">Platform</th>
           <th>Title</th>
-          <th style="width: 120px; text-align: center">Action</th>
+          <th style="width: 140px; text-align: center">Action</th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -573,11 +686,10 @@ pre {
 const CONFIG = {
   username: 'vikasvooradi',
   platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
-  cacheKey: 'sql_dashboard_v3',
+  cacheKey: 'sql_dashboard_v4',
   cacheExpiry: 24 * 60 * 60 * 1000, // 24 hours
   itemsPerPage: 25,
-  maxRetries: 3,
-  retryDelay: 1000
+  requestDelay: 100 // milliseconds between requests
 };
 
 // ==================== STATE ====================
@@ -586,39 +698,35 @@ let filteredQuestions = [];
 let currentPage = 1;
 let itemsPerPage = CONFIG.itemsPerPage;
 
-// ==================== GITHUB API ====================
-async function fetchWithRetry(url, retries = CONFIG.maxRetries) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        return await response.json();
-      }
-      if (response.status === 404) {
-        return null; // Not found is acceptable
-      }
-      if (response.status === 403 && i < retries - 1) {
-        // Rate limit - wait and retry
-        await sleep(CONFIG.retryDelay * (i + 1));
-        continue;
-      }
-    } catch (error) {
-      if (i === retries - 1) throw error;
-      await sleep(CONFIG.retryDelay);
+// ==================== GITHUB API (NO AUTH) ====================
+async function fetchPublic(url) {
+  try {
+    await sleep(CONFIG.requestDelay); // Rate limiting
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
     }
+    if (response.status === 404) {
+      return null;
+    }
+    console.warn(`API request failed: ${response.status}`);
+    return null;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return null;
   }
-  return null;
 }
 
 async function fetchContent(url) {
   try {
+    await sleep(CONFIG.requestDelay);
     const response = await fetch(url);
     if (response.ok) {
       return await response.text();
     }
     return null;
   } catch (error) {
-    console.error('Error fetching content:', error);
+    console.error('Content fetch error:', error);
     return null;
   }
 }
@@ -635,35 +743,37 @@ async function loadAllData() {
   const cached = loadFromCache();
   if (cached) {
     allQuestions = cached;
-    showBanner(`Loaded ${allQuestions.length} questions from cache`, 'success', 3000);
+    showBanner(`✓ Loaded ${allQuestions.length} questions from cache`, 'success', 3000);
     applyFilters();
     return;
   }
 
   // Fetch fresh data
   try {
-    const repos = await fetchWithRetry(`https://api.github.com/users/${CONFIG.username}/repos?per_page=100`);
+    const repos = await fetchPublic(`https://api.github.com/users/${CONFIG.username}/repos?per_page=100`);
     
     if (!repos || repos.length === 0) {
-      showBanner('No repositories found', 'error');
+      showBanner('❌ No repositories found', 'error');
       showEmptyState('No repositories found for this user');
       return;
     }
 
     const questions = [];
     
-    // Filter relevant repos
+    // Filter SQL-related repos
     const relevantRepos = repos.filter(repo => 
       CONFIG.platforms.some(platform => 
         repo.name.toLowerCase().includes(platform)
-      )
+      ) && repo.name.toLowerCase().includes('sql')
     );
 
     if (relevantRepos.length === 0) {
-      showBanner('No SQL repositories found', 'error');
+      showBanner('❌ No SQL repositories found', 'error');
       showEmptyState('No SQL practice repositories found');
       return;
     }
+
+    showBanner(`Found ${relevantRepos.length} repositories. Processing...`, 'info');
 
     // Process each repo
     for (const repo of relevantRepos) {
@@ -672,7 +782,7 @@ async function loadAllData() {
       );
 
       try {
-        const contents = await fetchWithRetry(
+        const contents = await fetchPublic(
           `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents`
         );
 
@@ -684,7 +794,7 @@ async function loadAllData() {
         // Check each directory for SQL files
         for (const dir of dirs) {
           try {
-            const files = await fetchWithRetry(
+            const files = await fetchPublic(
               `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
             );
 
@@ -711,32 +821,27 @@ async function loadAllData() {
             }
           } catch (error) {
             console.error(`Error processing directory ${dir.name}:`, error);
-            // Continue with next directory
           }
-          
-          // Small delay to avoid rate limiting
-          await sleep(50);
         }
       } catch (error) {
         console.error(`Error processing repo ${repo.name}:`, error);
-        // Continue with next repo
       }
     }
 
     if (questions.length === 0) {
-      showBanner('No SQL questions found', 'error');
+      showBanner('❌ No SQL questions found', 'error');
       showEmptyState('No SQL files found in repositories');
       return;
     }
 
     allQuestions = questions;
     saveToCache(questions);
-    showBanner(`Successfully loaded ${questions.length} questions!`, 'success', 3000);
+    showBanner(`✓ Successfully loaded ${questions.length} questions!`, 'success', 3000);
     applyFilters();
 
   } catch (error) {
     console.error('Error loading data:', error);
-    showBanner('Error loading questions. Please try again.', 'error');
+    showBanner('❌ Error loading questions. Please try again.', 'error');
     showEmptyState('Failed to load questions. Click Refresh to try again.');
   }
 }
@@ -777,7 +882,7 @@ function saveToCache(data) {
 function clearAllCache() {
   localStorage.removeItem(CONFIG.cacheKey);
   localStorage.removeItem(CONFIG.cacheKey + '_expiry');
-  showBanner('Cache cleared successfully', 'success', 2000);
+  showBanner('✓ Cache cleared successfully', 'success', 2000);
   refreshData();
 }
 
@@ -854,7 +959,6 @@ function renderPagination() {
     </button>
   `;
 
-  // Page numbers logic
   const maxVisible = 7;
   let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
   let endPage = Math.min(totalPages, startPage + maxVisible - 1);
@@ -866,7 +970,7 @@ function renderPagination() {
   if (startPage > 1) {
     html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
     if (startPage > 2) {
-      html += `<span style="color: #64748b; padding: 0 8px;">...</span>`;
+      html += `<span style="color: #a0aec0; padding: 0 8px;">...</span>`;
     }
   }
 
@@ -880,7 +984,7 @@ function renderPagination() {
 
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
-      html += `<span style="color: #64748b; padding: 0 8px;">...</span>`;
+      html += `<span style="color: #a0aec0; padding: 0 8px;">...</span>`;
     }
     html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
   }
@@ -888,194 +992,3 @@ function renderPagination() {
   html += `
     <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
       Next →
-    </button>
-  `;
-
-  pagination.innerHTML = html;
-}
-
-function showEmptyState(message) {
-  const tbody = document.getElementById('tableBody');
-  tbody.innerHTML = `
-    <tr>
-      <td colspan="4">
-        <div class="empty">
-          <div class="empty-icon">📭</div>
-          <div>${message}</div>
-        </div>
-      </td>
-    </tr>
-  `;
-  document.getElementById('pagination').innerHTML = '';
-}
-
-function updateStats() {
-  document.getElementById('totalCount').textContent = allQuestions.length;
-  const uniquePlatforms = new Set(allQuestions.map(q => q.platform));
-  document.getElementById('platformCount').textContent = uniquePlatforms.size;
-  
-  // Update platform filter
-  updatePlatformFilter();
-}
-
-function updatePlatformFilter() {
-  const select = document.getElementById('platformFilter');
-  const currentValue = select.value;
-  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
-  
-  select.innerHTML = '<option value="all">All Platforms</option>';
-  platforms.forEach(platform => {
-    select.innerHTML += `<option value="${platform}">${capitalize(platform)}</option>`;
-  });
-  
-  select.value = currentValue;
-}
-
-// ==================== MODAL ====================
-async function openQuestion(index) {
-  const question = filteredQuestions[index];
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalBody = document.getElementById('modalBody');
-
-  modalTitle.innerHTML = `
-    <span class="badge ${question.platform}">${question.platform}</span>
-    ${escapeHtml(question.title)}
-  `;
-
-  modalBody.innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <div>Loading solution...</div>
-    </div>
-  `;
-
-  modal.classList.add('active');
-
-  // Load content
-  try {
-    const [readme, sql] = await Promise.all([
-      question.readmeUrl ? fetchContent(question.readmeUrl) : null,
-      fetchContent(question.sqlUrl)
-    ]);
-
-    let html = '';
-
-    if (readme) {
-      html += `
-        <div class="section">
-          <h3>📝 Problem Description</h3>
-          <pre>${escapeHtml(readme)}</pre>
-        </div>
-      `;
-    }
-
-    if (sql) {
-      html += `
-        <div class="section">
-          <h3>💡 SQL Solution</h3>
-          <pre>${escapeHtml(sql)}</pre>
-        </div>
-      `;
-    }
-
-    if (!readme && !sql) {
-      html = '<div class="empty">Failed to load content</div>';
-    }
-
-    modalBody.innerHTML = html;
-
-  } catch (error) {
-    console.error('Error loading question:', error);
-    modalBody.innerHTML = '<div class="empty">Error loading content. Please try again.</div>';
-  }
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('active');
-}
-
-// ==================== UTILITIES ====================
-function changePage(page) {
-  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderTable();
-  renderPagination();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function refreshData() {
-  localStorage.removeItem(CONFIG.cacheKey);
-  localStorage.removeItem(CONFIG.cacheKey + '_expiry');
-  allQuestions = [];
-  filteredQuestions = [];
-  loadAllData();
-}
-
-function showBanner(message, type = 'info', duration = 0) {
-  const banner = document.getElementById('infoBanner');
-  banner.className = `info-banner ${type}`;
-  banner.innerHTML = message;
-  banner.style.display = 'flex';
-
-  if (duration > 0) {
-    setTimeout(() => {
-      banner.style.display = 'none';
-    }, duration);
-  }
-}
-
-function formatTitle(str) {
-  return str
-    .replace(/-/g, ' ')
-    .replace(/_/g, ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// ==================== EVENT LISTENERS ====================
-document.getElementById('searchInput').addEventListener('input', applyFilters);
-document.getElementById('platformFilter').addEventListener('change', applyFilters);
-document.getElementById('sortBy').addEventListener('change', applyFilters);
-document.getElementById('perPageSelect').addEventListener('change', function() {
-  itemsPerPage = parseInt(this.value);
-  currentPage = 1;
-  renderTable();
-  renderPagination();
-});
-
-// Close modal on outside click
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-  if (e.ctrlKey && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('searchInput').focus();
-  }
-});
-
-// ==================== INITIALIZATION ====================
-window.addEventListener('DOMContentLoaded', loadAllData);
-</script>
-</body>
-</html>
