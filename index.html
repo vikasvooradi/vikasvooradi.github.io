@@ -1,168 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vikas Vooradi | GitHub Portfolio</title>
+<meta charset="UTF-8">
+<title>Vikas Vooradi | SQL Practice</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
-/* =========================
-   GLOBAL STYLES
-========================= */
-:root {
-  --bg: #0f172a;
-  --card: rgba(255,255,255,0.08);
-  --glass: rgba(255,255,255,0.12);
-  --border: rgba(255,255,255,0.18);
-  --text: #e5e7eb;
-  --muted: #94a3b8;
-  --accent: #38bdf8;
+body{
+  margin:0;
+  font-family:system-ui;
+  background:#020617;
+  color:#e5e7eb;
 }
-
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: radial-gradient(circle at top, #1e293b, #020617);
-  color: var(--text);
+.container{max-width:1200px;margin:auto;padding:20px}
+.card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
 }
-
-h1,h2,h3 { margin: 0 0 10px; }
-a { color: var(--accent); text-decoration: none; }
-
-.container {
-  max-width: 1200px;
-  padding: 20px;
-  margin: auto;
+img{border-radius:50%}
+.badge{
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:8px;
+  background:#0ea5e9;
 }
-
-/* =========================
-   GLASS CARD
-========================= */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
 }
-
-/* =========================
-   PROFILE
-========================= */
-.profile {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 30px;
+pre{
+  background:#020617;
+  padding:12px;
+  overflow:auto;
+  border-radius:12px;
 }
-
-.profile img {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 3px solid var(--accent);
-}
-
-.profile-info p {
-  color: var(--muted);
-}
-
-/* =========================
-   STATS
-========================= */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.stats img {
-  width: 100%;
-  border-radius: 12px;
-}
-
-/* =========================
-   REPO SCROLLER
-========================= */
-.repo-scroll {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-}
-.repo-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-.repo-scroll::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
-.repo {
-  min-width: 280px;
-}
-.repo small {
-  color: var(--muted);
-}
-
-/* =========================
-   CONTROLS
-========================= */
-.controls {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 20px 0;
-}
-input, select {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--glass);
-  color: white;
-}
-
-/* =========================
-   QUESTIONS
-========================= */
-.question {
-  margin-bottom: 14px;
-}
-.question-header {
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-.badge {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: var(--glass);
-}
-.content {
-  display: none;
-  margin-top: 10px;
-}
-pre {
-  background: #020617;
-  padding: 12px;
-  overflow-x: auto;
-  border-radius: 10px;
-}
-.loading {
-  color: var(--muted);
-  text-align: center;
-  padding: 30px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-@media (max-width: 600px) {
-  .profile { flex-direction: column; text-align: center; }
+input,select{
+  padding:10px;
+  border-radius:10px;
+  background:#020617;
+  color:white;
+  border:1px solid #334155;
 }
 </style>
 </head>
@@ -170,173 +51,114 @@ pre {
 <body>
 <div class="container">
 
-<!-- ================= PROFILE ================= -->
-<div class="card profile">
-  <img id="avatar" src="https://github.com/github.png" />
-  <div class="profile-info">
-    <h1 id="name">Loading...</h1>
-    <p id="bio"></p>
+<!-- PROFILE -->
+<div class="card" style="display:flex;gap:20px;align-items:center">
+  <img src="https://github.com/vikasvooradi.png" width="100">
+  <div>
+    <h1>Vikas Vooradi</h1>
+    <p>SQL • Data Engineering • Interview Prep</p>
   </div>
 </div>
 
-<!-- ================= STATS ================= -->
-<div class="stats">
-  <img src="https://github-readme-stats.vercel.app/api?username=vikasvooradi&show_icons=true&theme=transparent" />
-  <img src="https://streak-stats.demolab.com?user=vikasvooradi&theme=transparent" />
-</div>
-
-<!-- ================= REPOS ================= -->
-<h2>📦 Platforms</h2>
-<div class="repo-scroll" id="repos"></div>
-
-<!-- ================= CONTROLS ================= -->
-<h2>📚 Questions</h2>
-<div class="controls">
-  <input id="search" placeholder="Search questions..." />
-  <select id="platformFilter">
+<!-- CONTROLS -->
+<div style="display:flex;gap:10px;margin:20px 0">
+  <input id="search" placeholder="Search questions…">
+  <select id="platform">
     <option value="all">All Platforms</option>
   </select>
 </div>
 
-<div id="questions">
-  <div class="loading">Scanning repositories…</div>
-</div>
+<!-- QUESTIONS -->
+<div id="questions">Loading…</div>
 
 </div>
 
 <script>
-/* ==================================================
-   CONFIG (EDIT ONLY THIS LINE TO ADD PLATFORMS)
-================================================== */
-const PLATFORMS = ['leetcode','hackerrank','codechef','codewars','lintcode','datalemur'];
-/* ================================================== */
+/* ================= CONFIG ================= */
+const USER = "vikasvooradi";
+const PLATFORMS = ["leetcode","hackerrank","codechef","codewars","lintcode","datalemur"];
+/* ========================================== */
 
-const USER = 'vikasvooradi';
-const GH = 'https://api.github.com';
+const RAW = "https://raw.githubusercontent.com";
+const API = "https://api.github.com";
 
-const headers = {
-  'Accept': 'application/vnd.github+json'
-};
+let QUESTIONS = [];
 
-/* ================= PROFILE ================= */
-fetch(`${GH}/users/${USER}`, {headers})
-.then(r => r.json())
-.then(d => {
-  document.getElementById('avatar').src = d.avatar_url || '';
-  document.getElementById('name').textContent = d.name || d.login;
-  document.getElementById('bio').textContent = d.bio || '';
+/* STEP 1 — GET REPOS (ONE API CALL ONLY) */
+fetch(`${API}/users/${USER}/repos?per_page=100`)
+.then(r=>r.json())
+.then(repos=>{
+  repos
+    .filter(r=>PLATFORMS.some(p=>r.name.includes(p)))
+    .forEach(repo=>{
+      const platform = PLATFORMS.find(p=>repo.name.includes(p));
+      addPlatform(platform);
+      scanRepo(repo.name,platform);
+    });
 });
 
-/* ================= REPOS ================= */
-let ALL_QUESTIONS = [];
-
-fetch(`${GH}/users/${USER}/repos?per_page=100`, {headers})
-.then(r => r.json())
-.then(repos => {
-
-  const repoBox = document.getElementById('repos');
-  const platformSet = new Set();
-
-  repos.filter(r =>
-    PLATFORMS.some(p => r.name.toLowerCase().includes(p))
-  ).forEach(repo => {
-
-    const platform = PLATFORMS.find(p => repo.name.toLowerCase().includes(p));
-    platformSet.add(platform);
-
-    const div = document.createElement('div');
-    div.className = 'card repo';
-    div.innerHTML = `
-      <h3>${repo.name}</h3>
-      <small>${repo.description || ''}</small><br/>
-      ⭐ ${repo.stargazers_count} | 🍴 ${repo.forks_count}<br/>
-      <a href="${repo.html_url}" target="_blank">View Repo</a>
-    `;
-    repoBox.appendChild(div);
-
-    scanQuestions(repo.name, platform);
-  });
-
-  const filter = document.getElementById('platformFilter');
-  platformSet.forEach(p => {
-    const o = document.createElement('option');
-    o.value = p;
-    o.textContent = p;
-    filter.appendChild(o);
-  });
-});
-
-/* ================= QUESTIONS ================= */
-function scanQuestions(repo, platform) {
-  fetch(`${GH}/repos/${USER}/${repo}/contents`, {headers})
-  .then(r => r.json())
-  .then(folders => {
-    folders.filter(f => f.type === 'dir').forEach(dir => {
+/* STEP 2 — SCAN REPO VIA RAW (NO LIMIT) */
+function scanRepo(repo,platform){
+  fetch(`${API}/repos/${USER}/${repo}/contents`)
+  .then(r=>r.json())
+  .then(folders=>{
+    folders.filter(f=>f.type==="dir").forEach(dir=>{
+      const base=`${RAW}/${USER}/${repo}/main/${dir.name}`;
       Promise.all([
-        fetch(`${GH}/repos/${USER}/${repo}/contents/${dir.name}/READ.ME`, {headers})
-          .then(r => r.ok ? r.text() : ''),
-        fetch(`${GH}/repos/${USER}/${repo}/contents/${dir.name}`, {headers})
-          .then(r => r.json())
-      ]).then(([readme, files]) => {
-        const sql = files.find(f => f.name.endsWith('.sql'));
-        if(!sql) return;
+        fetch(`${base}/READ.ME`).then(r=>r.ok?r.text():""),
+        fetch(`${base}`).then(r=>r.text())
+      ]).then(async ([readme])=>{
+        const files = await fetch(`${API}/repos/${USER}/${repo}/contents/${dir.name}`).then(r=>r.json());
+        const sql = files.find(f=>f.name.endsWith(".sql"));
+        if(!sql)return;
 
         fetch(sql.download_url)
-        .then(r => r.text())
-        .then(code => {
-          ALL_QUESTIONS.push({
-            platform,
-            title: dir.name,
-            readme,
-            code
-          });
-          renderQuestions();
+        .then(r=>r.text())
+        .then(code=>{
+          QUESTIONS.push({platform,title:dir.name,readme,code});
+          render();
         });
       });
     });
   });
 }
 
-function renderQuestions() {
-  const qBox = document.getElementById('questions');
-  qBox.innerHTML = '';
-
-  const search = document.getElementById('search').value.toLowerCase();
-  const platform = document.getElementById('platformFilter').value;
-
-  ALL_QUESTIONS
-    .filter(q =>
-      (platform === 'all' || q.platform === platform) &&
-      q.title.toLowerCase().includes(search)
-    )
-    .forEach(q => {
-      const div = document.createElement('div');
-      div.className = 'card question';
-      div.innerHTML = `
-        <div class="question-header">
-          <div>
-            <span class="badge">${q.platform}</span>
-            <strong>${q.title}</strong>
-          </div>
-          👁️
-        </div>
-        <div class="content">
-          <h4>📝 Problem</h4>
-          <pre>${q.readme}</pre>
-          <h4>💻 SQL</h4>
-          <pre>${q.code}</pre>
-        </div>
-      `;
-      div.querySelector('.question-header').onclick = () => {
-        const c = div.querySelector('.content');
-        c.style.display = c.style.display === 'block' ? 'none' : 'block';
-      };
-      qBox.appendChild(div);
-    });
+function addPlatform(p){
+  const sel=document.getElementById("platform");
+  if([...sel.options].some(o=>o.value===p))return;
+  sel.innerHTML+=`<option value="${p}">${p}</option>`;
 }
 
-document.getElementById('search').oninput = renderQuestions;
-document.getElementById('platformFilter').onchange = renderQuestions;
+function render(){
+  const q=document.getElementById("questions");
+  q.innerHTML="";
+  const s=document.getElementById("search").value.toLowerCase();
+  const p=document.getElementById("platform").value;
+
+  QUESTIONS
+  .filter(x=>(p==="all"||x.platform===p)&&x.title.includes(s))
+  .forEach(x=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`
+      <div class="question-header">
+        <div><span class="badge">${x.platform}</span> ${x.title}</div>
+        👁️
+      </div>
+      <div style="display:none">
+        <h4>Problem</h4><pre>${x.readme}</pre>
+        <h4>SQL</h4><pre>${x.code}</pre>
+      </div>`;
+    d.querySelector(".question-header").onclick=()=>{
+      const c=d.children[1];
+      c.style.display=c.style.display==="block"?"none":"block";
+    };
+    q.appendChild(d);
+  });
+}
+
+document.getElementById("search").oninput=render;
+document.getElementById("platform").onchange=render;
 </script>
 </body>
 </html>
