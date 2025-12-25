@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Vooradi | SQL Practice Portfolio</title>
+<title>Vikas Vooradi</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,26 +16,24 @@
 }
 
 :root {
-  --bg-primary: #0a0e27;
-  --bg-secondary: #141933;
-  --bg-card: #1a1f3a;
-  --accent-primary: #00f0ff;
-  --accent-secondary: #7b2ff7;
-  --text-primary: #ffffff;
-  --text-secondary: #a0aec0;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f8fa;
+  --bg-card: #ffffff;
+  --accent-primary: #ffa116;
+  --accent-secondary: #ff6b00;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --border-color: #e1e4e8;
+  --hover-bg: #f6f8fa;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
   padding: 20px;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(123, 47, 247, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.15) 0px, transparent 50%);
 }
 
 .container {
@@ -47,16 +45,15 @@ body {
 .header {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
+  border-radius: 12px;
   padding: 40px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 32px;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  overflow: hidden;
 }
 
 .header::before {
@@ -65,8 +62,9 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 12px 12px 0 0;
 }
 
 @keyframes slideDown {
@@ -85,13 +83,7 @@ body {
   height: 100px;
   border-radius: 50%;
   border: 3px solid var(--accent-primary);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.2);
 }
 
 .header-info h1 {
@@ -120,15 +112,15 @@ body {
 .stat-item {
   text-align: center;
   padding: 12px 24px;
-  background: rgba(0, 240, 255, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .stat-number {
   font-size: 32px;
   font-weight: 800;
-  color: var(--accent-primary);
+  color: var(--text-secondary);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -145,14 +137,14 @@ body {
 .controls {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
@@ -176,9 +168,9 @@ body {
 .search-box input {
   width: 100%;
   padding: 16px 20px 16px 52px;
-  border-radius: 14px;
+  border-radius: 8px;
   border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   color: var(--text-primary);
   font-size: 15px;
   outline: none;
@@ -187,9 +179,8 @@ body {
 }
 
 .search-box input:focus {
-  border-color: var(--accent-primary);
-  background: var(--bg-primary);
-  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
+  border-color: var(--text-secondary);
+  box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
 }
 
 .search-box::before {
@@ -216,32 +207,31 @@ select {
 }
 
 select:hover {
-  border-color: var(--accent-primary);
-  background: var(--bg-primary);
+  border-color: var(--text-secondary);
 }
 
 select:focus {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
+  border-color: var(--text-secondary);
+  box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
 }
 
 button {
   padding: 16px 28px;
-  border-radius: 14px;
+  border-radius: 8px;
   border: none;
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: var(--bg-primary);
+  color: white;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 161, 22, 0.2);
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.3);
 }
 
 button:active {
@@ -249,25 +239,25 @@ button:active {
 }
 
 button.secondary {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   box-shadow: none;
   border: 1px solid var(--border-color);
 }
 
 button.secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+  background: var(--hover-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Table */
 .table-container {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
   margin-bottom: 24px;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
@@ -277,8 +267,8 @@ table {
 }
 
 thead {
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(123, 47, 247, 0.1) 100%);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
 }
 
 th {
@@ -286,7 +276,7 @@ th {
   text-align: left;
   font-size: 12px;
   font-weight: 700;
-  color: var(--accent-primary);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -302,7 +292,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: rgba(0, 240, 255, 0.03);
+  background: var(--hover-bg);
 }
 
 tr:last-child td {
@@ -336,9 +326,9 @@ tr:last-child td {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--accent-primary);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(255, 161, 22, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 161, 22, 0.2);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -350,7 +340,7 @@ tr:last-child td {
 }
 
 .title-cell:hover {
-  color: var(--accent-primary);
+  color: var(--text-secondary);
 }
 
 .action-btn {
@@ -358,8 +348,8 @@ tr:last-child td {
   font-size: 13px;
   border-radius: 10px;
   border: 1px solid var(--accent-primary);
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--accent-primary);
+  background: rgba(255, 161, 22, 0.1);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 700;
@@ -370,7 +360,7 @@ tr:last-child td {
   background: var(--accent-primary);
   color: var(--bg-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
 /* Modal */
@@ -462,7 +452,7 @@ tr:last-child td {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
   transform: rotate(90deg);
-  border-color: var(--accent-primary);
+  border-color: var(--text-secondary);
 }
 
 .modal-body {
@@ -476,7 +466,7 @@ tr:last-child td {
 .section h3 {
   font-size: 18px;
   margin-bottom: 16px;
-  color: var(--accent-primary);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -527,8 +517,8 @@ pre {
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
   background: rgba(0, 240, 255, 0.05);
   transform: translateY(-2px);
 }
@@ -537,7 +527,7 @@ pre {
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-color: transparent;
   color: var(--bg-primary);
-  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
 .page-btn:disabled {
@@ -557,7 +547,7 @@ pre {
   width: 60px;
   height: 60px;
   border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent-primary);
+  border-top-color: var(--text-secondary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 20px;
@@ -575,7 +565,7 @@ pre {
 
 /* Info Banner */
 .info-banner {
-  background: rgba(0, 240, 255, 0.1);
+  background: rgba(255, 161, 22, 0.1);
   border: 1px solid rgba(0, 240, 255, 0.3);
   border-radius: 16px;
   padding: 20px 28px;
@@ -601,7 +591,7 @@ pre {
 }
 
 .info-banner.info {
-  color: var(--accent-primary);
+  color: var(--text-secondary);
 }
 
 /* Responsive */
@@ -671,7 +661,7 @@ pre {
     <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
     <div class="header-info">
       <h1>Vikas Vooradi</h1>
-      <p>SQL Practice Problems • Data Engineering • Interview Preparation</p>
+      <p>A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.</p>
     </div>
     <div class="stats">
       <div class="stat-item">
@@ -965,7 +955,7 @@ async function openQuestion(index) {
       <div class="section">
         <h3>🔗 Links</h3>
         <p>
-          <a href="${question.sqlUrl}" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">
+          <a href="${question.sqlUrl}" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-weight: 600;">
             View on GitHub →
           </a>
         </p>
