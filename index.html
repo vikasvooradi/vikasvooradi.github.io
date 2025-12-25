@@ -39,24 +39,70 @@ input,select,button{
   color:white;
   border:1px solid #334155;
 }
+button:hover{
+  background:#1e293b;
+  cursor:pointer;
+}
 .badge{
   background:#0ea5e9;
   font-size:12px;
   padding:4px 8px;
   border-radius:8px;
+  font-weight:600;
 }
 .question-header{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   cursor:pointer;
+  padding:8px;
+  border-radius:8px;
+  transition:background .2s;
+}
+.question-header:hover{
+  background:rgba(255,255,255,.03);
+}
+.question-title{
+  flex:1;
+  margin-left:10px;
 }
 pre{
   background:#020617;
   padding:12px;
   border-radius:12px;
   overflow:auto;
+  border:1px solid #334155;
 }
 small{color:#94a3b8}
+.progress{
+  background:#1e293b;
+  height:4px;
+  border-radius:4px;
+  overflow:hidden;
+  margin:10px 0;
+}
+.progress-bar{
+  background:#0ea5e9;
+  height:100%;
+  width:0;
+  transition:width .3s;
+}
+.status{
+  padding:10px;
+  border-radius:8px;
+  margin:10px 0;
+  background:rgba(14,165,233,.1);
+  border:1px solid rgba(14,165,233,.3);
+}
+.error{
+  background:rgba(239,68,68,.1);
+  border-color:rgba(239,68,68,.3);
+}
+.empty{
+  text-align:center;
+  padding:40px;
+  color:#64748b;
+}
 </style>
 </head>
 
@@ -65,7 +111,7 @@ small{color:#94a3b8}
 
 <!-- PROFILE -->
 <div class="card header">
-  <img src="https://github.com/vikasvooradi.png">
+  <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
   <div>
     <h1>Vikas Vooradi</h1>
     <small>SQL • Data Engineering • Interview Prep</small>
@@ -74,136 +120,442 @@ small{color:#94a3b8}
 
 <!-- CONTROLS -->
 <div class="controls">
-  <input id="search" placeholder="Search questions…">
+  <input id="search" placeholder="Search questions…" type="text">
   <select id="platformFilter">
     <option value="all">All Platforms</option>
   </select>
-  <button onclick="rebuild()">🔄 Refresh Index</button>
+  <select id="sortBy">
+    <option value="title">Sort by Title</option>
+    <option value="platform">Sort by Platform</option>
+  </select>
+  <button onclick="rebuild()">🔄 Rebuild Index</button>
+  <button onclick="clearCache()">🗑️ Clear Cache</button>
 </div>
 
-<div id="status" class="small"></div>
-<div id="questions">Loading…</div>
+<div id="statusContainer"></div>
+<div id="progress" class="progress" style="display:none">
+  <div id="progressBar" class="progress-bar"></div>
+</div>
+<div id="questions">Loading from cache...</div>
 
 </div>
 
 <script>
 /* ================= CONFIG ================= */
-const USER = "vikasvooradi";
-const PLATFORMS = ["leetcode","hackerrank","codechef","codewars","lintcode","datalemur"];
-const CACHE_KEY = "questions_cache_v1";
-/* ========================================== */
+const CONFIG = {
+  user: "vikasvooradi",
+  platforms: ["leetcode","hackerrank","codechef","codewars","lintcode","datalemur"],
+  cacheKey: "questions_cache_v2",
+  cacheExpiry: "cache_expiry_v2",
+  cacheDuration: 24 * 60 * 60 * 1000, // 24 hours
+  maxConcurrent: 5, // Max concurrent API requests
+  batchSize: 10 // Process repos in batches
+};
 
 const API = "https://api.github.com";
 const RAW = "https://raw.githubusercontent.com";
 
 let QUESTIONS = [];
+let loadedContent = new Map(); // Cache for loaded SQL content
 
-/* ================= LOAD CACHE ================= */
-const cached = localStorage.getItem(CACHE_KEY);
-if (cached) {
-  QUESTIONS = JSON.parse(cached);
-  document.getElementById("status").textContent =
-    "Loaded from cache (" + QUESTIONS.length + " questions)";
-  render();
-} else {
-  rebuild();
-}
-
-/* ================= REBUILD INDEX ================= */
-async function rebuild() {
-  document.getElementById("questions").textContent = "Building index…";
-  QUESTIONS = [];
-  localStorage.removeItem(CACHE_KEY);
-
-  const repos = await fetch(`${API}/users/${USER}/repos?per_page=100`)
-    .then(r=>r.json());
-
-  for (const repo of repos) {
-    const platform = PLATFORMS.find(p=>repo.name.toLowerCase().includes(p));
-    if (!platform) continue;
-    addPlatform(platform);
-
-    const dirs = await fetch(`${API}/repos/${USER}/${repo.name}/contents`)
-      .then(r=>r.json());
-
-    for (const dir of dirs.filter(d=>d.type==="dir")) {
-      const files = await fetch(
-        `${API}/repos/${USER}/${repo.name}/contents/${dir.name}`
-      ).then(r=>r.json());
-
-      const sql = files.find(f=>f.name.endsWith(".sql"));
-      if (!sql) continue;
-
-      QUESTIONS.push({
-        platform,
-        repo: repo.name,
-        title: dir.name,
-        path: dir.name,
-        sql_url: sql.download_url
-      });
+/* ================= GITHUB TOKEN HELPER ================= */
+function getGithubToken() {
+  // Check session storage first (temporary)
+  let token = sessionStorage.getItem('gh_token');
+  
+  if (!token) {
+    // Check if user wants to provide token
+    const hasToken = confirm(
+      'For better rate limits, you can provide a GitHub token.\n\n' +
+      'Click OK to enter token (optional), or Cancel to continue without token.\n\n' +
+      'Token is stored only in your browser session.'
+    );
+    
+    if (hasToken) {
+      token = prompt('Enter your GitHub Personal Access Token (optional):');
+      if (token && token.trim()) {
+        sessionStorage.setItem('gh_token', token.trim());
+      }
     }
   }
+  
+  return token;
+}
 
-  localStorage.setItem(CACHE_KEY, JSON.stringify(QUESTIONS));
-  document.getElementById("status").textContent =
-    "Index built (" + QUESTIONS.length + " questions)";
+/* ================= API HELPER WITH RATE LIMITING ================= */
+async function fetchWithAuth(url, options = {}) {
+  const token = getGithubToken();
+  const headers = {
+    'Accept': 'application/vnd.github.v3+json',
+    ...options.headers
+  };
+  
+  if (token) {
+    headers['Authorization'] = `token ${token}`;
+  }
+  
+  try {
+    const response = await fetch(url, { ...options, headers });
+    
+    // Check rate limit
+    const remaining = response.headers.get('X-RateLimit-Remaining');
+    const resetTime = response.headers.get('X-RateLimit-Reset');
+    
+    if (remaining && parseInt(remaining) < 10) {
+      showStatus(`⚠️ Rate limit low: ${remaining} requests remaining`, 'error');
+    }
+    
+    if (!response.ok) {
+      if (response.status === 403 || response.status === 429) {
+        const resetDate = new Date(parseInt(resetTime) * 1000);
+        throw new Error(`Rate limit exceeded. Resets at ${resetDate.toLocaleTimeString()}`);
+      }
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
+  }
+}
+
+/* ================= PARALLEL PROCESSING ================= */
+async function parallelMap(items, asyncFn, maxConcurrent = CONFIG.maxConcurrent) {
+  const results = [];
+  const executing = [];
+  
+  for (const item of items) {
+    const promise = asyncFn(item).then(result => {
+      executing.splice(executing.indexOf(promise), 1);
+      return result;
+    });
+    
+    results.push(promise);
+    executing.push(promise);
+    
+    if (executing.length >= maxConcurrent) {
+      await Promise.race(executing);
+    }
+  }
+  
+  return Promise.all(results);
+}
+
+/* ================= CACHE MANAGEMENT ================= */
+function isCacheValid() {
+  const expiry = localStorage.getItem(CONFIG.cacheExpiry);
+  if (!expiry) return false;
+  return Date.now() < parseInt(expiry);
+}
+
+function loadFromCache() {
+  if (!isCacheValid()) return null;
+  
+  const cached = localStorage.getItem(CONFIG.cacheKey);
+  if (!cached) return null;
+  
+  try {
+    return JSON.parse(cached);
+  } catch {
+    return null;
+  }
+}
+
+function saveToCache(data) {
+  try {
+    localStorage.setItem(CONFIG.cacheKey, JSON.stringify(data));
+    localStorage.setItem(CONFIG.cacheExpiry, (Date.now() + CONFIG.cacheDuration).toString());
+  } catch (error) {
+    console.error('Cache save error:', error);
+    showStatus('⚠️ Could not save to cache (storage full?)', 'error');
+  }
+}
+
+function clearCache() {
+  localStorage.removeItem(CONFIG.cacheKey);
+  localStorage.removeItem(CONFIG.cacheExpiry);
+  loadedContent.clear();
+  showStatus('Cache cleared successfully');
+  QUESTIONS = [];
   render();
 }
 
-/* ================= UI ================= */
-function addPlatform(p){
-  const s=document.getElementById("platformFilter");
-  if([...s.options].some(o=>o.value===p))return;
-  s.innerHTML+=`<option value="${p}">${p}</option>`;
+/* ================= STATUS & PROGRESS ================= */
+function showStatus(message, type = 'info') {
+  const container = document.getElementById('statusContainer');
+  container.innerHTML = `<div class="status ${type}">${message}</div>`;
+  setTimeout(() => container.innerHTML = '', 5000);
 }
 
-function render(){
-  const q=document.getElementById("questions");
-  q.innerHTML="";
+function updateProgress(current, total) {
+  const progressDiv = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  
+  if (total === 0) {
+    progressDiv.style.display = 'none';
+    return;
+  }
+  
+  progressDiv.style.display = 'block';
+  const percent = (current / total) * 100;
+  progressBar.style.width = `${percent}%`;
+  
+  if (current === total) {
+    setTimeout(() => progressDiv.style.display = 'none', 500);
+  }
+}
 
-  const s=document.getElementById("search").value.toLowerCase();
-  const p=document.getElementById("platformFilter").value;
+/* ================= REBUILD INDEX (OPTIMIZED) ================= */
+async function rebuild() {
+  try {
+    document.getElementById('questions').innerHTML = '<div class="empty">🔄 Building index...</div>';
+    QUESTIONS = [];
+    localStorage.removeItem(CONFIG.cacheKey);
+    loadedContent.clear();
 
-  QUESTIONS
-  .filter(x=>
-    (p==="all"||x.platform===p) &&
-    x.title.toLowerCase().includes(s)
-  )
-  .forEach(x=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
+    showStatus('🔄 Fetching repositories...');
+    
+    // Fetch all repos (with pagination if needed)
+    const repos = await fetchWithAuth(`${API}/users/${CONFIG.user}/repos?per_page=100&sort=updated`);
+    
+    // Filter relevant repos
+    const relevantRepos = repos.filter(repo => 
+      CONFIG.platforms.some(p => repo.name.toLowerCase().includes(p))
+    );
+    
+    if (relevantRepos.length === 0) {
+      showStatus('⚠️ No relevant repositories found', 'error');
+      render();
+      return;
+    }
+    
+    showStatus(`📦 Found ${relevantRepos.length} repositories. Scanning for questions...`);
+    updateProgress(0, relevantRepos.length);
+    
+    // Process repos in parallel with batching
+    let processed = 0;
+    const batchCount = Math.ceil(relevantRepos.length / CONFIG.batchSize);
+    
+    for (let i = 0; i < batchCount; i++) {
+      const batch = relevantRepos.slice(i * CONFIG.batchSize, (i + 1) * CONFIG.batchSize);
+      
+      const batchResults = await parallelMap(batch, async (repo) => {
+        try {
+          const platform = CONFIG.platforms.find(p => repo.name.toLowerCase().includes(p));
+          addPlatformToFilter(platform);
+          
+          // Fetch directory contents
+          const contents = await fetchWithAuth(`${API}/repos/${CONFIG.user}/${repo.name}/contents`);
+          
+          // Filter directories and check for SQL files in parallel
+          const dirs = contents.filter(item => item.type === 'dir');
+          
+          const questions = await parallelMap(dirs, async (dir) => {
+            try {
+              const files = await fetchWithAuth(`${API}/repos/${CONFIG.user}/${repo.name}/contents/${dir.name}`);
+              const sqlFile = files.find(f => f.name.toLowerCase().endsWith('.sql'));
+              const readmeFile = files.find(f => f.name.toUpperCase() === 'READ.ME' || f.name.toLowerCase() === 'readme.md');
+              
+              if (sqlFile) {
+                return {
+                  platform,
+                  repo: repo.name,
+                  title: dir.name.replace(/-/g, ' ').replace(/_/g, ' '),
+                  path: dir.name,
+                  sql_url: sqlFile.download_url,
+                  readme_url: readmeFile ? readmeFile.download_url : null
+                };
+              }
+            } catch (error) {
+              console.error(`Error processing directory ${dir.name}:`, error);
+            }
+            return null;
+          });
+          
+          processed++;
+          updateProgress(processed, relevantRepos.length);
+          
+          return questions.filter(q => q !== null);
+        } catch (error) {
+          console.error(`Error processing repo ${repo.name}:`, error);
+          processed++;
+          updateProgress(processed, relevantRepos.length);
+          return [];
+        }
+      });
+      
+      // Flatten results and add to QUESTIONS
+      QUESTIONS.push(...batchResults.flat());
+    }
+    
+    // Save to cache
+    saveToCache(QUESTIONS);
+    
+    showStatus(`✅ Index built successfully! Found ${QUESTIONS.length} SQL questions`);
+    render();
+    
+  } catch (error) {
+    console.error('Rebuild error:', error);
+    showStatus(`❌ Error: ${error.message}`, 'error');
+    document.getElementById('questions').innerHTML = `<div class="empty error">❌ ${error.message}</div>`;
+  }
+}
+
+/* ================= RENDERING ================= */
+function addPlatformToFilter(platform) {
+  const select = document.getElementById('platformFilter');
+  const exists = [...select.options].some(opt => opt.value === platform);
+  if (!exists) {
+    const option = document.createElement('option');
+    option.value = platform;
+    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
+    select.appendChild(option);
+  }
+}
+
+function render() {
+  const container = document.getElementById('questions');
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  const platformFilter = document.getElementById('platformFilter').value;
+  const sortBy = document.getElementById('sortBy').value;
+  
+  // Filter questions
+  let filtered = QUESTIONS.filter(q => {
+    const matchesPlatform = platformFilter === 'all' || q.platform === platformFilter;
+    const matchesSearch = q.title.toLowerCase().includes(searchTerm);
+    return matchesPlatform && matchesSearch;
+  });
+  
+  // Sort questions
+  filtered.sort((a, b) => {
+    if (sortBy === 'platform') {
+      return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
+    }
+    return a.title.localeCompare(b.title);
+  });
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">No questions found. Try adjusting your filters or rebuild the index.</div>';
+    return;
+  }
+  
+  container.innerHTML = '';
+  
+  filtered.forEach(question => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
       <div class="question-header">
-        <div>
-          <span class="badge">${x.platform}</span>
-          ${x.title}
-        </div>
-        👁️
+        <span class="badge">${question.platform}</span>
+        <div class="question-title">${question.title}</div>
+        <span class="toggle-icon">👁️</span>
       </div>
-      <div class="content" style="display:none">Loading…</div>
+      <div class="content" style="display:none;margin-top:12px"></div>
     `;
-    d.querySelector(".question-header").onclick=()=>toggle(d,x);
-    q.appendChild(d);
+    
+    card.querySelector('.question-header').onclick = () => toggleContent(card, question);
+    container.appendChild(card);
   });
 }
 
-async function toggle(div,q){
-  const c=div.querySelector(".content");
-  if(c.dataset.loaded){
-    c.style.display=c.style.display==="block"?"none":"block";
+/* ================= CONTENT LOADING ================= */
+async function toggleContent(card, question) {
+  const contentDiv = card.querySelector('.content');
+  const icon = card.querySelector('.toggle-icon');
+  
+  // Toggle if already loaded
+  if (contentDiv.dataset.loaded) {
+    const isHidden = contentDiv.style.display === 'none';
+    contentDiv.style.display = isHidden ? 'block' : 'none';
+    icon.textContent = isHidden ? '👁️' : '👁️';
     return;
   }
-  const base=`${RAW}/${USER}/${q.repo}/main/${q.path}`;
-  const readme=await fetch(`${base}/READ.ME`).then(r=>r.text());
-  const sql=await fetch(q.sql_url).then(r=>r.text());
-
-  c.innerHTML=`<pre>${readme}</pre><pre>${sql}</pre>`;
-  c.dataset.loaded="1";
-  c.style.display="block";
+  
+  // Load content
+  contentDiv.innerHTML = '<small>Loading...</small>';
+  contentDiv.style.display = 'block';
+  
+  try {
+    // Check cache first
+    const cacheKey = `${question.repo}/${question.path}`;
+    let readme = '';
+    let sql = '';
+    
+    if (loadedContent.has(cacheKey)) {
+      const cached = loadedContent.get(cacheKey);
+      readme = cached.readme;
+      sql = cached.sql;
+    } else {
+      // Fetch in parallel
+      const [readmeResponse, sqlResponse] = await Promise.all([
+        question.readme_url ? fetch(question.readme_url).then(r => r.text()).catch(() => '') : Promise.resolve(''),
+        fetch(question.sql_url).then(r => r.text())
+      ]);
+      
+      readme = readmeResponse;
+      sql = sqlResponse;
+      
+      // Cache the content
+      loadedContent.set(cacheKey, { readme, sql });
+    }
+    
+    // Render content
+    contentDiv.innerHTML = `
+      ${readme ? `<h3>Problem Description</h3><pre>${escapeHtml(readme)}</pre>` : ''}
+      <h3>SQL Solution</h3>
+      <pre>${escapeHtml(sql)}</pre>
+    `;
+    contentDiv.dataset.loaded = '1';
+    
+  } catch (error) {
+    contentDiv.innerHTML = `<small style="color:#ef4444">Error loading content: ${error.message}</small>`;
+    console.error('Content loading error:', error);
+  }
 }
 
-document.getElementById("search").oninput=render;
-document.getElementById("platformFilter").onchange=render;
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/* ================= INITIALIZATION ================= */
+async function init() {
+  // Try loading from cache
+  const cached = loadFromCache();
+  
+  if (cached && cached.length > 0) {
+    QUESTIONS = cached;
+    
+    // Populate platform filter
+    const platforms = [...new Set(QUESTIONS.map(q => q.platform))];
+    platforms.forEach(addPlatformToFilter);
+    
+    showStatus(`✅ Loaded ${QUESTIONS.length} questions from cache`);
+    render();
+  } else {
+    showStatus('No valid cache found. Please click "Rebuild Index" to fetch data.');
+    document.getElementById('questions').innerHTML = 
+      '<div class="empty">Click "🔄 Rebuild Index" to fetch your SQL questions from GitHub</div>';
+  }
+}
+
+/* ================= EVENT LISTENERS ================= */
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('platformFilter').addEventListener('change', render);
+document.getElementById('sortBy').addEventListener('change', render);
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+});
+
+/* ================= START ================= */
+init();
 </script>
 </body>
 </html>
