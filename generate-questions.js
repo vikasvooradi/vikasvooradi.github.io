@@ -184,7 +184,8 @@ async function generateQuestions() {
                 repo: repo.name,
                 path: dir.name,
                 sqlUrl: sqlFile.download_url,
-                readmeUrl: readmeFile ? readmeFile.download_url : null
+                readmeUrl: readmeFile ? readmeFile.download_url : null,
+                tags: ['DATABASE', 'ORACLE']
               };
 
               questions.push(question);
