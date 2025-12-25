@@ -3,540 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vikas Vooradi - SQL Problems</title>
+    <title>Vikas Vooradi - Coding Portfolio</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
         }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 40px 20px; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 5px solid white; margin-bottom: 15px; object-fit: cover; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .stat-card { background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center; backdrop-filter: blur(10px); }
+        .section { padding: 40px 30px; border-bottom: 1px solid #eee; }
+        .section:last-child { border-bottom: none; }
+        .section h2 { color: #2a5298; margin-bottom: 25px; font-size: 2em; text-align: center; }
+        .horizontal-scroller { 
+            display: flex; overflow-x: auto; gap: 15px; padding: 20px 0; scrollbar-width: thin; 
+            scrollbar-color: #2a5298 transparent;
         }
-
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: white;
-            margin-bottom: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-
-        .github-link {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #24292e;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .github-link:hover {
-            background: #1a1e22;
-            transform: translateY(-2px);
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 15px 20px;
-            background: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .search-bar:focus {
-            outline: none;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .problems-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .problem-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .problem-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .problem-header {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            gap: 15px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .problem-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            padding: 8px 15px;
-            border-radius: 8px;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .problem-title {
-            flex: 1;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .expand-icon {
-            font-size: 1.5rem;
-            color: #667eea;
-            transition: transform 0.3s ease;
-        }
-
-        .expand-icon.expanded {
-            transform: rotate(180deg);
-        }
-
-        .problem-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-
-        .problem-content.expanded {
-            max-height: 3000px;
-        }
-
-        .question-section {
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 2px solid #e9ecef;
-        }
-
-        .question-section h1,
-        .question-section h2,
-        .question-section h3 {
-            color: #2c3e50;
-            margin: 15px 0 10px 0;
-        }
-
-        .question-section h1 { font-size: 1.8rem; }
-        .question-section h2 { font-size: 1.5rem; }
-        .question-section h3 { font-size: 1.2rem; }
-
-        .question-section p {
-            margin: 10px 0;
-            line-height: 1.6;
-            color: #495057;
-        }
-
-        .question-section pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-        }
-
-        .question-section code {
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #e83e8c;
-        }
-
-        .question-section pre code {
-            background: none;
-            padding: 0;
-            color: #f8f8f2;
-        }
-
-        .solution-button-section {
-            padding: 20px;
-            background: white;
-            border-top: 2px solid #e9ecef;
-            text-align: center;
-        }
-
-        .solution-btn {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .solution-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .solution-btn.active {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .solution-section {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background: #2d2d2d;
-        }
-
-        .solution-section.expanded {
-            max-height: 800px;
-        }
-
-        .solution-content {
-            padding: 20px;
-            overflow: auto;
-            max-height: 750px;
-        }
-
-        .solution-code {
-            margin: 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #f8f8f2;
-            white-space: pre;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            color: white;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .problem-header { flex-wrap: wrap; }
-            .problem-number { min-width: 50px; }
-        }
+        .horizontal-scroller::-webkit-scrollbar { height: 8px; }
+        .horizontal-scroller::-webkit-scrollbar-track { background: #f1f1f1; }
+        .horizontal-scroller::-webkit-scrollbar-thumb { background: #2a5298; border-radius: 4px; }
+        .repo-card { min-width: 300px; background: #f8f9fa; border-radius: 12px; padding: 20px; flex-shrink: 0; border-left: 5px solid #2a5298; }
+        .repo-card h3 { color: #2a5298; margin-bottom: 10px; }
+        .questions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .question-item { background: #f8f9fa; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .question-item:hover { transform: translateY(-5px); }
+        .question-header { background: white; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .question-title { font-weight: 600; color: #333; }
+        .question-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { background: #e3f2fd; color: #1976d2; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; }
+        .solution-content { max-height: 0; overflow: hidden; background: #f8f9fa; transition: max-height 0.3s ease; }
+        .solution-content.open { max-height: 500px; padding: 20px; }
+        .solution-btn { background: #2a5298; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9em; }
+        .filters { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .filter-select, .search-input { padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+        .filter-select:focus, .search-input:focus { outline: none; border-color: #2a5298; }
+        .loading { text-align: center; padding: 40px; font-size: 1.2em; color: #666; }
+        .error { background: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        pre { background: #1e1e1e; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 0.9em; }
+        @media (max-width: 768px) { .stats-grid { grid-template-columns: 1fr; } .filters { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎯 Vikas Vooradi</h1>
-            <p class="subtitle">LeetCode SQL Solutions</p>
-            <a href="https://github.com/vikasvooradi/leetcode-oracle" target="_blank" class="github-link">
-                📚 View on GitHub
-            </a>
+            <img id="profile-img" class="profile-img" src="" alt="Profile Photo" onerror="this.src='https://avatars.githubusercontent.com/u/12345678?v=4'">
+            <h1>Vikas Vooradi</h1>
+            <p>ETL Developer | Data Engineer | SQL Enthusiast</p>
         </header>
 
-        <div id="stats" class="stats"></div>
-
-        <input 
-            type="text" 
-            id="searchBar" 
-            class="search-bar" 
-            placeholder="🔍 Search problems by number or title..."
-        >
-
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <p style="font-size: 1.2rem; color: #2c3e50;">Loading problems...</p>
+        <div class="section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=vikasvooradi&repo=vikasvooradi.github.io&theme=radical" alt="Total Contributions">
+                </div>
+                <img class="stat-card" src="https://streak-stats.demolab.com/?user=vikasvooradi&theme=radical" alt="GitHub Streak">
+                <img class="stat-card" src="https://github-readme-stats.vercel.app/api?username=vikasvooradi&show_icons=true&theme=radical&hide_border=true&bg_color=0d1117&title_color=FF6B35&icon_color=00e676&hide=stars,prs,issues" alt="Stats">
+            </div>
         </div>
 
-        <div id="problemsList" class="problems-list"></div>
+        <div class="section">
+            <h2>📂 Featured Repositories</h2>
+            <div id="repo-scroller" class="horizontal-scroller loading">Loading repositories...</div>
+        </div>
 
-        <footer>
-            <p>Made with ❤️ by <a href="https://github.com/vikasvooradi" target="_blank">Vikas Vooradi</a></p>
-        </footer>
+        <div class="section">
+            <h2>💻 Coding Challenges</h2>
+            <div class="filters">
+                <input type="text" id="search-input" class="search-input" placeholder="🔍 Search questions...">
+                <select id="platform-filter" class="filter-select">
+                    <option value="">All Platforms</option>
+                </select>
+            </div>
+            <div id="questions-container" class="questions-grid loading">Loading questions...</div>
+        </div>
     </div>
 
     <script>
-        let allProblems = [];
-        let problemStates = {};
+        // === CONFIGURATION - EDIT THESE LINES TO ADD NEW PLATFORMS ===
+        const USERNAME = 'vikasvooradi';
+        const PLATFORMS = ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur']; // ADD NEW PLATFORMS HERE 👈
+        const PLATFORM_KEYWORDS = PLATFORMS; // Same array - used for both repo filtering and platform names
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        // GitHub API Base URLs
+        const API_BASE = 'https://api.github.com';
+        const RAW_BASE = 'https://raw.githubusercontent.com';
 
-        function parseMarkdown(markdown) {
-            let html = markdown;
-            
-            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-            html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-            html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
-            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            
-            const parts = html.split(/(```[\s\S]*?```)/g);
-            html = parts.map(part => {
-                if (part.startsWith('```')) {
-                    const code = part.replace(/```[\w]*\n?/g, '').replace(/```$/g, '');
-                    return '<pre><code>' + escapeHtml(code) + '</code></pre>';
-                }
-                return part;
-            }).join('');
-            
-            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-            html = html.replace(/\n\n/g, '</p><p>');
-            html = html.replace(/\n/g, '<br>');
-            
-            return '<p>' + html + '</p>';
-        }
+        // Global state
+        let allQuestions = [];
+        let filteredQuestions = [];
 
-        function renderStats() {
-            const container = document.getElementById('stats');
-            container.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-number">${allProblems.length}</div>
-                    <div class="stat-label">Problems Solved</div>
-                </div>
-            `;
-        }
-
-        function renderProblem(problem, index) {
-            const card = document.createElement('div');
-            card.className = 'problem-card';
-            card.dataset.searchText = `${problem.number} ${problem.title}`.toLowerCase();
-            
-            card.innerHTML = `
-                <div class="problem-header" onclick="toggleQuestion(${index})">
-                    <div class="problem-number">#${problem.number}</div>
-                    <div class="problem-title">${escapeHtml(problem.title)}</div>
-                    <div class="expand-icon" id="icon-${index}">▼</div>
-                </div>
-                <div class="problem-content" id="content-${index}">
-                    <div class="question-section" id="question-${index}">
-                        <p style="color: #6c757d; text-align: center;">Loading question...</p>
-                    </div>
-                    <div class="solution-button-section">
-                        <button class="solution-btn" onclick="toggleSolution(${index}, event)">
-                            Show Solution
-                        </button>
-                    </div>
-                    <div class="solution-section" id="solution-${index}">
-                        <div class="solution-content">
-                            <pre class="solution-code" id="code-${index}">Loading solution...</pre>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        function renderProblems() {
-            const container = document.getElementById('problemsList');
-            container.innerHTML = '';
-            
-            allProblems.forEach((problem, index) => {
-                container.appendChild(renderProblem(problem, index));
-            });
-            
-            renderStats();
-        }
-
-        async function toggleQuestion(index) {
-            const content = document.getElementById(`content-${index}`);
-            const icon = document.getElementById(`icon-${index}`);
-            const question = document.getElementById(`question-${index}`);
-            
-            const isExpanded = content.classList.contains('expanded');
-            
-            if (isExpanded) {
-                content.classList.remove('expanded');
-                icon.classList.remove('expanded');
-            } else {
-                content.classList.add('expanded');
-                icon.classList.add('expanded');
-                
-                if (!problemStates[index]?.questionLoaded) {
-                    try {
-                        const response = await fetch(allProblems[index].readmeUrl);
-                        const markdown = await response.text();
-                        const html = parseMarkdown(markdown);
-                        question.innerHTML = html;
-                        
-                        if (!problemStates[index]) problemStates[index] = {};
-                        problemStates[index].questionLoaded = true;
-                    } catch (error) {
-                        question.innerHTML = '<p style="color: #dc3545;">Error loading question</p>';
-                    }
-                }
-            }
-        }
-
-        async function toggleSolution(index, event) {
-            event.stopPropagation();
-            
-            const solutionDiv = document.getElementById(`solution-${index}`);
-            const button = event.target;
-            const codeBlock = document.getElementById(`code-${index}`);
-            
-            const isExpanded = solutionDiv.classList.contains('expanded');
-            
-            if (isExpanded) {
-                solutionDiv.classList.remove('expanded');
-                button.textContent = 'Show Solution';
-                button.classList.remove('active');
-            } else {
-                solutionDiv.classList.add('expanded');
-                button.textContent = 'Hide Solution';
-                button.classList.add('active');
-                
-                if (!problemStates[index]?.solutionLoaded) {
-                    try {
-                        const response = await fetch(allProblems[index].sqlUrl);
-                        const code = await response.text();
-                        codeBlock.textContent = code;
-                        
-                        if (!problemStates[index]) problemStates[index] = {};
-                        problemStates[index].solutionLoaded = true;
-                    } catch (error) {
-                        codeBlock.textContent = 'Error loading solution';
-                    }
-                }
-            }
-        }
-
-        window.toggleQuestion = toggleQuestion;
-        window.toggleSolution = toggleSolution;
-
-        document.getElementById('searchBar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.problem-card');
-            
-            cards.forEach(card => {
-                const searchText = card.dataset.searchText;
-                card.style.display = searchText.includes(query) ? 'block' : 'none';
-            });
-        });
-
-        async function init() {
+        // === 1. Load Profile Image ===
+        async function loadProfileImage() {
             try {
-                // Load problems data from pre-built JSON file
-                const response = await fetch('./problems.json');
-                const data = await response.json();
-                
-                allProblems = data.problems.sort((a, b) => {
-                    const numA = parseInt(a.number) || 0;
-                    const numB = parseInt(b.number) || 0;
-                    return numA - numB;
-                });
-
-                document.getElementById('loading').classList.add('hidden');
-                renderProblems();
-
-                console.log(`✅ Loaded ${allProblems.length} problems successfully`);
-
-            } catch (error) {
-                console.error('Error loading problems:', error);
-                document.getElementById('loading').innerHTML = 
-                    '<p style="color: #dc3545;">Error loading problems. Please try again later.</p>';
+                const res = await fetch(`${API_BASE}/users/${USERNAME}`);
+                const user = await res.json();
+                document.getElementById('profile-img').src = user.avatar_url;
+            } catch (e) {
+                console.error('Profile image load failed:', e);
             }
         }
 
-        window.addEventListener('DOMContentLoaded', init);
+        // === 2. Load Repositories ===
+        async function loadRepositories() {
+            try {
+                const res = await fetch(`${API_BASE}/users/${USERNAME}/repos?sort=updated&per_page=100`);
+                const repos = await res.json();
+                const targetRepos = repos.filter(repo => 
+                    PLATFORM_KEYWORDS.some(keyword => repo.name.toLowerCase().includes(keyword))
+                );
+                
+                const scroller = document.getElementById('repo-scroller');
+                scroller.innerHTML = '';
+                
+                targetRepos.forEach(repo => {
+                    const card = document.createElement('div');
+                    card.className = 'repo-card';
+                    card.innerHTML = `
+                        <h3>${repo.name}</h3>
+                        <p>${repo.description || 'No description'}</p>
+                        <p><strong>⭐ ${repo.stargazers_count}</strong> | <strong>🍴 ${repo.forks_count}</strong> | <strong>📅 ${new Date(repo.updated_at).toLocaleDateString()}</strong></p>
+                        <a href="${repo.html_url}" target="_blank" style="background:#2a5298;color:white;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:0.9em;">View Repo</a>
+                    `;
+                    scroller.appendChild(card);
+                });
+                
+                if (targetRepos.length === 0) {
+                    scroller.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">No matching repositories found</div>';
+                }
+            } catch (e) {
+                document.getElementById('repo-scroller').innerHTML = '<div class="error">Failed to load repositories. Check console.</div>';
+                console.error('Repos load failed:', e);
+            }
+        }
+
+        // === 3. Load Questions from All Repos ===
+        async function loadQuestions() {
+            const questionsContainer = document.getElementById('questions-container');
+            questionsContainer.innerHTML = '<div class="loading">🔄 Scanning repositories for questions...</div>';
+
+            allQuestions = [];
+            const platformFilter = document.getElementById('platform-filter');
+            platformFilter.innerHTML = '<option value="">All Platforms</option>';
+
+            try {
+                // Get all repos
+                const res = await fetch(`${API_BASE}/users/${USERNAME}/repos?sort=updated&per_page=100`);
+                const repos = await res.json();
+
+                // Filter platform repos
+                const platformRepos = repos.filter(repo => 
+                    PLATFORM_KEYWORDS.some(keyword => repo.name.toLowerCase().includes(keyword))
+                );
+
+                for (const repo of platformRepos) {
+                    await processRepoQuestions(repo);
+                    
+                    // Add to platform filter
+                    const platformName = repo.name.split('-')[0].toUpperCase();
+                    if (!Array.from(platformFilter.options).some(opt => opt.value === platformName)) {
+                        const option = new Option(platformName, platformName);
+                        platformFilter.appendChild(option);
+                    }
+                }
+
+                filteredQuestions = [...allQuestions];
+                renderQuestions();
+            } catch (e) {
+                questionsContainer.innerHTML = '<div class="error">Failed to load questions. GitHub API rate limit or network error.</div>';
+                console.error('Questions load failed:', e);
+            }
+        }
+
+        // === 4. Process Individual Repo Questions ===
+        async function processRepoQuestions(repo) {
+            try {
+                const res = await fetch(`${API_BASE}/repos/${USERNAME}/${repo.name}/contents`);
+                const contents = await res.json();
+
+                // Find all directories (question folders)
+                const questionFolders = contents.filter(item => 
+                    item.type === 'dir' && /^\d+/.test(item.name)
+                );
+
+                for (const folder of questionFolders) {
+                    const question = await fetchQuestionFromFolder(repo.name, folder.name);
+                    if (question) {
+                        allQuestions.push(question);
+                    }
+                }
+            } catch (e) {
+                console.error(`Failed to process repo ${repo.name}:`, e);
+            }
+        }
+
+        // === 5. Fetch Question + Solution from Folder ===
+        async function fetchQuestionFromFolder(repoName, folderName) {
+            try {
+                const readmeRes = await fetch(`${API_BASE}/repos/${USERNAME}/${repoName}/contents/${folderName}/READ.ME`);
+                const readmeData = await readmeRes.json();
+                
+                if (readmeData.download_url) {
+                    const readmeRaw = await fetch(readmeData.download_url);
+                    const questionText = await readmeRaw.text();
+
+                    // Look for solution file (any .sql file)
+                    const contentsRes = await fetch(`${API_BASE}/repos/${USERNAME}/${repoName}/contents/${folderName}`);
+                    const contents = await contentsRes.json();
+                    const sqlFile = contents.find(file => file.name.endsWith('.sql') && file.download_url);
+
+                    let solution = '';
+                    if (sqlFile) {
+                        const solutionRaw = await fetch(sqlFile.download_url);
+                        solution = await solutionRaw.text();
+                    }
+
+                    const platform = repoName.split('-')[0];
+                    return {
+                        id: `${repoName}-${folderName}`,
+                        title: folderName,
+                        platform,
+                        repo: repoName,
+                        question: questionText,
+                        solution,
+                        tags: ['sql', platform]
+                    };
+                }
+            } catch (e) {
+                console.error(`Failed to fetch ${folderName} from ${repoName}:`, e);
+            }
+            return null;
+        }
+
+        // === 6. Render Questions ===
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const selectedPlatform = document.getElementById('platform-filter').value;
+
+            filteredQuestions = allQuestions.filter(q => 
+                (!searchTerm || q.title.toLowerCase().includes(searchTerm) || q.question.toLowerCase().includes(searchTerm)) &&
+                (!selectedPlatform || q.platform === selectedPlatform)
+            );
+
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:60px;color:#666;">No questions match your filters</div>';
+                return;
+            }
+
+            container.innerHTML = filteredQuestions.map(q => `
+                <div class="question-item">
+                    <div class="question-header" onclick="toggleSolution('${q.id}')">
+                        <div>
+                            <div class="question-title">${q.title}</div>
+                            <div class="question-tags">
+                                ${q.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <button class="solution-btn">👁️ Solution</button>
+                    </div>
+                    <div id="solution-${q.id}" class="solution-content">
+                        <details>
+                            <summary style="cursor:pointer;padding:10px;background:#e3f2fd;margin:10px;border-radius:6px;">📝 Problem Statement</summary>
+                            <div style="margin:15px 0;">${q.question.substring(0, 1000)}${q.question.length > 1000 ? '...' : ''}</div>
+                        </details>
+                        ${q.solution ? `
+                            <details>
+                                <summary style="cursor:pointer;padding:10px;background:#e8f5e8;margin:10px;border-radius:6px;">💻 SQL Solution</summary>
+                                <pre>${q.solution}</pre>
+                            </details>
+                        ` : '<p style="text-align:center;color:#666;padding:20px;">No solution file found</p>'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // === 7. Toggle Solution Visibility ===
+        function toggleSolution(questionId) {
+            const content = document.getElementById(`solution-${questionId}`);
+            content.classList.toggle('open');
+        }
+
+        // === 8. Event Listeners ===
+        document.getElementById('search-input').addEventListener('input', renderQuestions);
+        document.getElementById('platform-filter').addEventListener('change', renderQuestions);
+
+        // === 9. Initialize ===
+        window.addEventListener('load', async () => {
+            await loadProfileImage();
+            await loadRepositories();
+            await loadQuestions();
+        });
     </script>
 </body>
 </html>
