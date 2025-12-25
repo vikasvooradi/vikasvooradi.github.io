@@ -2,106 +2,475 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Vooradi | SQL Dashboard</title>
+<title>Vikas Vooradi | SQL Practice Dashboard</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
-body{
-  margin:0;
-  font-family:system-ui;
-  background:#020617;
-  color:#e5e7eb;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.container{max-width:1200px;margin:auto;padding:20px}
-.card{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background: #0a0a0a;
+  color: #e5e7eb;
+  line-height: 1.6;
 }
-.header{
-  display:flex;
-  gap:20px;
-  align-items:center;
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
 }
-.header img{width:90px;border-radius:50%}
-.controls{
-  display:flex;
-  gap:10px;
-  margin:20px 0;
-  flex-wrap:wrap;
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
-input,select,button{
-  padding:10px;
-  border-radius:10px;
-  background:#020617;
-  color:white;
-  border:1px solid #334155;
+
+.header img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #0ea5e9;
 }
-button:hover{
-  background:#1e293b;
-  cursor:pointer;
+
+.header-info h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #fff;
 }
-.badge{
-  background:#0ea5e9;
-  font-size:12px;
-  padding:4px 8px;
-  border-radius:8px;
-  font-weight:600;
+
+.header-info p {
+  color: #94a3b8;
+  font-size: 14px;
 }
-.question-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  padding:8px;
-  border-radius:8px;
-  transition:background .2s;
+
+.stats {
+  margin-left: auto;
+  display: flex;
+  gap: 24px;
 }
-.question-header:hover{
-  background:rgba(255,255,255,.03);
+
+.stat-item {
+  text-align: center;
 }
-.question-title{
-  flex:1;
-  margin-left:10px;
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0ea5e9;
 }
-pre{
-  background:#020617;
-  padding:12px;
-  border-radius:12px;
-  overflow:auto;
-  border:1px solid #334155;
+
+.stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
 }
-small{color:#94a3b8}
-.progress{
-  background:#1e293b;
-  height:4px;
-  border-radius:4px;
-  overflow:hidden;
-  margin:10px 0;
+
+/* Controls */
+.controls {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
 }
-.progress-bar{
-  background:#0ea5e9;
-  height:100%;
-  width:0;
-  transition:width .3s;
+
+.search-box {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
 }
-.status{
-  padding:10px;
-  border-radius:8px;
-  margin:10px 0;
-  background:rgba(14,165,233,.1);
-  border:1px solid rgba(14,165,233,.3);
+
+.search-box input {
+  width: 100%;
+  padding: 12px 16px 12px 40px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
 }
-.error{
-  background:rgba(239,68,68,.1);
-  border-color:rgba(239,68,68,.3);
+
+.search-box input:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
 }
-.empty{
-  text-align:center;
-  padding:40px;
-  color:#64748b;
+
+.search-box::before {
+  content: "🔍";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+}
+
+select {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+select:hover {
+  border-color: #475569;
+}
+
+select:focus {
+  border-color: #0ea5e9;
+}
+
+button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #0ea5e9;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: #0284c7;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.secondary {
+  background: #334155;
+}
+
+button.secondary:hover {
+  background: #475569;
+}
+
+/* Table */
+.table-container {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #0f172a;
+}
+
+th {
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+tr:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge.leetcode { background: #ffa116; color: #000; }
+.badge.hackerrank { background: #00ea64; color: #000; }
+.badge.codechef { background: #5b4638; color: #fff; }
+.badge.codewars { background: #b1361e; color: #fff; }
+.badge.lintcode { background: #0ea5e9; color: #fff; }
+.badge.datalemur { background: #8b5cf6; color: #fff; }
+
+.title-cell {
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.title-cell:hover {
+  color: #0ea5e9;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: #334155;
+  color: #fff;
+  transform: none;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 1000;
+  overflow: auto;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 20px 25px rgba(0,0,0,0.5);
+}
+
+.modal-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #1e293b;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  color: #fff;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.close-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #0ea5e9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+pre {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: 'Courier New', monospace;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+}
+
+.page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #334155;
+  color: #fff;
+  transform: none;
+}
+
+.page-btn.active {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+}
+
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #334155;
+  border-top-color: #0ea5e9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Info Banner */
+.info-banner {
+  background: rgba(14,165,233,0.1);
+  border: 1px solid rgba(14,165,233,0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-banner.success {
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.3);
+}
+
+.info-banner.error {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats {
+    display: none;
+  }
+  
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  table {
+    font-size: 14px;
+  }
+  
+  th, td {
+    padding: 12px 8px;
+  }
+  
+  .modal-content {
+    margin: 0;
+    max-height: 100vh;
+    border-radius: 0;
+  }
 }
 </style>
 </head>
@@ -109,155 +478,286 @@ small{color:#94a3b8}
 <body>
 <div class="container">
 
-<!-- PROFILE -->
-<div class="card header">
-  <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
-  <div>
-    <h1>Vikas Vooradi</h1>
-    <small>SQL • Data Engineering • Interview Prep</small>
+  <!-- Header -->
+  <div class="header">
+    <img src="https://github.com/vikasvooradi.png" alt="Profile">
+    <div class="header-info">
+      <h1>Vikas Vooradi</h1>
+      <p>SQL Practice Problems • Data Engineering • Interview Preparation</p>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="platformCount">0</div>
+        <div class="stat-label">Platforms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Banner -->
+  <div id="infoBanner" style="display:none"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search questions...">
+    </div>
+    <select id="platformFilter">
+      <option value="all">All Platforms</option>
+    </select>
+    <select id="sortBy">
+      <option value="title-asc">Title (A-Z)</option>
+      <option value="title-desc">Title (Z-A)</option>
+      <option value="platform-asc">Platform (A-Z)</option>
+    </select>
+    <select id="perPageSelect">
+      <option value="10">10 per page</option>
+      <option value="25" selected>25 per page</option>
+      <option value="50">50 per page</option>
+      <option value="100">100 per page</option>
+    </select>
+    <button onclick="refreshData()">🔄 Refresh</button>
+    <button class="secondary" onclick="clearAllCache()">Clear Cache</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px">#</th>
+          <th style="width: 150px">Platform</th>
+          <th>Title</th>
+          <th style="width: 120px; text-align: center">Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr>
+          <td colspan="4">
+            <div class="loading">
+              <div class="spinner"></div>
+              <div>Loading questions...</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Question Details</h2>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div>Loading content...</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- CONTROLS -->
-<div class="controls">
-  <input id="search" placeholder="Search questions…" type="text">
-  <select id="platformFilter">
-    <option value="all">All Platforms</option>
-  </select>
-  <select id="sortBy">
-    <option value="title">Sort by Title</option>
-    <option value="platform">Sort by Platform</option>
-  </select>
-  <button onclick="rebuild()">🔄 Rebuild Index</button>
-  <button onclick="clearCache()">🗑️ Clear Cache</button>
-</div>
-
-<div id="statusContainer"></div>
-<div id="progress" class="progress" style="display:none">
-  <div id="progressBar" class="progress-bar"></div>
-</div>
-<div id="questions">Loading from cache...</div>
-
-</div>
-
 <script>
-/* ================= CONFIG ================= */
+// ==================== CONFIGURATION ====================
 const CONFIG = {
-  user: "vikasvooradi",
-  platforms: ["leetcode","hackerrank","codechef","codewars","lintcode","datalemur"],
-  cacheKey: "questions_cache_v2",
-  cacheExpiry: "cache_expiry_v2",
-  cacheDuration: 24 * 60 * 60 * 1000, // 24 hours
-  maxConcurrent: 5, // Max concurrent API requests
-  batchSize: 10 // Process repos in batches
+  username: 'vikasvooradi',
+  platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
+  cacheKey: 'sql_dashboard_v3',
+  cacheExpiry: 24 * 60 * 60 * 1000, // 24 hours
+  itemsPerPage: 25,
+  maxRetries: 3,
+  retryDelay: 1000
 };
 
-const API = "https://api.github.com";
-const RAW = "https://raw.githubusercontent.com";
+// ==================== STATE ====================
+let allQuestions = [];
+let filteredQuestions = [];
+let currentPage = 1;
+let itemsPerPage = CONFIG.itemsPerPage;
 
-let QUESTIONS = [];
-let loadedContent = new Map(); // Cache for loaded SQL content
-
-/* ================= GITHUB TOKEN HELPER ================= */
-function getGithubToken() {
-  // Check session storage first (temporary)
-  let token = sessionStorage.getItem('gh_token');
-  
-  if (!token) {
-    // Check if user wants to provide token
-    const hasToken = confirm(
-      'For better rate limits, you can provide a GitHub token.\n\n' +
-      'Click OK to enter token (optional), or Cancel to continue without token.\n\n' +
-      'Token is stored only in your browser session.'
-    );
-    
-    if (hasToken) {
-      token = prompt('Enter your GitHub Personal Access Token (optional):');
-      if (token && token.trim()) {
-        sessionStorage.setItem('gh_token', token.trim());
+// ==================== GITHUB API ====================
+async function fetchWithRetry(url, retries = CONFIG.maxRetries) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        return await response.json();
       }
+      if (response.status === 404) {
+        return null; // Not found is acceptable
+      }
+      if (response.status === 403 && i < retries - 1) {
+        // Rate limit - wait and retry
+        await sleep(CONFIG.retryDelay * (i + 1));
+        continue;
+      }
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      await sleep(CONFIG.retryDelay);
     }
   }
-  
-  return token;
+  return null;
 }
 
-/* ================= API HELPER WITH RATE LIMITING ================= */
-async function fetchWithAuth(url, options = {}) {
-  const token = getGithubToken();
-  const headers = {
-    'Accept': 'application/vnd.github.v3+json',
-    ...options.headers
-  };
-  
-  if (token) {
-    headers['Authorization'] = `token ${token}`;
-  }
-  
+async function fetchContent(url) {
   try {
-    const response = await fetch(url, { ...options, headers });
-    
-    // Check rate limit
-    const remaining = response.headers.get('X-RateLimit-Remaining');
-    const resetTime = response.headers.get('X-RateLimit-Reset');
-    
-    if (remaining && parseInt(remaining) < 10) {
-      showStatus(`⚠️ Rate limit low: ${remaining} requests remaining`, 'error');
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.text();
     }
-    
-    if (!response.ok) {
-      if (response.status === 403 || response.status === 429) {
-        const resetDate = new Date(parseInt(resetTime) * 1000);
-        throw new Error(`Rate limit exceeded. Resets at ${resetDate.toLocaleTimeString()}`);
-      }
-      throw new Error(`API error: ${response.status}`);
-    }
-    
-    return response.json();
+    return null;
   } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
+    console.error('Error fetching content:', error);
+    return null;
   }
 }
 
-/* ================= PARALLEL PROCESSING ================= */
-async function parallelMap(items, asyncFn, maxConcurrent = CONFIG.maxConcurrent) {
-  const results = [];
-  const executing = [];
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ==================== DATA LOADING ====================
+async function loadAllData() {
+  showBanner('Loading questions...', 'info');
   
-  for (const item of items) {
-    const promise = asyncFn(item).then(result => {
-      executing.splice(executing.indexOf(promise), 1);
-      return result;
-    });
-    
-    results.push(promise);
-    executing.push(promise);
-    
-    if (executing.length >= maxConcurrent) {
-      await Promise.race(executing);
-    }
+  // Check cache first
+  const cached = loadFromCache();
+  if (cached) {
+    allQuestions = cached;
+    showBanner(`Loaded ${allQuestions.length} questions from cache`, 'success', 3000);
+    applyFilters();
+    return;
   }
-  
-  return Promise.all(results);
-}
 
-/* ================= CACHE MANAGEMENT ================= */
-function isCacheValid() {
-  const expiry = localStorage.getItem(CONFIG.cacheExpiry);
-  if (!expiry) return false;
-  return Date.now() < parseInt(expiry);
-}
-
-function loadFromCache() {
-  if (!isCacheValid()) return null;
-  
-  const cached = localStorage.getItem(CONFIG.cacheKey);
-  if (!cached) return null;
-  
+  // Fetch fresh data
   try {
+    const repos = await fetchWithRetry(`https://api.github.com/users/${CONFIG.username}/repos?per_page=100`);
+    
+    if (!repos || repos.length === 0) {
+      showBanner('No repositories found', 'error');
+      showEmptyState('No repositories found for this user');
+      return;
+    }
+
+    const questions = [];
+    
+    // Filter relevant repos
+    const relevantRepos = repos.filter(repo => 
+      CONFIG.platforms.some(platform => 
+        repo.name.toLowerCase().includes(platform)
+      )
+    );
+
+    if (relevantRepos.length === 0) {
+      showBanner('No SQL repositories found', 'error');
+      showEmptyState('No SQL practice repositories found');
+      return;
+    }
+
+    // Process each repo
+    for (const repo of relevantRepos) {
+      const platform = CONFIG.platforms.find(p => 
+        repo.name.toLowerCase().includes(p)
+      );
+
+      try {
+        const contents = await fetchWithRetry(
+          `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents`
+        );
+
+        if (!contents) continue;
+
+        // Get all directories
+        const dirs = contents.filter(item => item.type === 'dir');
+
+        // Check each directory for SQL files
+        for (const dir of dirs) {
+          try {
+            const files = await fetchWithRetry(
+              `https://api.github.com/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
+            );
+
+            if (!files) continue;
+
+            const sqlFile = files.find(f => 
+              f.name.toLowerCase().endsWith('.sql')
+            );
+            
+            if (sqlFile) {
+              const readmeFile = files.find(f => 
+                f.name.toLowerCase() === 'read.me' || 
+                f.name.toLowerCase() === 'readme.md'
+              );
+
+              questions.push({
+                platform: platform,
+                title: formatTitle(dir.name),
+                repo: repo.name,
+                path: dir.name,
+                sqlUrl: sqlFile.download_url,
+                readmeUrl: readmeFile ? readmeFile.download_url : null
+              });
+            }
+          } catch (error) {
+            console.error(`Error processing directory ${dir.name}:`, error);
+            // Continue with next directory
+          }
+          
+          // Small delay to avoid rate limiting
+          await sleep(50);
+        }
+      } catch (error) {
+        console.error(`Error processing repo ${repo.name}:`, error);
+        // Continue with next repo
+      }
+    }
+
+    if (questions.length === 0) {
+      showBanner('No SQL questions found', 'error');
+      showEmptyState('No SQL files found in repositories');
+      return;
+    }
+
+    allQuestions = questions;
+    saveToCache(questions);
+    showBanner(`Successfully loaded ${questions.length} questions!`, 'success', 3000);
+    applyFilters();
+
+  } catch (error) {
+    console.error('Error loading data:', error);
+    showBanner('Error loading questions. Please try again.', 'error');
+    showEmptyState('Failed to load questions. Click Refresh to try again.');
+  }
+}
+
+// ==================== CACHE MANAGEMENT ====================
+function loadFromCache() {
+  try {
+    const cached = localStorage.getItem(CONFIG.cacheKey);
+    const expiry = localStorage.getItem(CONFIG.cacheKey + '_expiry');
+    
+    if (!cached || !expiry) return null;
+    
+    if (Date.now() > parseInt(expiry)) {
+      localStorage.removeItem(CONFIG.cacheKey);
+      localStorage.removeItem(CONFIG.cacheKey + '_expiry');
+      return null;
+    }
+    
     return JSON.parse(cached);
-  } catch {
+  } catch (error) {
+    console.error('Cache load error:', error);
     return null;
   }
 }
@@ -265,253 +765,278 @@ function loadFromCache() {
 function saveToCache(data) {
   try {
     localStorage.setItem(CONFIG.cacheKey, JSON.stringify(data));
-    localStorage.setItem(CONFIG.cacheExpiry, (Date.now() + CONFIG.cacheDuration).toString());
+    localStorage.setItem(
+      CONFIG.cacheKey + '_expiry',
+      (Date.now() + CONFIG.cacheExpiry).toString()
+    );
   } catch (error) {
     console.error('Cache save error:', error);
-    showStatus('⚠️ Could not save to cache (storage full?)', 'error');
   }
 }
 
-function clearCache() {
+function clearAllCache() {
   localStorage.removeItem(CONFIG.cacheKey);
-  localStorage.removeItem(CONFIG.cacheExpiry);
-  loadedContent.clear();
-  showStatus('Cache cleared successfully');
-  QUESTIONS = [];
-  render();
+  localStorage.removeItem(CONFIG.cacheKey + '_expiry');
+  showBanner('Cache cleared successfully', 'success', 2000);
+  refreshData();
 }
 
-/* ================= STATUS & PROGRESS ================= */
-function showStatus(message, type = 'info') {
-  const container = document.getElementById('statusContainer');
-  container.innerHTML = `<div class="status ${type}">${message}</div>`;
-  setTimeout(() => container.innerHTML = '', 5000);
-}
-
-function updateProgress(current, total) {
-  const progressDiv = document.getElementById('progress');
-  const progressBar = document.getElementById('progressBar');
-  
-  if (total === 0) {
-    progressDiv.style.display = 'none';
-    return;
-  }
-  
-  progressDiv.style.display = 'block';
-  const percent = (current / total) * 100;
-  progressBar.style.width = `${percent}%`;
-  
-  if (current === total) {
-    setTimeout(() => progressDiv.style.display = 'none', 500);
-  }
-}
-
-/* ================= REBUILD INDEX (OPTIMIZED) ================= */
-async function rebuild() {
-  try {
-    document.getElementById('questions').innerHTML = '<div class="empty">🔄 Building index...</div>';
-    QUESTIONS = [];
-    localStorage.removeItem(CONFIG.cacheKey);
-    loadedContent.clear();
-
-    showStatus('🔄 Fetching repositories...');
-    
-    // Fetch all repos (with pagination if needed)
-    const repos = await fetchWithAuth(`${API}/users/${CONFIG.user}/repos?per_page=100&sort=updated`);
-    
-    // Filter relevant repos
-    const relevantRepos = repos.filter(repo => 
-      CONFIG.platforms.some(p => repo.name.toLowerCase().includes(p))
-    );
-    
-    if (relevantRepos.length === 0) {
-      showStatus('⚠️ No relevant repositories found', 'error');
-      render();
-      return;
-    }
-    
-    showStatus(`📦 Found ${relevantRepos.length} repositories. Scanning for questions...`);
-    updateProgress(0, relevantRepos.length);
-    
-    // Process repos in parallel with batching
-    let processed = 0;
-    const batchCount = Math.ceil(relevantRepos.length / CONFIG.batchSize);
-    
-    for (let i = 0; i < batchCount; i++) {
-      const batch = relevantRepos.slice(i * CONFIG.batchSize, (i + 1) * CONFIG.batchSize);
-      
-      const batchResults = await parallelMap(batch, async (repo) => {
-        try {
-          const platform = CONFIG.platforms.find(p => repo.name.toLowerCase().includes(p));
-          addPlatformToFilter(platform);
-          
-          // Fetch directory contents
-          const contents = await fetchWithAuth(`${API}/repos/${CONFIG.user}/${repo.name}/contents`);
-          
-          // Filter directories and check for SQL files in parallel
-          const dirs = contents.filter(item => item.type === 'dir');
-          
-          const questions = await parallelMap(dirs, async (dir) => {
-            try {
-              const files = await fetchWithAuth(`${API}/repos/${CONFIG.user}/${repo.name}/contents/${dir.name}`);
-              const sqlFile = files.find(f => f.name.toLowerCase().endsWith('.sql'));
-              const readmeFile = files.find(f => f.name.toUpperCase() === 'READ.ME' || f.name.toLowerCase() === 'readme.md');
-              
-              if (sqlFile) {
-                return {
-                  platform,
-                  repo: repo.name,
-                  title: dir.name.replace(/-/g, ' ').replace(/_/g, ' '),
-                  path: dir.name,
-                  sql_url: sqlFile.download_url,
-                  readme_url: readmeFile ? readmeFile.download_url : null
-                };
-              }
-            } catch (error) {
-              console.error(`Error processing directory ${dir.name}:`, error);
-            }
-            return null;
-          });
-          
-          processed++;
-          updateProgress(processed, relevantRepos.length);
-          
-          return questions.filter(q => q !== null);
-        } catch (error) {
-          console.error(`Error processing repo ${repo.name}:`, error);
-          processed++;
-          updateProgress(processed, relevantRepos.length);
-          return [];
-        }
-      });
-      
-      // Flatten results and add to QUESTIONS
-      QUESTIONS.push(...batchResults.flat());
-    }
-    
-    // Save to cache
-    saveToCache(QUESTIONS);
-    
-    showStatus(`✅ Index built successfully! Found ${QUESTIONS.length} SQL questions`);
-    render();
-    
-  } catch (error) {
-    console.error('Rebuild error:', error);
-    showStatus(`❌ Error: ${error.message}`, 'error');
-    document.getElementById('questions').innerHTML = `<div class="empty error">❌ ${error.message}</div>`;
-  }
-}
-
-/* ================= RENDERING ================= */
-function addPlatformToFilter(platform) {
-  const select = document.getElementById('platformFilter');
-  const exists = [...select.options].some(opt => opt.value === platform);
-  if (!exists) {
-    const option = document.createElement('option');
-    option.value = platform;
-    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
-    select.appendChild(option);
-  }
-}
-
-function render() {
-  const container = document.getElementById('questions');
-  const searchTerm = document.getElementById('search').value.toLowerCase();
-  const platformFilter = document.getElementById('platformFilter').value;
+// ==================== FILTERING & SORTING ====================
+function applyFilters() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const platform = document.getElementById('platformFilter').value;
   const sortBy = document.getElementById('sortBy').value;
-  
-  // Filter questions
-  let filtered = QUESTIONS.filter(q => {
-    const matchesPlatform = platformFilter === 'all' || q.platform === platformFilter;
+
+  // Filter
+  filteredQuestions = allQuestions.filter(q => {
+    const matchesPlatform = platform === 'all' || q.platform === platform;
     const matchesSearch = q.title.toLowerCase().includes(searchTerm);
     return matchesPlatform && matchesSearch;
   });
-  
-  // Sort questions
-  filtered.sort((a, b) => {
-    if (sortBy === 'platform') {
-      return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
+
+  // Sort
+  filteredQuestions.sort((a, b) => {
+    switch (sortBy) {
+      case 'title-asc':
+        return a.title.localeCompare(b.title);
+      case 'title-desc':
+        return b.title.localeCompare(a.title);
+      case 'platform-asc':
+        return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
+      default:
+        return 0;
     }
-    return a.title.localeCompare(b.title);
   });
-  
-  if (filtered.length === 0) {
-    container.innerHTML = '<div class="empty">No questions found. Try adjusting your filters or rebuild the index.</div>';
-    return;
-  }
-  
-  container.innerHTML = '';
-  
-  filtered.forEach(question => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="question-header">
-        <span class="badge">${question.platform}</span>
-        <div class="question-title">${question.title}</div>
-        <span class="toggle-icon">👁️</span>
-      </div>
-      <div class="content" style="display:none;margin-top:12px"></div>
-    `;
-    
-    card.querySelector('.question-header').onclick = () => toggleContent(card, question);
-    container.appendChild(card);
-  });
+
+  currentPage = 1;
+  updateStats();
+  renderTable();
+  renderPagination();
 }
 
-/* ================= CONTENT LOADING ================= */
-async function toggleContent(card, question) {
-  const contentDiv = card.querySelector('.content');
-  const icon = card.querySelector('.toggle-icon');
+// ==================== RENDERING ====================
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
   
-  // Toggle if already loaded
-  if (contentDiv.dataset.loaded) {
-    const isHidden = contentDiv.style.display === 'none';
-    contentDiv.style.display = isHidden ? 'block' : 'none';
-    icon.textContent = isHidden ? '👁️' : '👁️';
+  if (filteredQuestions.length === 0) {
+    showEmptyState('No questions found. Try adjusting your filters.');
     return;
   }
-  
-  // Load content
-  contentDiv.innerHTML = '<small>Loading...</small>';
-  contentDiv.style.display = 'block';
-  
-  try {
-    // Check cache first
-    const cacheKey = `${question.repo}/${question.path}`;
-    let readme = '';
-    let sql = '';
-    
-    if (loadedContent.has(cacheKey)) {
-      const cached = loadedContent.get(cacheKey);
-      readme = cached.readme;
-      sql = cached.sql;
-    } else {
-      // Fetch in parallel
-      const [readmeResponse, sqlResponse] = await Promise.all([
-        question.readme_url ? fetch(question.readme_url).then(r => r.text()).catch(() => '') : Promise.resolve(''),
-        fetch(question.sql_url).then(r => r.text())
-      ]);
-      
-      readme = readmeResponse;
-      sql = sqlResponse;
-      
-      // Cache the content
-      loadedContent.set(cacheKey, { readme, sql });
-    }
-    
-    // Render content
-    contentDiv.innerHTML = `
-      ${readme ? `<h3>Problem Description</h3><pre>${escapeHtml(readme)}</pre>` : ''}
-      <h3>SQL Solution</h3>
-      <pre>${escapeHtml(sql)}</pre>
-    `;
-    contentDiv.dataset.loaded = '1';
-    
-  } catch (error) {
-    contentDiv.innerHTML = `<small style="color:#ef4444">Error loading content: ${error.message}</small>`;
-    console.error('Content loading error:', error);
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageQuestions = filteredQuestions.slice(start, end);
+
+  tbody.innerHTML = pageQuestions.map((q, index) => `
+    <tr>
+      <td>${start + index + 1}</td>
+      <td><span class="badge ${q.platform}">${q.platform}</span></td>
+      <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
+      <td style="text-align: center">
+        <button class="action-btn" onclick="openQuestion(${start + index})">View Solution</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderPagination() {
+  const pagination = document.getElementById('pagination');
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+
+  if (totalPages <= 1) {
+    pagination.innerHTML = '';
+    return;
   }
+
+  let html = `
+    <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+      ← Previous
+    </button>
+  `;
+
+  // Page numbers logic
+  const maxVisible = 7;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+  if (endPage - startPage < maxVisible - 1) {
+    startPage = Math.max(1, endPage - maxVisible + 1);
+  }
+
+  if (startPage > 1) {
+    html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
+    if (startPage > 2) {
+      html += `<span style="color: #64748b; padding: 0 8px;">...</span>`;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    html += `
+      <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+        ${i}
+      </button>
+    `;
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      html += `<span style="color: #64748b; padding: 0 8px;">...</span>`;
+    }
+    html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
+  }
+
+  html += `
+    <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+      Next →
+    </button>
+  `;
+
+  pagination.innerHTML = html;
+}
+
+function showEmptyState(message) {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="4">
+        <div class="empty">
+          <div class="empty-icon">📭</div>
+          <div>${message}</div>
+        </div>
+      </td>
+    </tr>
+  `;
+  document.getElementById('pagination').innerHTML = '';
+}
+
+function updateStats() {
+  document.getElementById('totalCount').textContent = allQuestions.length;
+  const uniquePlatforms = new Set(allQuestions.map(q => q.platform));
+  document.getElementById('platformCount').textContent = uniquePlatforms.size;
+  
+  // Update platform filter
+  updatePlatformFilter();
+}
+
+function updatePlatformFilter() {
+  const select = document.getElementById('platformFilter');
+  const currentValue = select.value;
+  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
+  
+  select.innerHTML = '<option value="all">All Platforms</option>';
+  platforms.forEach(platform => {
+    select.innerHTML += `<option value="${platform}">${capitalize(platform)}</option>`;
+  });
+  
+  select.value = currentValue;
+}
+
+// ==================== MODAL ====================
+async function openQuestion(index) {
+  const question = filteredQuestions[index];
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+
+  modalTitle.innerHTML = `
+    <span class="badge ${question.platform}">${question.platform}</span>
+    ${escapeHtml(question.title)}
+  `;
+
+  modalBody.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Loading solution...</div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+
+  // Load content
+  try {
+    const [readme, sql] = await Promise.all([
+      question.readmeUrl ? fetchContent(question.readmeUrl) : null,
+      fetchContent(question.sqlUrl)
+    ]);
+
+    let html = '';
+
+    if (readme) {
+      html += `
+        <div class="section">
+          <h3>📝 Problem Description</h3>
+          <pre>${escapeHtml(readme)}</pre>
+        </div>
+      `;
+    }
+
+    if (sql) {
+      html += `
+        <div class="section">
+          <h3>💡 SQL Solution</h3>
+          <pre>${escapeHtml(sql)}</pre>
+        </div>
+      `;
+    }
+
+    if (!readme && !sql) {
+      html = '<div class="empty">Failed to load content</div>';
+    }
+
+    modalBody.innerHTML = html;
+
+  } catch (error) {
+    console.error('Error loading question:', error);
+    modalBody.innerHTML = '<div class="empty">Error loading content. Please try again.</div>';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+// ==================== UTILITIES ====================
+function changePage(page) {
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderTable();
+  renderPagination();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function refreshData() {
+  localStorage.removeItem(CONFIG.cacheKey);
+  localStorage.removeItem(CONFIG.cacheKey + '_expiry');
+  allQuestions = [];
+  filteredQuestions = [];
+  loadAllData();
+}
+
+function showBanner(message, type = 'info', duration = 0) {
+  const banner = document.getElementById('infoBanner');
+  banner.className = `info-banner ${type}`;
+  banner.innerHTML = message;
+  banner.style.display = 'flex';
+
+  if (duration > 0) {
+    setTimeout(() => {
+      banner.style.display = 'none';
+    }, duration);
+  }
+}
+
+function formatTitle(str) {
+  return str
+    .replace(/-/g, ' ')
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function escapeHtml(text) {
@@ -520,42 +1045,37 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-/* ================= INITIALIZATION ================= */
-async function init() {
-  // Try loading from cache
-  const cached = loadFromCache();
-  
-  if (cached && cached.length > 0) {
-    QUESTIONS = cached;
-    
-    // Populate platform filter
-    const platforms = [...new Set(QUESTIONS.map(q => q.platform))];
-    platforms.forEach(addPlatformToFilter);
-    
-    showStatus(`✅ Loaded ${QUESTIONS.length} questions from cache`);
-    render();
-  } else {
-    showStatus('No valid cache found. Please click "Rebuild Index" to fetch data.');
-    document.getElementById('questions').innerHTML = 
-      '<div class="empty">Click "🔄 Rebuild Index" to fetch your SQL questions from GitHub</div>';
-  }
-}
+// ==================== EVENT LISTENERS ====================
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('platformFilter').addEventListener('change', applyFilters);
+document.getElementById('sortBy').addEventListener('change', applyFilters);
+document.getElementById('perPageSelect').addEventListener('change', function() {
+  itemsPerPage = parseInt(this.value);
+  currentPage = 1;
+  renderTable();
+  renderPagination();
+});
 
-/* ================= EVENT LISTENERS ================= */
-document.getElementById('search').addEventListener('input', render);
-document.getElementById('platformFilter').addEventListener('change', render);
-document.getElementById('sortBy').addEventListener('change', render);
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('search').focus();
+// Close modal on outside click
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
   }
 });
 
-/* ================= START ================= */
-init();
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+  if (e.ctrlKey && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ==================== INITIALIZATION ====================
+window.addEventListener('DOMContentLoaded', loadAllData);
 </script>
 </body>
 </html>
