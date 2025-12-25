@@ -1,1 +1,19 @@
+[
+  {
+    "platform": "leetcode",
+    "title": "Combine Two Tables",
+    "repo": "leetcode-sql",
+    "path": "combine-two-tables",
+    "sqlUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-sql/main/combine-two-tables/solution.sql",
+    "readmeUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-sql/main/combine-two-tables/README.md"
+  },
+  {
+    "platform": "hackerrank",
+    "title": "Revising The Select Query",
+    "repo": "hackerrank-sql",
+    "path": "revising-the-select-query",
+    "sqlUrl": "https://raw.githubusercontent.com/vikasvooradi/hackerrank-sql/main/revising-the-select-query/solution.sql",
+    "readmeUrl": null
+  }
+]
 
