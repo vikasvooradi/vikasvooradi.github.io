@@ -327,6 +327,21 @@ tr:last-child td {
 .badge.lintcode { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
 .badge.datalemur { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
 
+.tag-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 2px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--accent-primary);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  font-family: 'JetBrains Mono', monospace;
+}
+
 .title-cell {
   color: var(--text-primary);
   font-weight: 600;
@@ -703,12 +718,13 @@ pre {
           <th style="width: 60px">#</th>
           <th style="width: 160px">Platform</th>
           <th>Title</th>
+          <th style="width: 200px">Tags</th>
           <th style="width: 160px; text-align: center">Action</th>
         </tr>
       </thead>
       <tbody id="tableBody">
         <tr>
-          <td colspan="4">
+          <td colspan="5">
             <div class="loading">
               <div class="spinner"></div>
               <div>Loading questions...</div>
@@ -847,6 +863,7 @@ function renderTable() {
       <td>${start + index + 1}</td>
       <td><span class="badge ${q.platform}">${q.platform}</span></td>
       <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
+      <td>${(q.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')}</td>
       <td style="text-align: center">
         <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
       </td>
@@ -1011,7 +1028,7 @@ function showBanner(message, type = 'info', duration = 0) {
 function showEmptyState(message) {
   document.getElementById('tableBody').innerHTML = `
     <tr>
-      <td colspan="4">
+      <td colspan="5">
         <div class="empty">
           <div class="empty-icon">🔍</div>
           <div>${escapeHtml(message)}</div>
