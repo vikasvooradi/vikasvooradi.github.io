@@ -9,9 +9,13 @@ const https = require('https');
 const fs = require('fs');
 
 const CONFIG = {
-  username: 'vikasvooradi',
+  username: process.env.GITHUB_REPOSITORY_OWNER || 'vikasvooradi',
   platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
-  outputFile: 'questions.json'
+  // Keywords that indicate SQL practice repos
+  sqlKeywords: ['sql', 'oracle', 'mysql', 'postgresql', 'postgres'],
+  outputFile: 'questions.json',
+  // More flexible matching - repos just need to contain platform name + sql keyword
+  requireSqlInName: false // Set to true if you want stricter matching
 };
 
 // GitHub API helper
@@ -88,14 +92,32 @@ async function generateQuestions() {
 
     console.log(`✓ Found ${repos.length} repositories`);
 
-    // Filter SQL-related repos
-    const relevantRepos = repos.filter(repo => 
-      CONFIG.platforms.some(platform => 
-        repo.name.toLowerCase().includes(platform)
-      ) && repo.name.toLowerCase().includes('sql')
-    );
+    // Filter SQL-related repos - check for platform names and SQL keywords (including Oracle)
+    const relevantRepos = repos.filter(repo => {
+      const repoLower = repo.name.toLowerCase();
+      const hasPlatform = CONFIG.platforms.some(platform => repoLower.includes(platform));
+      const hasSQLKeyword = CONFIG.sqlKeywords.some(keyword => repoLower.includes(keyword));
+      
+      if (CONFIG.requireSqlInName) {
+        return hasPlatform && hasSQLKeyword;
+      } else {
+        // More flexible: match if it has platform name OR SQL keyword
+        return hasPlatform || hasSQLKeyword;
+      }
+    });
 
-    console.log(`✓ Found ${relevantRepos.length} SQL practice repositories`);
+    console.log(`\n📋 All repositories found:`);
+    repos.forEach(repo => {
+      const isRelevant = relevantRepos.includes(repo);
+      const repoLower = repo.name.toLowerCase();
+      const matchReason = isRelevant ? 
+        (CONFIG.platforms.some(p => repoLower.includes(p)) ? '(platform)' : 
+         CONFIG.sqlKeywords.some(k => repoLower.includes(k)) ? '(sql/oracle)' : '') : '';
+      console.log(`  ${isRelevant ? '✓' : '○'} ${repo.name} ${matchReason}`);
+    });
+
+    console.log(`\n✓ Selected ${relevantRepos.length} SQL practice repositories:`);
+    relevantRepos.forEach(repo => console.log(`  • ${repo.name}`));
 
     if (relevantRepos.length === 0) {
       console.error('❌ No SQL repositories found');
@@ -106,11 +128,17 @@ async function generateQuestions() {
 
     // Process each repository
     for (const repo of relevantRepos) {
-      const platform = CONFIG.platforms.find(p => 
+      // Try to detect platform from repo name
+      let platform = CONFIG.platforms.find(p => 
         repo.name.toLowerCase().includes(p)
       );
+      
+      // If no platform detected, use 'sql' as default
+      if (!platform) {
+        platform = 'sql';
+      }
 
-      console.log(`\n📂 Processing ${repo.name}...`);
+      console.log(`\n📂 Processing ${repo.name} (platform: ${platform})...`);
 
       await sleep(100); // Rate limiting
 
@@ -201,4 +229,3 @@ async function generateQuestions() {
 
 // Run the script
 generateQuestions();
-
