@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Vooradi | SQL Practice</title>
+<title>Vikas Vooradi | SQL Dashboard</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
@@ -20,12 +20,30 @@ body{
   padding:16px;
   margin-bottom:14px;
 }
-img{border-radius:50%}
+.header{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+.header img{width:90px;border-radius:50%}
+.controls{
+  display:flex;
+  gap:10px;
+  margin:20px 0;
+  flex-wrap:wrap;
+}
+input,select,button{
+  padding:10px;
+  border-radius:10px;
+  background:#020617;
+  color:white;
+  border:1px solid #334155;
+}
 .badge{
+  background:#0ea5e9;
   font-size:12px;
   padding:4px 8px;
   border-radius:8px;
-  background:#0ea5e9;
 }
 .question-header{
   display:flex;
@@ -35,16 +53,10 @@ img{border-radius:50%}
 pre{
   background:#020617;
   padding:12px;
-  overflow:auto;
   border-radius:12px;
+  overflow:auto;
 }
-input,select{
-  padding:10px;
-  border-radius:10px;
-  background:#020617;
-  color:white;
-  border:1px solid #334155;
-}
+small{color:#94a3b8}
 </style>
 </head>
 
@@ -52,23 +64,24 @@ input,select{
 <div class="container">
 
 <!-- PROFILE -->
-<div class="card" style="display:flex;gap:20px;align-items:center">
-  <img src="https://github.com/vikasvooradi.png" width="100">
+<div class="card header">
+  <img src="https://github.com/vikasvooradi.png">
   <div>
     <h1>Vikas Vooradi</h1>
-    <p>SQL • Data Engineering • Interview Prep</p>
+    <small>SQL • Data Engineering • Interview Prep</small>
   </div>
 </div>
 
 <!-- CONTROLS -->
-<div style="display:flex;gap:10px;margin:20px 0">
+<div class="controls">
   <input id="search" placeholder="Search questions…">
-  <select id="platform">
+  <select id="platformFilter">
     <option value="all">All Platforms</option>
   </select>
+  <button onclick="rebuild()">🔄 Refresh Index</button>
 </div>
 
-<!-- QUESTIONS -->
+<div id="status" class="small"></div>
 <div id="questions">Loading…</div>
 
 </div>
@@ -77,88 +90,120 @@ input,select{
 /* ================= CONFIG ================= */
 const USER = "vikasvooradi";
 const PLATFORMS = ["leetcode","hackerrank","codechef","codewars","lintcode","datalemur"];
+const CACHE_KEY = "questions_cache_v1";
 /* ========================================== */
 
-const RAW = "https://raw.githubusercontent.com";
 const API = "https://api.github.com";
+const RAW = "https://raw.githubusercontent.com";
 
 let QUESTIONS = [];
 
-/* STEP 1 — GET REPOS (ONE API CALL ONLY) */
-fetch(`${API}/users/${USER}/repos?per_page=100`)
-.then(r=>r.json())
-.then(repos=>{
-  repos
-    .filter(r=>PLATFORMS.some(p=>r.name.includes(p)))
-    .forEach(repo=>{
-      const platform = PLATFORMS.find(p=>repo.name.includes(p));
-      addPlatform(platform);
-      scanRepo(repo.name,platform);
-    });
-});
-
-/* STEP 2 — SCAN REPO VIA RAW (NO LIMIT) */
-function scanRepo(repo,platform){
-  fetch(`${API}/repos/${USER}/${repo}/contents`)
-  .then(r=>r.json())
-  .then(folders=>{
-    folders.filter(f=>f.type==="dir").forEach(dir=>{
-      const base=`${RAW}/${USER}/${repo}/main/${dir.name}`;
-      Promise.all([
-        fetch(`${base}/READ.ME`).then(r=>r.ok?r.text():""),
-        fetch(`${base}`).then(r=>r.text())
-      ]).then(async ([readme])=>{
-        const files = await fetch(`${API}/repos/${USER}/${repo}/contents/${dir.name}`).then(r=>r.json());
-        const sql = files.find(f=>f.name.endsWith(".sql"));
-        if(!sql)return;
-
-        fetch(sql.download_url)
-        .then(r=>r.text())
-        .then(code=>{
-          QUESTIONS.push({platform,title:dir.name,readme,code});
-          render();
-        });
-      });
-    });
-  });
+/* ================= LOAD CACHE ================= */
+const cached = localStorage.getItem(CACHE_KEY);
+if (cached) {
+  QUESTIONS = JSON.parse(cached);
+  document.getElementById("status").textContent =
+    "Loaded from cache (" + QUESTIONS.length + " questions)";
+  render();
+} else {
+  rebuild();
 }
 
+/* ================= REBUILD INDEX ================= */
+async function rebuild() {
+  document.getElementById("questions").textContent = "Building index…";
+  QUESTIONS = [];
+  localStorage.removeItem(CACHE_KEY);
+
+  const repos = await fetch(`${API}/users/${USER}/repos?per_page=100`)
+    .then(r=>r.json());
+
+  for (const repo of repos) {
+    const platform = PLATFORMS.find(p=>repo.name.toLowerCase().includes(p));
+    if (!platform) continue;
+    addPlatform(platform);
+
+    const dirs = await fetch(`${API}/repos/${USER}/${repo.name}/contents`)
+      .then(r=>r.json());
+
+    for (const dir of dirs.filter(d=>d.type==="dir")) {
+      const files = await fetch(
+        `${API}/repos/${USER}/${repo.name}/contents/${dir.name}`
+      ).then(r=>r.json());
+
+      const sql = files.find(f=>f.name.endsWith(".sql"));
+      if (!sql) continue;
+
+      QUESTIONS.push({
+        platform,
+        repo: repo.name,
+        title: dir.name,
+        path: dir.name,
+        sql_url: sql.download_url
+      });
+    }
+  }
+
+  localStorage.setItem(CACHE_KEY, JSON.stringify(QUESTIONS));
+  document.getElementById("status").textContent =
+    "Index built (" + QUESTIONS.length + " questions)";
+  render();
+}
+
+/* ================= UI ================= */
 function addPlatform(p){
-  const sel=document.getElementById("platform");
-  if([...sel.options].some(o=>o.value===p))return;
-  sel.innerHTML+=`<option value="${p}">${p}</option>`;
+  const s=document.getElementById("platformFilter");
+  if([...s.options].some(o=>o.value===p))return;
+  s.innerHTML+=`<option value="${p}">${p}</option>`;
 }
 
 function render(){
   const q=document.getElementById("questions");
   q.innerHTML="";
+
   const s=document.getElementById("search").value.toLowerCase();
-  const p=document.getElementById("platform").value;
+  const p=document.getElementById("platformFilter").value;
 
   QUESTIONS
-  .filter(x=>(p==="all"||x.platform===p)&&x.title.includes(s))
+  .filter(x=>
+    (p==="all"||x.platform===p) &&
+    x.title.toLowerCase().includes(s)
+  )
   .forEach(x=>{
     const d=document.createElement("div");
     d.className="card";
     d.innerHTML=`
       <div class="question-header">
-        <div><span class="badge">${x.platform}</span> ${x.title}</div>
+        <div>
+          <span class="badge">${x.platform}</span>
+          ${x.title}
+        </div>
         👁️
       </div>
-      <div style="display:none">
-        <h4>Problem</h4><pre>${x.readme}</pre>
-        <h4>SQL</h4><pre>${x.code}</pre>
-      </div>`;
-    d.querySelector(".question-header").onclick=()=>{
-      const c=d.children[1];
-      c.style.display=c.style.display==="block"?"none":"block";
-    };
+      <div class="content" style="display:none">Loading…</div>
+    `;
+    d.querySelector(".question-header").onclick=()=>toggle(d,x);
     q.appendChild(d);
   });
 }
 
+async function toggle(div,q){
+  const c=div.querySelector(".content");
+  if(c.dataset.loaded){
+    c.style.display=c.style.display==="block"?"none":"block";
+    return;
+  }
+  const base=`${RAW}/${USER}/${q.repo}/main/${q.path}`;
+  const readme=await fetch(`${base}/READ.ME`).then(r=>r.text());
+  const sql=await fetch(q.sql_url).then(r=>r.text());
+
+  c.innerHTML=`<pre>${readme}</pre><pre>${sql}</pre>`;
+  c.dataset.loaded="1";
+  c.style.display="block";
+}
+
 document.getElementById("search").oninput=render;
-document.getElementById("platform").onchange=render;
+document.getElementById("platformFilter").onchange=render;
 </script>
 </body>
 </html>
