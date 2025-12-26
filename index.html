@@ -154,108 +154,41 @@ body {
   font-weight: 700;
 }
 
-.contributions-container {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+.github-link {
+  margin-left: auto;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
-.contributions-grid {
-  flex: 1;
+.github-link:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.contributions-container {
+  width: 100%;
   overflow-x: auto;
   padding: 10px 0;
 }
 
-.graph {
-  display: flex;
-  gap: 3px;
+.contributions-embed {
+  min-width: 800px;
+  width: 100%;
 }
 
-.graph-column {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.graph-cell {
-  width: 11px;
-  height: 11px;
-  background: #ebedf0;
-  border-radius: 2px;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.graph-cell:hover {
-  transform: scale(1.3);
-  z-index: 10;
-}
-
-.graph-cell[data-level="0"] { background: #ebedf0; }
-.graph-cell[data-level="1"] { background: #9be9a8; }
-.graph-cell[data-level="2"] { background: #40c463; }
-.graph-cell[data-level="3"] { background: #30a14e; }
-.graph-cell[data-level="4"] { background: #216e39; }
-
-.contributions-legend {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.legend-scale {
-  display: flex;
-  gap: 3px;
-  margin-left: 8px;
-}
-
-.legend-cell {
-  width: 11px;
-  height: 11px;
-  border-radius: 2px;
-}
-
-.month-labels {
-  display: flex;
-  gap: 3px;
-  margin-bottom: 4px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.month-label {
-  width: calc(4.33 * 14px);
-  text-align: left;
-}
-
-.day-labels {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-right: 8px;
-}
-
-.day-label {
-  height: 11px;
-  line-height: 11px;
-  visibility: hidden;
-}
-
-.day-label.visible {
-  visibility: visible;
-}
-
-.contributions-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.contributions-main {
-  display: flex;
+.contributions-embed img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: white;
 }
 
 /* Controls */
@@ -870,9 +803,13 @@ pre {
     border-radius: 0;
   }
 
-  .contributions-legend {
+  .github-contributions h2 {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .github-link {
+    margin-left: 0;
   }
 }
 
@@ -921,34 +858,16 @@ pre {
 
   <!-- GitHub Contributions -->
   <div class="github-contributions">
-    <h2>🔥 GitHub Contributions</h2>
-    <div class="contributions-wrapper">
-      <div class="month-labels" id="monthLabels"></div>
-      <div class="contributions-main">
-        <div class="day-labels">
-          <div class="day-label">Mon</div>
-          <div class="day-label"></div>
-          <div class="day-label">Wed</div>
-          <div class="day-label"></div>
-          <div class="day-label">Fri</div>
-          <div class="day-label"></div>
-          <div class="day-label">Sun</div>
-        </div>
-        <div class="contributions-grid">
-          <div class="graph" id="contributionsGraph"></div>
-        </div>
+    <h2>
+      🔥 GitHub Contributions
+      <a href="https://github.com/vikasvooradi" target="_blank" class="github-link">
+        View Profile →
+      </a>
+    </h2>
+    <div class="contributions-container">
+      <div class="contributions-embed" id="contributionsEmbed">
+        <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
       </div>
-    </div>
-    <div class="contributions-legend">
-      <span>Less</span>
-      <div class="legend-scale">
-        <div class="legend-cell" style="background: #ebedf0;"></div>
-        <div class="legend-cell" style="background: #9be9a8;"></div>
-        <div class="legend-cell" style="background: #40c463;"></div>
-        <div class="legend-cell" style="background: #30a14e;"></div>
-        <div class="legend-cell" style="background: #216e39;"></div>
-      </div>
-      <span>More</span>
     </div>
   </div>
 
@@ -959,7 +878,7 @@ pre {
   <div class="controls">
     <div class="search-section">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search by title, platform, or tags...">
+        <input type="text" id="searchInput" placeholder="Search by title, platform, or database type...">
       </div>
     </div>
     
@@ -987,7 +906,7 @@ pre {
     <!-- Advanced Filters -->
     <div class="advanced-filters" id="advancedFilters">
       <div class="filter-group">
-        <div class="filter-group-title">Filter by Tags</div>
+        <div class="filter-group-title">Filter by Database Type</div>
         <div class="tag-filters" id="tagFilters"></div>
       </div>
       
@@ -1008,7 +927,7 @@ pre {
           <th style="width: 60px">#</th>
           <th style="width: 160px">Platform</th>
           <th>Title</th>
-          <th style="width: 200px">Tags</th>
+          <th style="width: 200px">Database</th>
           <th style="width: 160px; text-align: center">Action</th>
         </tr>
       </thead>
@@ -1050,7 +969,7 @@ pre {
 // ==================== CONFIGURATION ====================
 const CONFIG = {
   dataFile: 'questions.json',
-  username: 'vikasvooradi',
+  username: 'vikasvooradi', // Automatically used for GitHub chart
   itemsPerPage: 25
 };
 
@@ -1062,123 +981,13 @@ let itemsPerPage = CONFIG.itemsPerPage;
 let activeTagFilters = new Set();
 
 // ==================== GITHUB CONTRIBUTIONS ====================
-async function loadGitHubContributions() {
-  try {
-    const username = CONFIG.username;
-    const today = new Date();
-    const oneYearAgo = new Date(today);
-    oneYearAgo.setFullYear(today.getFullYear() - 1);
-    
-    // Fetch contribution data from GitHub API
-    const query = `
-      query($userName: String!) {
-        user(login: $userName) {
-          contributionsCollection {
-            contributionCalendar {
-              weeks {
-                contributionDays {
-                  date
-                  contributionCount
-                }
-              }
-            }
-          }
-        }
-      }
-    `;
-
-    // Since we can't make authenticated GitHub GraphQL requests from client-side,
-    // we'll generate mock data based on actual GitHub pattern
-    // In production, you should use a backend API to fetch this data
-    generateContributionsChart();
-    
-  } catch (error) {
-    console.error('Error loading contributions:', error);
-    generateContributionsChart(); // Fallback to mock data
-  }
-}
-
-function generateContributionsChart() {
-  const graph = document.getElementById('contributionsGraph');
-  const monthLabels = document.getElementById('monthLabels');
-  graph.innerHTML = '';
-  monthLabels.innerHTML = '';
-  
-  const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 364); // ~52 weeks
-  
-  const weeks = [];
-  let currentWeek = [];
-  
-  // Generate 52 weeks of data
-  for (let i = 0; i < 365; i++) {
-    const date = new Date(startDate);
-    date.setDate(startDate.getDate() + i);
-    
-    // Generate contribution count (with some realistic patterns)
-    const dayOfWeek = date.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    const baseContribution = isWeekend ? Math.random() * 3 : Math.random() * 10;
-    const count = Math.floor(baseContribution);
-    
-    currentWeek.push({
-      date: date.toISOString().split('T')[0],
-      count: count,
-      level: getContributionLevel(count)
-    });
-    
-    if (date.getDay() === 6 || i === 364) {
-      weeks.push([...currentWeek]);
-      currentWeek = [];
-    }
-  }
-  
-  // Create month labels
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  let lastMonth = -1;
-  weeks.forEach((week, weekIndex) => {
-    const firstDay = new Date(week[0].date);
-    const month = firstDay.getMonth();
-    if (month !== lastMonth && weekIndex % 4 === 0) {
-      const label = document.createElement('div');
-      label.className = 'month-label';
-      label.textContent = months[month];
-      monthLabels.appendChild(label);
-      lastMonth = month;
-    } else if (weekIndex % 4 === 0) {
-      const spacer = document.createElement('div');
-      spacer.className = 'month-label';
-      monthLabels.appendChild(spacer);
-    }
-  });
-  
-  // Create contribution cells
-  weeks.forEach(week => {
-    const column = document.createElement('div');
-    column.className = 'graph-column';
-    
-    week.forEach(day => {
-      const cell = document.createElement('div');
-      cell.className = 'graph-cell';
-      cell.setAttribute('data-level', day.level);
-      cell.setAttribute('data-date', day.date);
-      cell.setAttribute('data-count', day.count);
-      cell.title = `${day.date}: ${day.count} contributions`;
-      column.appendChild(cell);
-    });
-    
-    graph.appendChild(column);
-  });
-}
-
-function getContributionLevel(count) {
-  if (count === 0) return 0;
-  if (count <= 2) return 1;
-  if (count <= 5) return 2;
-  if (count <= 8) return 3;
-  return 4;
-}
+// The chart is loaded via the popular ghchart.rshah.org service
+// It automatically fetches your real GitHub contributions
+// Color is customized to match the site theme (ffa116 = orange)
+// Alternative services you can use:
+// 1. https://ghchart.rshah.org/{color}/{username}
+// 2. https://github-readme-streak-stats.herokuapp.com/?user={username}
+// 3. https://github-readme-stats.vercel.app/api?username={username}&show_icons=true
 
 // ==================== DATA LOADING ====================
 async function loadAllData() {
@@ -1198,6 +1007,17 @@ async function loadAllData() {
       showEmptyState('No SQL questions available');
       return;
     }
+    
+    // Process and normalize tags - only keep database types
+    allQuestions = allQuestions.map(q => {
+      if (q.tags && Array.isArray(q.tags)) {
+        // Filter out 'DATABASE' tag and keep only specific database types like ORACLE, MySQL, etc.
+        q.tags = q.tags.filter(tag => 
+          tag.toUpperCase() !== 'DATABASE'
+        );
+      }
+      return q;
+    });
     
     showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
     initializeFilters();
@@ -1223,7 +1043,7 @@ function initializeFilters() {
     platformFilter.appendChild(option);
   });
   
-  // Tag filters
+  // Database type filters (only non-generic tags)
   const allTags = new Set();
   allQuestions.forEach(q => {
     if (q.tags) {
@@ -1232,13 +1052,18 @@ function initializeFilters() {
   });
   
   const tagFilters = document.getElementById('tagFilters');
-  [...allTags].sort().forEach(tag => {
-    const btn = document.createElement('button');
-    btn.className = 'tag-filter-btn';
-    btn.textContent = tag;
-    btn.onclick = () => toggleTagFilter(tag, btn);
-    tagFilters.appendChild(btn);
-  });
+  
+  if (allTags.size === 0) {
+    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
+  } else {
+    [...allTags].sort().forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'tag-filter-btn';
+      btn.textContent = tag;
+      btn.onclick = () => toggleTagFilter(tag, btn);
+      tagFilters.appendChild(btn);
+    });
+  }
 }
 
 function toggleTagFilter(tag, button) {
@@ -1306,7 +1131,7 @@ function applyFilters() {
       q.platform.toLowerCase().includes(searchTerm) ||
       (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
     
-    // Tag filter
+    // Tag filter (database type filter)
     const matchesTags = activeTagFilters.size === 0 || 
       (q.tags && [...activeTagFilters].every(filterTag => 
         q.tags.some(qTag => qTag === filterTag)
@@ -1348,17 +1173,23 @@ function renderTable() {
   const end = start + itemsPerPage;
   const pageQuestions = filteredQuestions.slice(start, end);
 
-  tbody.innerHTML = pageQuestions.map((q, index) => `
-    <tr>
-      <td>${start + index + 1}</td>
-      <td><span class="badge ${q.platform}">${q.platform}</span></td>
-      <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
-      <td>${(q.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')}</td>
-      <td style="text-align: center">
-        <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = pageQuestions.map((q, index) => {
+    const displayTags = q.tags && q.tags.length > 0 
+      ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
+      : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
+    
+    return `
+      <tr>
+        <td>${start + index + 1}</td>
+        <td><span class="badge ${q.platform}">${q.platform}</span></td>
+        <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
+        <td>${displayTags}</td>
+        <td style="text-align: center">
+          <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function renderPagination() {
@@ -1437,6 +1268,10 @@ async function openQuestion(index) {
       readmeContent = await readmeResponse.text();
     }
 
+    const tagsDisplay = question.tags && question.tags.length > 0
+      ? question.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
+      : '<span style="color: var(--text-secondary);">No specific database tags</span>';
+
     modalBody.innerHTML = `
       ${readmeContent ? `
         <div class="section">
@@ -1448,6 +1283,11 @@ async function openQuestion(index) {
       <div class="section">
         <h3>💻 SQL Solution</h3>
         <pre>${escapeHtml(sqlContent)}</pre>
+      </div>
+
+      <div class="section">
+        <h3>🏷️ Database Type</h3>
+        <p>${tagsDisplay}</p>
       </div>
 
       <div class="section">
@@ -1547,7 +1387,6 @@ document.getElementById('perPageSelect').addEventListener('change', function() {
 
 // ==================== INITIALIZATION ====================
 loadAllData();
-loadGitHubContributions();
 </script>
 
 </body>
