@@ -890,7 +890,466 @@ pre {
         <option value="50">50 per page</option>
         <option value="100">100 per page</option>
       </select>
-      <button class="secondary toggle-advanced" onclick="toggleAdvancedFilters()">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div>Loading content...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIGURATION ====================
+const CONFIG = {
+  dataFile: 'questions.json',
+  githubUsername: 'vikasvooradi',
+  itemsPerPage: 25
+};
+
+// ==================== STATE ====================
+let allQuestions = [];
+let filteredQuestions = [];
+let currentPage = 1;
+let itemsPerPage = CONFIG.itemsPerPage;
+let activeTagFilters = new Set();
+let userProfile = null;
+
+// ==================== GITHUB PROFILE LOADING ====================
+async function loadGitHubProfile() {
+  try {
+    const response = await fetch(`https://api.github.com/users/${CONFIG.githubUsername}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch GitHub profile');
+    }
+    
+    userProfile = await response.json();
+    
+    // Update profile information
+    document.getElementById('profileImage').src = userProfile.avatar_url;
+    document.getElementById('profileName').textContent = userProfile.name || CONFIG.githubUsername;
+    document.getElementById('profileBio').textContent = userProfile.bio || 'A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.';
+    
+    // Update GitHub links
+    document.getElementById('githubProfileLink').href = userProfile.html_url;
+    document.getElementById('contributionsChart').src = `https://ghchart.rshah.org/ffa116/${CONFIG.githubUsername}`;
+    
+    // Update page title
+    document.title = `${userProfile.name || CONFIG.githubUsername} - SQL Portfolio`;
+    
+  } catch (error) {
+    console.error('Error loading GitHub profile:', error);
+    // Fallback values
+    document.getElementById('profileImage').src = `https://github.com/${CONFIG.githubUsername}.png`;
+    document.getElementById('profileName').textContent = CONFIG.githubUsername;
+    document.getElementById('profileBio').textContent = 'A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.';
+    document.getElementById('githubProfileLink').href = `https://github.com/${CONFIG.githubUsername}`;
+    document.getElementById('contributionsChart').src = `https://ghchart.rshah.org/ffa116/${CONFIG.githubUsername}`;
+  }
+}
+
+// ==================== DATA LOADING ====================
+async function loadAllData() {
+  try {
+    showBanner('Loading questions...', 'info');
+    
+    const response = await fetch(CONFIG.dataFile + '?t=' + Date.now());
+    
+    if (!response.ok) {
+      throw new Error('Failed to load questions');
+    }
+    
+    allQuestions = await response.json();
+    
+    if (allQuestions.length === 0) {
+      showBanner('❌ No questions found', 'error');
+      showEmptyState('No SQL questions available');
+      return;
+    }
+    
+    // Process and normalize tags - only keep database types
+    allQuestions = allQuestions.map(q => {
+      if (q.tags && Array.isArray(q.tags)) {
+        q.tags = q.tags.filter(tag => 
+          tag.toUpperCase() !== 'DATABASE'
+        );
+      }
+      return q;
+    });
+    
+    showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
+    initializeFilters();
+    applyFilters();
+    
+  } catch (error) {
+    console.error('Error loading data:', error);
+    showBanner('❌ Error loading questions. Please refresh the page.', 'error');
+    showEmptyState('Failed to load questions. Please try again.');
+  }
+}
+
+// ==================== FILTERS ====================
+function initializeFilters() {
+  // Platform filter
+  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
+  const platformFilter = document.getElementById('platformFilter');
+  
+  platforms.forEach(platform => {
+    const option = document.createElement('option');
+    option.value = platform;
+    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
+    platformFilter.appendChild(option);
+  });
+  
+  // Database type filters
+  const allTags = new Set();
+  allQuestions.forEach(q => {
+    if (q.tags) {
+      q.tags.forEach(tag => allTags.add(tag));
+    }
+  });
+  
+  const tagFilters = document.getElementById('tagFilters');
+  
+  if (allTags.size === 0) {
+    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
+  } else {
+    [...allTags].sort().forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'tag-filter-btn';
+      btn.textContent = tag;
+      btn.onclick = () => toggleTagFilter(tag, btn);
+      tagFilters.appendChild(btn);
+    });
+  }
+}
+
+function toggleTagFilter(tag, button) {
+  if (activeTagFilters.has(tag)) {
+    activeTagFilters.delete(tag);
+    button.classList.remove('active');
+  } else {
+    activeTagFilters.add(tag);
+    button.classList.add('active');
+  }
+  updateActiveFiltersDisplay();
+  applyFilters();
+}
+
+function updateActiveFiltersDisplay() {
+  const container = document.getElementById('activeFilters');
+  
+  if (activeTagFilters.size === 0) {
+    container.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>';
+    return;
+  }
+  
+  container.innerHTML = '';
+  activeTagFilters.forEach(tag => {
+    const chip = document.createElement('div');
+    chip.className = 'active-filter-chip';
+    chip.innerHTML = `
+      ${tag}
+      <button onclick="removeTagFilter('${tag}')">&times;</button>
+    `;
+    container.appendChild(chip);
+  });
+}
+
+function removeTagFilter(tag) {
+  activeTagFilters.delete(tag);
+  const buttons = document.querySelectorAll('.tag-filter-btn');
+  buttons.forEach(btn => {
+    if (btn.textContent === tag) {
+      btn.classList.remove('active');
+    }
+  });
+  updateActiveFiltersDisplay();
+  applyFilters();
+}
+
+function toggleAdvancedFilters() {
+  const filters = document.getElementById('advancedFilters');
+  filters.classList.toggle('active');
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const platform = document.getElementById('platformFilter').value;
+  const sortBy = document.getElementById('sortBy').value;
+
+  // Filter
+  filteredQuestions = allQuestions.filter(q => {
+    const matchesPlatform = platform === 'all' || q.platform === platform;
+    
+    const matchesSearch = searchTerm === '' || 
+      q.title.toLowerCase().includes(searchTerm) ||
+      q.platform.toLowerCase().includes(searchTerm) ||
+      (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
+    
+    const matchesTags = activeTagFilters.size === 0 || 
+      (q.tags && [...activeTagFilters].every(filterTag => 
+        q.tags.some(qTag => qTag === filterTag)
+      ));
+    
+    return matchesPlatform && matchesSearch && matchesTags;
+  });
+
+  // Sort
+  filteredQuestions.sort((a, b) => {
+    switch (sortBy) {
+      case 'title-asc':
+        return a.title.localeCompare(b.title);
+      case 'title-desc':
+        return b.title.localeCompare(a.title);
+      case 'platform-asc':
+        return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
+      default:
+        return 0;
+    }
+  });
+
+  currentPage = 1;
+  updateStats();
+  renderTable();
+  renderPagination();
+}
+
+// ==================== RENDERING ====================
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  
+  if (filteredQuestions.length === 0) {
+    showEmptyState('No questions found. Try adjusting your filters.');
+    return;
+  }
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageQuestions = filteredQuestions.slice(start, end);
+
+  tbody.innerHTML = pageQuestions.map((q, index) => {
+    const displayTags = q.tags && q.tags.length > 0 
+      ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
+      : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
+    
+    return `
+      <tr>
+        <td>${start + index + 1}</td>
+        <td><span class="badge ${q.platform}">${q.platform}</span></td>
+        <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
+        <td>${displayTags}</td>
+        <td style="text-align: center">
+          <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderPagination() {
+  const pagination = document.getElementById('pagination');
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+
+  if (totalPages <= 1) {
+    pagination.innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+      ← Prev
+    </button>
+  `;
+
+  const maxVisible = 7;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+  if (endPage - startPage < maxVisible - 1) {
+    startPage = Math.max(1, endPage - maxVisible + 1);
+  }
+
+  if (startPage > 1) {
+    html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
+    if (startPage > 2) {
+      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    html += `
+      <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+        ${i}
+      </button>
+    `;
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
+    }
+    html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
+  }
+
+  html += `
+    <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+      Next →
+    </button>
+  `;
+
+  pagination.innerHTML = html;
+}
+
+// ==================== MODAL ====================
+async function openQuestion(index) {
+  const question = filteredQuestions[index];
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+
+  modal.classList.add('active');
+  modalTitle.innerHTML = `<span class="badge ${question.platform}">${question.platform}</span> ${escapeHtml(question.title)}`;
+  
+  modalBody.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading solution...</div></div>';
+
+  try {
+    const sqlResponse = await fetch(question.sqlUrl);
+    const sqlContent = await sqlResponse.text();
+
+    let readmeContent = '';
+    if (question.readmeUrl) {
+      const readmeResponse = await fetch(question.readmeUrl);
+      readmeContent = await readmeResponse.text();
+    }
+
+    const tagsDisplay = question.tags && question.tags.length > 0
+      ? question.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
+      : '<span style="color: var(--text-secondary);">No specific database tags</span>';
+
+    modalBody.innerHTML = `
+      ${readmeContent ? `
+        <div class="section">
+          <h3>📋 Problem Description</h3>
+          <pre>${escapeHtml(readmeContent)}</pre>
+        </div>
+      ` : ''}
+      
+      <div class="section">
+        <h3>💻 SQL Solution</h3>
+        <pre>${escapeHtml(sqlContent)}</pre>
+      </div>
+
+      <div class="section">
+        <h3>🏷️ Database Type</h3>
+        <p>${tagsDisplay}</p>
+      </div>
+
+      <div class="section">
+        <h3>🔗 Links</h3>
+        <p>
+          <a href="${question.sqlUrl}" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">
+            View on GitHub →
+          </a>
+        </p>
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Error loading question:', error);
+    modalBody.innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div>Failed to load question content</div></div>';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+
+// ==================== HELPERS ====================
+function changePage(page) {
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderTable();
+  renderPagination();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateStats() {
+  document.getElementById('totalCount').textContent = filteredQuestions.length;
+  const platforms = new Set(filteredQuestions.map(q => q.platform));
+  document.getElementById('platformCount').textContent = platforms.size;
+}
+
+function showBanner(message, type = 'info', duration = 0) {
+  const banner = document.getElementById('infoBanner');
+  banner.className = `info-banner ${type}`;
+  banner.textContent = message;
+  banner.style.display = 'flex';
+  
+  if (duration > 0) {
+    setTimeout(() => {
+      banner.style.display = 'none';
+    }, duration);
+  }
+}
+
+function showEmptyState(message) {
+  document.getElementById('tableBody').innerHTML = `
+    <tr>
+      <td colspan="5">
+        <div class="empty">
+          <div class="empty-icon">🔍</div>
+          <div>${escapeHtml(message)}</div>
+        </div>
+      </td>
+    </tr>
+  `;
+  document.getElementById('pagination').innerHTML = '';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function refreshData() {
+  location.reload();
+}
+
+// ==================== EVENT LISTENERS ====================
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('platformFilter').addEventListener('change', applyFilters);
+document.getElementById('sortBy').addEventListener('change', applyFilters);
+document.getElementById('perPageSelect').addEventListener('change', function() {
+  itemsPerPage = parseInt(this.value);
+  currentPage = 1;
+  applyFilters();
+});
+
+// ==================== INITIALIZATION ====================
+loadGitHubProfile();
+loadAllData();
+</script>
+
+</body>
+</html> class="secondary toggle-advanced" onclick="toggleAdvancedFilters()">
         🔧 Advanced Filters
       </button>
       <button onclick="refreshData()">🔄 Refresh</button>
