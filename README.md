@@ -50,12 +50,11 @@ I believe in consistent, daily practice. Every solution in this portfolio repres
 Through these SQL problems, I've developed expertise in:
 - Complex JOIN operations
 - Window functions and CTEs
-- Query optimization
 - Database design principles
 - Subqueries and nested queries
 - Aggregate functions
 - Data manipulation (INSERT, UPDATE, DELETE)
-- Indexing and performance tuning
+
 
 ## 📄 License
 
