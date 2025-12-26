@@ -5,7 +5,7 @@ This is my personal practice portfolio showcasing my journey through problems fr
 ### 🎯 Purpose
 
 This repository serves as:
-- 📚 A documentation of my SQL learning journey
+- 📚 A documentation of my learning journey
 - 💼 A portfolio piece for potential employers
 - 🔍 A searchable collection of my solutions
 - 📈 A tracker of my continuous improvement
