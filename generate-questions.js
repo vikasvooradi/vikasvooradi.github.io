@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Generate questions.json from GitHub repositories
- * This script scans your SQL practice repos and creates a static data file
+ * Generate questions.json with FULL CONTENT embedded
+ * This eliminates runtime GitHub API calls entirely
  */
 
 const https = require('https');
@@ -11,64 +11,111 @@ const fs = require('fs');
 const CONFIG = {
   username: process.env.GITHUB_REPOSITORY_OWNER || 'vikasvooradi',
   platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
-  // Keywords that indicate SQL practice repos
   sqlKeywords: ['sql', 'oracle', 'mysql', 'postgresql', 'postgres'],
   outputFile: 'questions.json',
-  // More flexible matching - repos just need to contain platform name + sql keyword
-  requireSqlInName: false // Set to true if you want stricter matching
+  requireSqlInName: false,
+  rateLimitDelay: 100,
+  batchSize: 10,
 };
 
-// GitHub API helper
-function fetchGitHub(path) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'api.github.com',
-      path: path,
-      method: 'GET',
-      headers: {
-        'User-Agent': 'SQL-Portfolio-Generator',
-        'Accept': 'application/vnd.github.v3+json'
+// GitHub API helper with retry logic
+async function fetchGitHub(path, retries = 3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        const options = {
+          hostname: 'api.github.com',
+          path: path,
+          method: 'GET',
+          headers: {
+            'User-Agent': 'SQL-Portfolio-Generator',
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        };
+
+        if (process.env.GITHUB_TOKEN) {
+          options.headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+        }
+
+        const req = https.request(options, (res) => {
+          let data = '';
+
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          res.on('end', () => {
+            const remaining = res.headers['x-ratelimit-remaining'];
+            const resetTime = res.headers['x-ratelimit-reset'];
+            
+            if (remaining && parseInt(remaining) < 10) {
+              console.warn(`⚠️  Low API rate limit: ${remaining} requests remaining`);
+              console.warn(`   Resets at: ${new Date(parseInt(resetTime) * 1000).toLocaleString()}`);
+            }
+
+            if (res.statusCode === 200) {
+              try {
+                resolve(JSON.parse(data));
+              } catch (e) {
+                reject(new Error('Invalid JSON response'));
+              }
+            } else if (res.statusCode === 404) {
+              resolve(null);
+            } else if (res.statusCode === 403) {
+              reject(new Error(`Rate limit exceeded. Reset at: ${new Date(parseInt(resetTime) * 1000).toLocaleString()}`));
+            } else {
+              reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+            }
+          });
+        });
+
+        req.on('error', reject);
+        req.setTimeout(10000, () => {
+          req.destroy();
+          reject(new Error('Request timeout'));
+        });
+        req.end();
+      });
+
+      return data;
+    } catch (error) {
+      if (attempt === retries) {
+        throw error;
       }
-    };
-
-    // Add token if available
-    if (process.env.GITHUB_TOKEN) {
-      options.headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+      console.warn(`   Retry ${attempt}/${retries} after error: ${error.message}`);
+      await sleep(1000 * attempt);
     }
+  }
+}
 
-    const req = https.request(options, (res) => {
+// Fetch raw content from GitHub
+async function fetchRawContent(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'SQL-Portfolio-Generator' } }, (res) => {
       let data = '';
-
+      
       res.on('data', (chunk) => {
         data += chunk;
       });
 
       res.on('end', () => {
         if (res.statusCode === 200) {
-          try {
-            resolve(JSON.parse(data));
-          } catch (e) {
-            reject(new Error('Invalid JSON response'));
-          }
-        } else if (res.statusCode === 404) {
-          resolve(null);
+          resolve(data);
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+          resolve(null);
         }
       });
+    }).on('error', (err) => {
+      console.warn(`   Failed to fetch content: ${err.message}`);
+      resolve(null);
     });
-
-    req.on('error', reject);
-    req.end();
   });
 }
 
-// Rate limiting helper
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Format directory name to title
 function formatTitle(dirName) {
   return dirName
     .replace(/[-_]/g, ' ')
@@ -76,13 +123,11 @@ function formatTitle(dirName) {
     .trim();
 }
 
-// Main function
 async function generateQuestions() {
-  console.log('🚀 Starting question generation...');
+  console.log('🚀 Starting question generation with full content embedding...');
   console.log(`📦 Fetching repositories for user: ${CONFIG.username}`);
 
   try {
-    // Fetch all repositories
     const repos = await fetchGitHub(`/users/${CONFIG.username}/repos?per_page=100`);
     
     if (!repos || repos.length === 0) {
@@ -92,7 +137,6 @@ async function generateQuestions() {
 
     console.log(`✓ Found ${repos.length} repositories`);
 
-    // Filter SQL-related repos - check for platform names and SQL keywords (including Oracle)
     const relevantRepos = repos.filter(repo => {
       const repoLower = repo.name.toLowerCase();
       const hasPlatform = CONFIG.platforms.some(platform => repoLower.includes(platform));
@@ -101,22 +145,11 @@ async function generateQuestions() {
       if (CONFIG.requireSqlInName) {
         return hasPlatform && hasSQLKeyword;
       } else {
-        // More flexible: match if it has platform name OR SQL keyword
         return hasPlatform || hasSQLKeyword;
       }
     });
 
-    console.log(`\n📋 All repositories found:`);
-    repos.forEach(repo => {
-      const isRelevant = relevantRepos.includes(repo);
-      const repoLower = repo.name.toLowerCase();
-      const matchReason = isRelevant ? 
-        (CONFIG.platforms.some(p => repoLower.includes(p)) ? '(platform)' : 
-         CONFIG.sqlKeywords.some(k => repoLower.includes(k)) ? '(sql/oracle)' : '') : '';
-      console.log(`  ${isRelevant ? '✓' : '○'} ${repo.name} ${matchReason}`);
-    });
-
-    console.log(`\n✓ Selected ${relevantRepos.length} SQL practice repositories:`);
+    console.log(`\n✓ Selected ${relevantRepos.length} SQL practice repositories`);
     relevantRepos.forEach(repo => console.log(`  • ${repo.name}`));
 
     if (relevantRepos.length === 0) {
@@ -125,25 +158,23 @@ async function generateQuestions() {
     }
 
     const questions = [];
+    let totalApiCalls = 0;
 
-    // Process each repository
     for (const repo of relevantRepos) {
-      // Try to detect platform from repo name
       let platform = CONFIG.platforms.find(p => 
         repo.name.toLowerCase().includes(p)
       );
       
-      // If no platform detected, use 'sql' as default
       if (!platform) {
         platform = 'sql';
       }
 
       console.log(`\n📂 Processing ${repo.name} (platform: ${platform})...`);
 
-      await sleep(100); // Rate limiting
+      await sleep(CONFIG.rateLimitDelay);
+      totalApiCalls++;
 
       try {
-        // Get repository contents
         const contents = await fetchGitHub(`/repos/${CONFIG.username}/${repo.name}/contents`);
         
         if (!contents) {
@@ -151,48 +182,60 @@ async function generateQuestions() {
           continue;
         }
 
-        // Get all directories
         const dirs = contents.filter(item => item.type === 'dir');
         console.log(`  ✓ Found ${dirs.length} directories`);
 
-        // Check each directory for SQL files
-        for (const dir of dirs) {
-          await sleep(100); // Rate limiting
+        for (let i = 0; i < dirs.length; i += CONFIG.batchSize) {
+          const batch = dirs.slice(i, i + CONFIG.batchSize);
+          
+          for (const dir of batch) {
+            await sleep(CONFIG.rateLimitDelay);
+            totalApiCalls++;
 
-          try {
-            const files = await fetchGitHub(
-              `/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
-            );
-
-            if (!files) continue;
-
-            // Find SQL file
-            const sqlFile = files.find(f => 
-              f.name.toLowerCase().endsWith('.sql')
-            );
-
-            if (sqlFile) {
-              // Find README file
-              const readmeFile = files.find(f => 
-                f.name.toLowerCase() === 'read.me' || 
-                f.name.toLowerCase() === 'readme.md'
+            try {
+              const files = await fetchGitHub(
+                `/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
               );
 
-              const question = {
-                platform: platform,
-                title: formatTitle(dir.name),
-                repo: repo.name,
-                path: dir.name,
-                sqlUrl: sqlFile.download_url,
-                readmeUrl: readmeFile ? readmeFile.download_url : null,
-                tags: ['DATABASE', 'ORACLE']
-              };
+              if (!files) continue;
 
-              questions.push(question);
-              console.log(`    ✓ ${question.title}`);
+              const sqlFile = files.find(f => 
+                f.name.toLowerCase().endsWith('.sql')
+              );
+
+              if (sqlFile) {
+                const readmeFile = files.find(f => 
+                  f.name.toLowerCase() === 'read.me' || 
+                  f.name.toLowerCase() === 'readme.md'
+                );
+
+                console.log(`    📥 Fetching content for ${dir.name}...`);
+                
+                const [sqlContent, readmeContent] = await Promise.all([
+                  fetchRawContent(sqlFile.download_url),
+                  readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
+                ]);
+
+                const question = {
+                  platform: platform,
+                  title: formatTitle(dir.name),
+                  repo: repo.name,
+                  path: dir.name,
+                  sqlCode: sqlContent,
+                  description: readmeContent,
+                  tags: ['ORACLE']
+                };
+
+                questions.push(question);
+                console.log(`    ✓ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
+              }
+            } catch (error) {
+              console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
             }
-          } catch (error) {
-            console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
+          }
+
+          if (i + CONFIG.batchSize < dirs.length) {
+            await sleep(500);
           }
         }
       } catch (error) {
@@ -205,22 +248,26 @@ async function generateQuestions() {
       process.exit(1);
     }
 
-    // Sort questions
     questions.sort((a, b) => {
       const platformCompare = a.platform.localeCompare(b.platform);
       if (platformCompare !== 0) return platformCompare;
       return a.title.localeCompare(b.title);
     });
 
-    // Write to file
     fs.writeFileSync(
       CONFIG.outputFile,
       JSON.stringify(questions, null, 2),
       'utf8'
     );
 
-    console.log(`\n✅ Success! Generated ${CONFIG.outputFile} with ${questions.length} questions`);
-    console.log(`📊 Platforms: ${[...new Set(questions.map(q => q.platform))].join(', ')}`);
+    const fileSize = fs.statSync(CONFIG.outputFile).size;
+    console.log(`\n✅ Success! Generated ${CONFIG.outputFile}`);
+    console.log(`📊 Statistics:`);
+    console.log(`   • Questions: ${questions.length}`);
+    console.log(`   • Platforms: ${[...new Set(questions.map(q => q.platform))].join(', ')}`);
+    console.log(`   • File size: ${(fileSize / 1024).toFixed(2)} KB`);
+    console.log(`   • Total API calls: ${totalApiCalls}`);
+    console.log(`   • Avg content per question: ${(fileSize / questions.length / 1024).toFixed(2)} KB`);
 
   } catch (error) {
     console.error('\n❌ Error:', error.message);
@@ -228,5 +275,4 @@ async function generateQuestions() {
   }
 }
 
-// Run the script
 generateQuestions();
