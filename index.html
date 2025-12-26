@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Vooradi</title>
+<title>SQL Portfolio</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -240,7 +240,7 @@ body {
 }
 
 .search-box input:focus {
-  border-color: var(--text-secondary);
+  border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
 }
 
@@ -262,7 +262,7 @@ body {
 
 select {
   padding: 16px 20px;
-  border-radius: 14px;
+  border-radius: 8px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
   color: var(--text-primary);
@@ -275,11 +275,11 @@ select {
 }
 
 select:hover {
-  border-color: var(--text-secondary);
+  border-color: var(--accent-primary);
 }
 
 select:focus {
-  border-color: var(--text-secondary);
+  border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
 }
 
@@ -315,7 +315,8 @@ button.secondary {
 
 button.secondary:hover {
   background: var(--hover-bg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(255, 161, 22, 0.1);
 }
 
 /* Advanced Filters */
@@ -360,22 +361,19 @@ button.secondary:hover {
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'JetBrains Mono', monospace;
+  box-shadow: none;
 }
 
 .tag-filter-btn:hover {
   border-color: var(--accent-primary);
   background: rgba(255, 161, 22, 0.1);
+  transform: none;
 }
 
 .tag-filter-btn.active {
   background: var(--accent-primary);
   color: white;
   border-color: var(--accent-primary);
-}
-
-.toggle-advanced {
-  padding: 12px 20px;
-  font-size: 13px;
 }
 
 .active-filters {
@@ -508,27 +506,26 @@ tr:last-child td {
 }
 
 .title-cell:hover {
-  color: var(--text-secondary);
+  color: var(--accent-primary);
 }
 
 .action-btn {
   padding: 10px 20px;
   font-size: 13px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-primary);
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--text-secondary);
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: 0 2px 8px rgba(255, 161, 22, 0.2);
 }
 
 .action-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.4);
 }
 
 /* Modal */
@@ -614,6 +611,7 @@ tr:last-child td {
   border-radius: 12px;
   transition: all 0.2s;
   flex-shrink: 0;
+  box-shadow: none;
 }
 
 .close-btn:hover {
@@ -664,8 +662,7 @@ pre {
   padding: 24px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
+  border-radius: 12px;
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
 }
 
@@ -682,20 +679,21 @@ pre {
   transition: all 0.2s;
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
+  box-shadow: none;
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
-  background: rgba(0, 240, 255, 0.05);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(255, 161, 22, 0.1);
   transform: translateY(-2px);
 }
 
 .page-btn.active {
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-color: transparent;
-  color: var(--bg-primary);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.3);
 }
 
 .page-btn:disabled {
@@ -714,8 +712,8 @@ pre {
   display: inline-block;
   width: 60px;
   height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--text-secondary);
+  border: 4px solid rgba(255, 161, 22, 0.1);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 20px;
@@ -734,8 +732,8 @@ pre {
 /* Info Banner */
 .info-banner {
   background: rgba(255, 161, 22, 0.1);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 161, 22, 0.3);
+  border-radius: 12px;
   padding: 20px 28px;
   margin-bottom: 24px;
   display: flex;
@@ -743,7 +741,6 @@ pre {
   gap: 16px;
   animation: fadeIn 0.4s ease-out;
   font-weight: 600;
-  backdrop-filter: blur(10px);
 }
 
 .info-banner.success {
@@ -771,10 +768,6 @@ pre {
   .header {
     flex-direction: column;
     text-align: center;
-  }
-  
-  .controls {
-    flex-direction: column;
   }
   
   .search-section {
@@ -839,10 +832,10 @@ pre {
 
   <!-- Header -->
   <div class="header">
-    <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
+    <img id="profileImage" src="" alt="Profile Picture">
     <div class="header-info">
-      <h1>Vikas Vooradi</h1>
-      <p>A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.</p>
+      <h1 id="profileName">Loading...</h1>
+      <p id="profileBio">Loading profile information...</p>
     </div>
     <div class="stats">
       <div class="stat-item">
@@ -860,13 +853,13 @@ pre {
   <div class="github-contributions">
     <h2>
       🔥 GitHub Contributions
-      <a href="https://github.com/vikasvooradi" target="_blank" class="github-link">
+      <a id="githubProfileLink" href="#" target="_blank" class="github-link">
         View Profile →
       </a>
     </h2>
     <div class="contributions-container">
-      <div class="contributions-embed" id="contributionsEmbed">
-        <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
+      <div class="contributions-embed">
+        <img id="contributionsChart" src="" alt="GitHub Contributions Chart" />
       </div>
     </div>
   </div>
@@ -954,440 +947,4 @@ pre {
   <div class="modal-content">
     <div class="modal-header">
       <h2 id="modalTitle">Question Details</h2>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body" id="modalBody">
-      <div class="loading">
-        <div class="spinner"></div>
-        <div>Loading content...</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-// ==================== CONFIGURATION ====================
-const CONFIG = {
-  dataFile: 'questions.json',
-  username: 'vikasvooradi', // Automatically used for GitHub chart
-  itemsPerPage: 25
-};
-
-// ==================== STATE ====================
-let allQuestions = [];
-let filteredQuestions = [];
-let currentPage = 1;
-let itemsPerPage = CONFIG.itemsPerPage;
-let activeTagFilters = new Set();
-
-// ==================== GITHUB CONTRIBUTIONS ====================
-// The chart is loaded via the popular ghchart.rshah.org service
-// It automatically fetches your real GitHub contributions
-// Color is customized to match the site theme (ffa116 = orange)
-// Alternative services you can use:
-// 1. https://ghchart.rshah.org/{color}/{username}
-// 2. https://github-readme-streak-stats.herokuapp.com/?user={username}
-// 3. https://github-readme-stats.vercel.app/api?username={username}&show_icons=true
-
-// ==================== DATA LOADING ====================
-async function loadAllData() {
-  try {
-    showBanner('Loading questions...', 'info');
-    
-    const response = await fetch(CONFIG.dataFile + '?t=' + Date.now());
-    
-    if (!response.ok) {
-      throw new Error('Failed to load questions');
-    }
-    
-    allQuestions = await response.json();
-    
-    if (allQuestions.length === 0) {
-      showBanner('❌ No questions found', 'error');
-      showEmptyState('No SQL questions available');
-      return;
-    }
-    
-    // Process and normalize tags - only keep database types
-    allQuestions = allQuestions.map(q => {
-      if (q.tags && Array.isArray(q.tags)) {
-        // Filter out 'DATABASE' tag and keep only specific database types like ORACLE, MySQL, etc.
-        q.tags = q.tags.filter(tag => 
-          tag.toUpperCase() !== 'DATABASE'
-        );
-      }
-      return q;
-    });
-    
-    showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
-    initializeFilters();
-    applyFilters();
-    
-  } catch (error) {
-    console.error('Error loading data:', error);
-    showBanner('❌ Error loading questions. Please refresh the page.', 'error');
-    showEmptyState('Failed to load questions. Please try again.');
-  }
-}
-
-// ==================== FILTERS ====================
-function initializeFilters() {
-  // Platform filter
-  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
-  const platformFilter = document.getElementById('platformFilter');
-  
-  platforms.forEach(platform => {
-    const option = document.createElement('option');
-    option.value = platform;
-    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
-    platformFilter.appendChild(option);
-  });
-  
-  // Database type filters (only non-generic tags)
-  const allTags = new Set();
-  allQuestions.forEach(q => {
-    if (q.tags) {
-      q.tags.forEach(tag => allTags.add(tag));
-    }
-  });
-  
-  const tagFilters = document.getElementById('tagFilters');
-  
-  if (allTags.size === 0) {
-    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
-  } else {
-    [...allTags].sort().forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'tag-filter-btn';
-      btn.textContent = tag;
-      btn.onclick = () => toggleTagFilter(tag, btn);
-      tagFilters.appendChild(btn);
-    });
-  }
-}
-
-function toggleTagFilter(tag, button) {
-  if (activeTagFilters.has(tag)) {
-    activeTagFilters.delete(tag);
-    button.classList.remove('active');
-  } else {
-    activeTagFilters.add(tag);
-    button.classList.add('active');
-  }
-  updateActiveFiltersDisplay();
-  applyFilters();
-}
-
-function updateActiveFiltersDisplay() {
-  const container = document.getElementById('activeFilters');
-  
-  if (activeTagFilters.size === 0) {
-    container.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>';
-    return;
-  }
-  
-  container.innerHTML = '';
-  activeTagFilters.forEach(tag => {
-    const chip = document.createElement('div');
-    chip.className = 'active-filter-chip';
-    chip.innerHTML = `
-      ${tag}
-      <button onclick="removeTagFilter('${tag}')">&times;</button>
-    `;
-    container.appendChild(chip);
-  });
-}
-
-function removeTagFilter(tag) {
-  activeTagFilters.delete(tag);
-  const buttons = document.querySelectorAll('.tag-filter-btn');
-  buttons.forEach(btn => {
-    if (btn.textContent === tag) {
-      btn.classList.remove('active');
-    }
-  });
-  updateActiveFiltersDisplay();
-  applyFilters();
-}
-
-function toggleAdvancedFilters() {
-  const filters = document.getElementById('advancedFilters');
-  filters.classList.toggle('active');
-}
-
-function applyFilters() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const platform = document.getElementById('platformFilter').value;
-  const sortBy = document.getElementById('sortBy').value;
-
-  // Filter
-  filteredQuestions = allQuestions.filter(q => {
-    // Platform filter
-    const matchesPlatform = platform === 'all' || q.platform === platform;
-    
-    // Search filter - search in title, platform, and tags
-    const matchesSearch = searchTerm === '' || 
-      q.title.toLowerCase().includes(searchTerm) ||
-      q.platform.toLowerCase().includes(searchTerm) ||
-      (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
-    
-    // Tag filter (database type filter)
-    const matchesTags = activeTagFilters.size === 0 || 
-      (q.tags && [...activeTagFilters].every(filterTag => 
-        q.tags.some(qTag => qTag === filterTag)
-      ));
-    
-    return matchesPlatform && matchesSearch && matchesTags;
-  });
-
-  // Sort
-  filteredQuestions.sort((a, b) => {
-    switch (sortBy) {
-      case 'title-asc':
-        return a.title.localeCompare(b.title);
-      case 'title-desc':
-        return b.title.localeCompare(a.title);
-      case 'platform-asc':
-        return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
-      default:
-        return 0;
-    }
-  });
-
-  currentPage = 1;
-  updateStats();
-  renderTable();
-  renderPagination();
-}
-
-// ==================== RENDERING ====================
-function renderTable() {
-  const tbody = document.getElementById('tableBody');
-  
-  if (filteredQuestions.length === 0) {
-    showEmptyState('No questions found. Try adjusting your filters.');
-    return;
-  }
-
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageQuestions = filteredQuestions.slice(start, end);
-
-  tbody.innerHTML = pageQuestions.map((q, index) => {
-    const displayTags = q.tags && q.tags.length > 0 
-      ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
-      : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
-    
-    return `
-      <tr>
-        <td>${start + index + 1}</td>
-        <td><span class="badge ${q.platform}">${q.platform}</span></td>
-        <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
-        <td>${displayTags}</td>
-        <td style="text-align: center">
-          <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function renderPagination() {
-  const pagination = document.getElementById('pagination');
-  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-
-  if (totalPages <= 1) {
-    pagination.innerHTML = '';
-    return;
-  }
-
-  let html = `
-    <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-      ← Prev
-    </button>
-  `;
-
-  const maxVisible = 7;
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-  if (endPage - startPage < maxVisible - 1) {
-    startPage = Math.max(1, endPage - maxVisible + 1);
-  }
-
-  if (startPage > 1) {
-    html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
-    if (startPage > 2) {
-      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
-    }
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    html += `
-      <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
-        ${i}
-      </button>
-    `;
-  }
-
-  if (endPage < totalPages) {
-    if (endPage < totalPages - 1) {
-      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
-    }
-    html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
-  }
-
-  html += `
-    <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-      Next →
-    </button>
-  `;
-
-  pagination.innerHTML = html;
-}
-
-// ==================== MODAL ====================
-async function openQuestion(index) {
-  const question = filteredQuestions[index];
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalBody = document.getElementById('modalBody');
-
-  modal.classList.add('active');
-  modalTitle.innerHTML = `<span class="badge ${question.platform}">${question.platform}</span> ${escapeHtml(question.title)}`;
-  
-  modalBody.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading solution...</div></div>';
-
-  try {
-    const sqlResponse = await fetch(question.sqlUrl);
-    const sqlContent = await sqlResponse.text();
-
-    let readmeContent = '';
-    if (question.readmeUrl) {
-      const readmeResponse = await fetch(question.readmeUrl);
-      readmeContent = await readmeResponse.text();
-    }
-
-    const tagsDisplay = question.tags && question.tags.length > 0
-      ? question.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
-      : '<span style="color: var(--text-secondary);">No specific database tags</span>';
-
-    modalBody.innerHTML = `
-      ${readmeContent ? `
-        <div class="section">
-          <h3>📋 Problem Description</h3>
-          <pre>${escapeHtml(readmeContent)}</pre>
-        </div>
-      ` : ''}
-      
-      <div class="section">
-        <h3>💻 SQL Solution</h3>
-        <pre>${escapeHtml(sqlContent)}</pre>
-      </div>
-
-      <div class="section">
-        <h3>🏷️ Database Type</h3>
-        <p>${tagsDisplay}</p>
-      </div>
-
-      <div class="section">
-        <h3>🔗 Links</h3>
-        <p>
-          <a href="${question.sqlUrl}" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-weight: 600;">
-            View on GitHub →
-          </a>
-        </p>
-      </div>
-    `;
-
-  } catch (error) {
-    console.error('Error loading question:', error);
-    modalBody.innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div>Failed to load question content</div></div>';
-  }
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('active');
-}
-
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-});
-
-// ==================== HELPERS ====================
-function changePage(page) {
-  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderTable();
-  renderPagination();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function updateStats() {
-  document.getElementById('totalCount').textContent = filteredQuestions.length;
-  const platforms = new Set(filteredQuestions.map(q => q.platform));
-  document.getElementById('platformCount').textContent = platforms.size;
-}
-
-function showBanner(message, type = 'info', duration = 0) {
-  const banner = document.getElementById('infoBanner');
-  banner.className = `info-banner ${type}`;
-  banner.textContent = message;
-  banner.style.display = 'flex';
-  
-  if (duration > 0) {
-    setTimeout(() => {
-      banner.style.display = 'none';
-    }, duration);
-  }
-}
-
-function showEmptyState(message) {
-  document.getElementById('tableBody').innerHTML = `
-    <tr>
-      <td colspan="5">
-        <div class="empty">
-          <div class="empty-icon">🔍</div>
-          <div>${escapeHtml(message)}</div>
-        </div>
-      </td>
-    </tr>
-  `;
-  document.getElementById('pagination').innerHTML = '';
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function refreshData() {
-  location.reload();
-}
-
-// ==================== EVENT LISTENERS ====================
-document.getElementById('searchInput').addEventListener('input', applyFilters);
-document.getElementById('platformFilter').addEventListener('change', applyFilters);
-document.getElementById('sortBy').addEventListener('change', applyFilters);
-document.getElementById('perPageSelect').addEventListener('change', function() {
-  itemsPerPage = parseInt(this.value);
-  currentPage = 1;
-  applyFilters();
-});
-
-// ==================== INITIALIZATION ====================
-loadAllData();
-</script>
-
-</body>
-</html>
+      <button
