@@ -533,7 +533,7 @@ tr:last-child td {
   box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
-/* Enhanced Modal */
+/* Enhanced Modal - Full Screen */
 .modal {
   display: none;
   position: fixed;
@@ -541,30 +541,22 @@ tr:last-child td {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10, 14, 39, 0.95);
-  backdrop-filter: blur(10px);
+  background: var(--bg-secondary);
   z-index: 1000;
-  overflow: auto;
-  padding: 40px 20px;
+  overflow: hidden;
 }
 
 .modal.active {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
   animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  max-width: 1200px;
   width: 100%;
-  max-height: calc(100vh - 80px);
+  height: 100%;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
 }
@@ -581,39 +573,39 @@ tr:last-child td {
 }
 
 .modal-header {
-  padding: 24px 32px;
+  padding: 20px 32px;
   border-bottom: 2px solid var(--border-color);
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
   background: var(--bg-card);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex-shrink: 0;
 }
 
 .modal-title-section {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .modal-header h2 {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.3;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .modal-subtitle {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -643,22 +635,41 @@ tr:last-child td {
 
 .modal-body {
   padding: 0;
-  overflow-y: auto;
+  overflow: hidden;
   flex: 1;
+  display: flex;
+  height: 100%;
+}
+
+.modal-split-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 0;
+}
+
+.modal-left-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border-right: 2px solid var(--border-color);
+}
+
+.modal-right-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-section {
   padding: 32px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.modal-section:last-child {
-  border-bottom: none;
 }
 
 .modal-section h3 {
-  font-size: 14px;
-  margin-bottom: 16px;
+  font-size: 13px;
+  margin-bottom: 20px;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -668,11 +679,11 @@ tr:last-child td {
   letter-spacing: 1px;
 }
 
-/* Problem Description Styling */
+/* Problem Description Styling - Left Panel */
 .problem-description {
-  background: var(--bg-secondary);
   line-height: 1.8;
   font-size: 15px;
+  height: 100%;
 }
 
 .problem-description pre {
@@ -682,11 +693,12 @@ tr:last-child td {
   padding: 20px;
   overflow-x: auto;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
   white-space: pre-wrap;
   word-wrap: break-word;
+  margin: 0;
 }
 
 .problem-description table {
@@ -713,13 +725,21 @@ tr:last-child td {
   margin: 12px 0;
 }
 
-/* Solution Code Styling */
+/* Solution Code Styling - Right Panel */
 .solution-section {
   background: var(--bg-card);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .code-container {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
 }
 
 .code-header {
@@ -728,9 +748,8 @@ tr:last-child td {
   align-items: center;
   padding: 12px 20px;
   background: var(--bg-secondary);
-  border: 1px solid var(--code-border);
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid var(--code-border);
+  flex-shrink: 0;
 }
 
 .code-language {
@@ -763,14 +782,14 @@ tr:last-child td {
 
 .code-block {
   background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 0 0 8px 8px;
   padding: 24px;
-  overflow-x: auto;
+  overflow: auto;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
+  flex: 1;
+  height: 100%;
 }
 
 .code-block pre {
@@ -778,56 +797,6 @@ tr:last-child td {
   padding: 0;
   background: none;
   border: none;
-}
-
-/* Tags Section */
-.tags-section {
-  background: var(--bg-secondary);
-}
-
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-item {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  background: rgba(255, 161, 22, 0.15);
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 161, 22, 0.3);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Links Section */
-.links-section {
-  background: var(--bg-card);
-}
-
-.link-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.link-item:hover {
-  background: rgba(255, 161, 22, 0.1);
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  transform: translateX(4px);
 }
 
 /* Pagination */
@@ -971,23 +940,23 @@ tr:last-child td {
   th, td {
     padding: 16px 12px;
   }
-  
-  .modal {
-    padding: 0;
+
+  .modal-split-container {
+    flex-direction: column;
   }
 
-  .modal-content {
-    max-height: 100vh;
-    border-radius: 0;
-    margin: 0;
+  .modal-left-panel {
+    border-right: none;
+    border-bottom: 2px solid var(--border-color);
+    max-height: 40%;
   }
 
-  .modal-header {
-    padding: 20px;
+  .modal-right-panel {
+    flex: 1;
   }
 
   .modal-header h2 {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .modal-section {
@@ -1457,22 +1426,33 @@ async function openQuestion(index) {
       readmeContent = await readmeResponse.text();
     }
 
-    let modalHTML = '';
+    // Create split-screen layout
+    let modalHTML = '<div class="modal-split-container">';
 
-    // Problem Description Section
+    // Left Panel - Problem Description
+    modalHTML += '<div class="modal-left-panel">';
     if (readmeContent) {
       modalHTML += `
         <div class="modal-section problem-description">
-          <h3>📋 PROBLEM DESCRIPTION</h3>
+          <h3>📋 Description</h3>
           <pre>${escapeHtml(readmeContent)}</pre>
         </div>
       `;
+    } else {
+      modalHTML += `
+        <div class="modal-section problem-description">
+          <h3>📋 Description</h3>
+          <p style="color: var(--text-secondary);">No description available for this question.</p>
+        </div>
+      `;
     }
+    modalHTML += '</div>';
 
-    // SQL Solution Section
+    // Right Panel - SQL Solution
+    modalHTML += '<div class="modal-right-panel">';
     modalHTML += `
       <div class="modal-section solution-section">
-        <h3>💻 SQL SOLUTION</h3>
+        <h3>💻 Code</h3>
         <div class="code-container">
           <div class="code-header">
             <span class="code-language">SQL</span>
@@ -1486,16 +1466,9 @@ async function openQuestion(index) {
         </div>
       </div>
     `;
+    modalHTML += '</div>';
 
-    // Links Section
-    modalHTML += `
-      <div class="modal-section links-section">
-        <h3>🔗 LINKS</h3>
-        <a href="${question.sqlUrl}" target="_blank" class="link-item">
-          View on GitHub →
-        </a>
-      </div>
-    `;
+    modalHTML += '</div>'; // Close split-container
 
     modalBody.innerHTML = modalHTML;
 
