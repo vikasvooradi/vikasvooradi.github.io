@@ -1397,7 +1397,9 @@ function renderPagination() {
   pagination.innerHTML = html;
 }
 
-// ==================== ENHANCED MODAL ====================
+// ==================== REPLACE THIS FUNCTION IN YOUR index.html ====================
+// Find the "async function openQuestion(index)" and replace it entirely with this:
+
 async function openQuestion(index) {
   const question = filteredQuestions[index];
   const modal = document.getElementById('modal');
@@ -1420,68 +1422,54 @@ async function openQuestion(index) {
   
   modalSubtitle.innerHTML = tagsDisplay;
   
-  modalBody.innerHTML = '<div class="loading"><div class="spinner"></div><div>Loading solution...</div></div>';
+  // Read embedded content (NO API CALLS!)
+  const sqlContent = question.sqlCode || 'No SQL code available';
+  const readmeContent = question.description || '';
 
-  try {
-    const sqlResponse = await fetch(question.sqlUrl);
-    const sqlContent = await sqlResponse.text();
+  // Create split-screen layout
+  let modalHTML = '<div class="modal-split-container">';
 
-    let readmeContent = '';
-    if (question.readmeUrl) {
-      const readmeResponse = await fetch(question.readmeUrl);
-      readmeContent = await readmeResponse.text();
-    }
-
-    // Create split-screen layout
-    let modalHTML = '<div class="modal-split-container">';
-
-    // Left Panel - Problem Description
-    modalHTML += '<div class="modal-left-panel">';
-    if (readmeContent) {
-      // Convert HTML-like content to readable format
-      const formattedContent = formatProblemDescription(readmeContent);
-      modalHTML += `
-        <div class="modal-section problem-description">
-          ${formattedContent}
-        </div>
-      `;
-    } else {
-      modalHTML += `
-        <div class="modal-section problem-description">
-          <p style="color: var(--text-secondary);">No description available for this question.</p>
-        </div>
-      `;
-    }
-    modalHTML += '</div>';
-
-    // Right Panel - SQL Solution
-    modalHTML += '<div class="modal-right-panel">';
+  // Left Panel - Problem Description
+  modalHTML += '<div class="modal-left-panel">';
+  if (readmeContent) {
+    const formattedContent = formatProblemDescription(readmeContent);
     modalHTML += `
-      <div class="modal-section solution-section">
-        <h3>💻 Code</h3>
-        <div class="code-container">
-          <div class="code-header">
-            <span class="code-language">SQL</span>
-            <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
-              📋 Copy Code
-            </button>
-          </div>
-          <div class="code-block">
-            <pre>${escapeHtml(sqlContent)}</pre>
-          </div>
-        </div>
+      <div class="modal-section problem-description">
+        ${formattedContent}
       </div>
     `;
-    modalHTML += '</div>';
-
-    modalHTML += '</div>'; // Close split-container
-
-    modalBody.innerHTML = modalHTML;
-
-  } catch (error) {
-    console.error('Error loading question:', error);
-    modalBody.innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div>Failed to load question content</div></div>';
+  } else {
+    modalHTML += `
+      <div class="modal-section problem-description">
+        <p style="color: var(--text-secondary);">No description available for this question.</p>
+      </div>
+    `;
   }
+  modalHTML += '</div>';
+
+  // Right Panel - SQL Solution
+  modalHTML += '<div class="modal-right-panel">';
+  modalHTML += `
+    <div class="modal-section solution-section">
+      <h3>💻 Code</h3>
+      <div class="code-container">
+        <div class="code-header">
+          <span class="code-language">SQL</span>
+          <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
+            📋 Copy Code
+          </button>
+        </div>
+        <div class="code-block">
+          <pre>${escapeHtml(sqlContent)}</pre>
+        </div>
+      </div>
+    </div>
+  `;
+  modalHTML += '</div>';
+
+  modalHTML += '</div>'; // Close split-container
+
+  modalBody.innerHTML = modalHTML;
 }
 
 function closeModal() {
