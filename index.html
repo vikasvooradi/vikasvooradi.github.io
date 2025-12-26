@@ -688,17 +688,18 @@ tr:last-child td {
 
 .problem-description pre {
   background: var(--bg-card);
-  border: 1px solid var(--code-border);
-  border-radius: 8px;
-  padding: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
   overflow-x: auto;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.9;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
   white-space: pre-wrap;
   word-wrap: break-word;
   margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .problem-description table {
@@ -740,29 +741,32 @@ tr:last-child td {
   flex-direction: column;
   flex: 1;
   height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .code-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 14px 24px;
   background: var(--bg-secondary);
-  border-bottom: 1px solid var(--code-border);
+  border-bottom: 2px solid var(--border-color);
   flex-shrink: 0;
 }
 
 .code-language {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-family: 'JetBrains Mono', monospace;
 }
 
 .copy-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 12px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -790,6 +794,8 @@ tr:last-child td {
   color: var(--text-primary);
   flex: 1;
   height: 100%;
+  border: 2px solid var(--border-color);
+  border-top: none;
 }
 
 .code-block pre {
