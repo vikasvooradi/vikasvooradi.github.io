@@ -653,20 +653,18 @@ tr:last-child td {
   overflow-y: auto;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
+  padding: 24px;
 }
 
 .modal-right-panel {
   flex: 1;
   overflow-y: auto;
   background: var(--bg-card);
-  display: flex;
-  flex-direction: column;
+  padding: 24px;
 }
 
 .modal-section {
-  padding: 24px;
-  padding-bottom: 40px;
-  padding-top: 24px;
+  padding: 0;
 }
 
 .modal-section h3 {
@@ -722,8 +720,7 @@ tr:last-child td {
 
 /* Solution Code Styling - Right Panel */
 .solution-section {
-  background: var(--bg-card);
-  flex: 1;
+  background: transparent;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -781,13 +778,11 @@ tr:last-child td {
 .code-block {
   background: var(--code-bg);
   padding: 24px;
-  overflow: auto;
+  overflow: visible;
   font-size: 14px;
   line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
-  flex: 1;
-  height: 100%;
   border: 2px solid var(--border-color);
   border-top: none;
 }
