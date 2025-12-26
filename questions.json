@@ -745,6 +745,18 @@
   },
   {
     "platform": "leetcode",
+    "title": "1907 Count Salary Categories",
+    "repo": "leetcode-oracle",
+    "path": "1907-count-salary-categories",
+    "sqlUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-oracle/main/1907-count-salary-categories/1907-count-salary-categories.sql",
+    "readmeUrl": "https://raw.githubusercontent.com/vikasvooradi/leetcode-oracle/main/1907-count-salary-categories/README.md",
+    "tags": [
+      "DATABASE",
+      "ORACLE"
+    ]
+  },
+  {
+    "platform": "leetcode",
     "title": "1965 Employees With Missing Information",
     "repo": "leetcode-oracle",
     "path": "1965-employees-with-missing-information",
