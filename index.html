@@ -743,6 +743,7 @@ tr:last-child td {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 2px solid var(--border-color);
   min-height: 200px;
+  height: 100%; /* ADDED: Fill available space */
 }
 
 .code-header {
@@ -786,11 +787,13 @@ tr:last-child td {
 .code-block {
   background: var(--code-bg);
   padding: 24px;
-  overflow: visible;
+  overflow: auto; /* ✅ FIXED: Changed from 'visible' to 'auto' for scrolling */
   font-size: 14px;
   line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
+  flex: 1; /* ✅ ADDED: Take remaining space */
+  max-height: calc(100vh - 300px); /* ✅ ADDED: Limit height to prevent overflow */
 }
 
 .code-block pre {
@@ -798,6 +801,8 @@ tr:last-child td {
   padding: 0;
   background: none;
   border: none;
+  white-space: pre; /* ✅ FIXED: Preserve code formatting and enable horizontal scroll */
+  overflow-x: auto; /* ✅ ADDED: Horizontal scroll for long lines */
 }
 
 /* Pagination */
