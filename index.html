@@ -652,6 +652,7 @@ tr:last-child td {
   display: flex;
   width: 100%;
   height: 100%;
+  min-height: 70vh; /* Ensure minimum height for split view */
   gap: 0;
 }
 
@@ -660,14 +661,18 @@ tr:last-child td {
   overflow-y: auto;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
-  padding: 16px; /* reduced from 24px */
+  padding: 16px;
+  min-height: 400px; /* Minimum height for consistency */
 }
 
 .modal-right-panel {
   flex: 1;
   overflow-y: auto;
   background: var(--bg-card);
-  padding: 16px; /* reduced from 24px */
+  padding: 16px;
+  min-height: 400px; /* Minimum height for consistency */
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-section {
@@ -739,6 +744,7 @@ tr:last-child td {
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex: 1; /* Take all available space */
 }
 
 .code-container {
@@ -747,10 +753,10 @@ tr:last-child td {
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 2px solid var(--border-color);
-  min-height: 200px;
-  height: 100%; /* ADDED: Fill available space */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid #2d2d2d; /* Darker border for code editor look */
+  min-height: 400px; /* Increased minimum height */
+  flex: 1; /* Fill available space */
 }
 
 .code-header {
@@ -758,15 +764,15 @@ tr:last-child td {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  background: var(--bg-secondary);
-  border-bottom: 2px solid var(--border-color);
+  background: #252526; /* VS Code header color */
+  border-bottom: 2px solid #2d2d2d;
   flex-shrink: 0;
 }
 
 .code-language {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: #858585; /* Muted text for dark header */
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-family: 'JetBrains Mono', monospace;
@@ -792,15 +798,15 @@ tr:last-child td {
 }
 
 .code-block {
-  background: var(--code-bg);
+  background: #1e1e1e; /* Dark editor background */
   padding: 24px;
-  overflow: auto; /* ✅ FIXED: Changed from 'visible' to 'auto' for scrolling */
+  overflow: auto;
   font-size: 14px;
   line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
-  flex: 1; /* ✅ ADDED: Take remaining space */
-  max-height: calc(100vh - 300px); /* ✅ ADDED: Limit height to prevent overflow */
+  color: #d4d4d4; /* Light text for dark background */
+  flex: 1;
+  max-height: calc(100vh - 300px);
 }
 
 .code-block pre {
@@ -808,8 +814,9 @@ tr:last-child td {
   padding: 0;
   background: none;
   border: none;
-  white-space: pre; /* ✅ FIXED: Preserve code formatting and enable horizontal scroll */
-  overflow-x: auto; /* ✅ ADDED: Horizontal scroll for long lines */
+  white-space: pre;
+  overflow-x: auto;
+  color: #d4d4d4; /* Light text */
 }
 
 /* Pagination */
