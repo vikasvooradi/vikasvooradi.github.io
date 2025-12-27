@@ -1480,11 +1480,11 @@ async function openQuestion(index) {
   const sqlContent = question.sqlCode || 'No SQL code available';
   const readmeContent = question.description || '';
 
-  // Create split-screen layout
-  let modalHTML = '<div class="modal-split-container">';
+  // Create split-screen layout with INLINE STYLES
+  let modalHTML = '<div class="modal-split-container" style="display: flex !important; flex-direction: row !important; width: 100%; height: 100%; gap: 0; min-height: 0; flex-wrap: nowrap !important;">';
 
   // Left Panel - Problem Description
-  modalHTML += '<div class="modal-left-panel">';
+  modalHTML += '<div class="modal-left-panel" style="flex: 1 1 50% !important; min-width: 0 !important; max-width: 50% !important; width: 50% !important; overflow-y: auto; background: var(--bg-secondary); border-right: 2px solid var(--border-color); padding: 16px; min-height: 0;">';
   if (readmeContent) {
     const formattedContent = formatProblemDescription(readmeContent);
     modalHTML += `
@@ -1502,7 +1502,7 @@ async function openQuestion(index) {
   modalHTML += '</div>';
 
   // Right Panel - SQL Solution
-  modalHTML += '<div class="modal-right-panel">';
+  modalHTML += '<div class="modal-right-panel" style="flex: 1 1 50% !important; min-width: 0 !important; max-width: 50% !important; width: 50% !important; overflow-y: auto; background: var(--bg-card); padding: 16px; min-height: 0; display: flex !important; flex-direction: column !important;">';
   modalHTML += `
     <div class="modal-section solution-section">
       <div class="code-container">
