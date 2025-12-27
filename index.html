@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vikas Bhaskar Vooradi</title>
+<title>Vikas Bhaskar Vooradi - DATIX SQL Portfolio</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -308,115 +308,10 @@ button:active {
   transform: translateY(0);
 }
 
-button.secondary {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  box-shadow: none;
-  border: 1px solid var(--border-color);
-}
-
-button.secondary:hover {
-  background: var(--hover-bg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Advanced Filters */
-.advanced-filters {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
-  display: none;
-}
-
-.advanced-filters.active {
-  display: block;
-}
-
-.filter-group {
-  margin-bottom: 16px;
-}
-
-.filter-group-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.tag-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-filter-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.tag-filter-btn:hover {
-  border-color: var(--accent-primary);
-  background: rgba(255, 161, 22, 0.1);
-}
-
-.tag-filter-btn.active {
-  background: var(--accent-primary);
-  color: white;
-  border-color: var(--accent-primary);
-}
-
-.toggle-advanced {
-  padding: 12px 20px;
-  font-size: 13px;
-}
-
-.active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.active-filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: rgba(255, 161, 22, 0.15);
-  color: var(--text-primary);
-  font-size: 12px;
-  font-weight: 600;
-  border: 1px solid rgba(255, 161, 22, 0.3);
-}
-
-.active-filter-chip button {
-  padding: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
-  color: white;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: none;
-}
-
-.active-filter-chip button:hover {
-  background: rgba(0, 0, 0, 0.4);
-  transform: none;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 /* Table */
@@ -425,9 +320,8 @@ button.secondary:hover {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
 table {
@@ -437,7 +331,9 @@ table {
 
 thead {
   background: var(--bg-secondary);
-  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 th {
@@ -448,361 +344,74 @@ th {
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
+  border-bottom: 2px solid var(--border-color);
 }
 
 td {
   padding: 20px 24px;
   border-bottom: 1px solid var(--border-color);
-  font-size: 15px;
+  font-size: 14px;
 }
 
-tbody tr {
-  transition: all 0.2s;
+tr {
+  transition: background-color 0.2s;
 }
 
 tbody tr:hover {
   background: var(--hover-bg);
 }
 
-tr:last-child td {
+tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* Platform Badges - Updated for DATIX */
 .badge {
   display: inline-block;
-  padding: 6px 16px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: 'JetBrains Mono', monospace;
 }
 
-.badge.leetcode { background: rgba(255, 161, 22, 0.15); color: #ffa116; border: 1px solid rgba(255, 161, 22, 0.3); }
-.badge.hackerrank { background: rgba(0, 234, 141, 0.15); color: #00ea8d; border: 1px solid rgba(0, 234, 141, 0.3); }
-.badge.codechef { background: rgba(92, 66, 42, 0.15); color: #c9a176; border: 1px solid rgba(92, 66, 42, 0.3); }
-.badge.codewars { background: rgba(176, 62, 62, 0.15); color: #f56565; border: 1px solid rgba(176, 62, 62, 0.3); }
-.badge.lintcode { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-.badge.datalemur { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
-.badge.sql { background: rgba(100, 100, 100, 0.15); color: #666; border: 1px solid rgba(100, 100, 100, 0.3); }
+.badge.datix,
+.badge.DATIX {
+  background: linear-gradient(135deg, #ffa116 0%, #ff6b00 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 161, 22, 0.25);
+}
 
+/* Tag Badges */
 .tag-badge {
   display: inline-block;
-  padding: 4px 12px;
-  margin: 2px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(255, 161, 22, 0.1);
   color: var(--text-secondary);
-  border: 1px solid rgba(255, 161, 22, 0.2);
-  font-family: 'JetBrains Mono', monospace;
+  margin-right: 6px;
+  margin-bottom: 4px;
 }
 
 .title-cell {
+  cursor: pointer;
   color: var(--text-primary);
   font-weight: 600;
-  cursor: pointer;
   transition: color 0.2s;
 }
 
 .title-cell:hover {
-  color: var(--text-secondary);
+  color: var(--accent-primary);
 }
 
 .action-btn {
   padding: 10px 20px;
   font-size: 13px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-primary);
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.action-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
-}
-
-/* Enhanced Modal - Full Screen */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-secondary);
-  z-index: 1000;
-  overflow: hidden;
-}
-
-.modal.active {
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 0.3s ease-out;
-}
-
-.modal-content {
-  background: var(--bg-card);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-@keyframes modalSlide {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-header {
-  padding: 20px 32px;
-  border-bottom: 2px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  background: var(--bg-card);
-  flex-shrink: 0;
-}
-
-.modal-title-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.modal-header h2 {
-  font-size: 20px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0;
-}
-
-.modal-subtitle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.close-btn {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 24px;
-  cursor: pointer;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.close-btn:hover {
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  transform: rotate(90deg);
-}
-
-.modal-body {
-  padding: 0;
-  overflow: hidden;
-  flex: 1;
-  display: flex;
-  height: 100%;
-}
-
-.modal-split-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  gap: 0;
-}
-
-.modal-left-panel {
-  flex: 1;
-  overflow-y: auto;
-  background: var(--bg-secondary);
-  border-right: 2px solid var(--border-color);
-  padding: 16px; /* reduced from 24px */
-}
-
-.modal-right-panel {
-  flex: 1;
-  overflow-y: auto;
-  background: var(--bg-card);
-  padding: 16px; /* reduced from 24px */
-}
-
-.modal-section {
-  padding: 0;
-}
-
-.modal-section h3 {
-  display: none;
-}
-
-/* Problem Description Styling - Left Panel */
-.problem-description {
-  line-height: 1.6;
-  font-size: 15px;
-}
-
-/* tighter vertical rhythm inside description */
-.problem-description h1,
-.problem-description h2,
-.problem-description h3,
-.problem-description h4 {
-  margin: 8px 0 4px 0;
-}
-
-.problem-description p {
-  margin: 6px 0;
-}
-
-.problem-description pre {
-  background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px;
-  overflow-x: auto;
-  font-size: 14px;
-  line-height: 1.7;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 8px 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-  min-height: 0;
-}
-
-.problem-description table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.problem-description table th,
-.problem-description table td {
-  border: 1px solid var(--border-color);
-  padding: 8px 10px;
-  text-align: left;
-}
-
-.problem-description table th {
-  background: var(--bg-secondary);
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-/* Solution Code Styling - Right Panel */
-.solution-section {
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.code-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 2px solid var(--border-color);
-  min-height: 200px;
-  height: 100%; /* ADDED: Fill available space */
-}
-
-.code-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 24px;
-  background: var(--bg-secondary);
-  border-bottom: 2px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.code-language {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.copy-btn {
-  padding: 8px 16px;
-  font-size: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
   border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 600;
-}
-
-.copy-btn:hover {
-  background: var(--accent-primary);
-  color: white;
-  border-color: var(--accent-primary);
-  transform: none;
-}
-
-.code-block {
-  background: var(--code-bg);
-  padding: 24px;
-  overflow: auto; /* ✅ FIXED: Changed from 'visible' to 'auto' for scrolling */
-  font-size: 14px;
-  line-height: 1.8;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
-  flex: 1; /* ✅ ADDED: Take remaining space */
-  max-height: calc(100vh - 300px); /* ✅ ADDED: Limit height to prevent overflow */
-}
-
-.code-block pre {
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  white-space: pre; /* ✅ FIXED: Preserve code formatting and enable horizontal scroll */
-  overflow-x: auto; /* ✅ ADDED: Horizontal scroll for long lines */
 }
 
 /* Pagination */
@@ -812,119 +421,383 @@ tr:last-child td {
   align-items: center;
   gap: 8px;
   padding: 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+  flex-wrap: wrap;
 }
 
 .page-btn {
-  min-width: 48px;
-  height: 48px;
-  padding: 12px 16px;
-  border-radius: 12px;
+  min-width: 40px;
+  padding: 10px 16px;
+  background: var(--bg-card);
   border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  box-shadow: none;
+  font-size: 13px;
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
-  background: rgba(0, 240, 255, 0.05);
-  transform: translateY(-2px);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--bg-card);
 }
 
 .page-btn.active {
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
   border-color: transparent;
-  color: var(--bg-primary);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
-.page-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  animation: fadeIn 0.3s;
 }
 
-/* Loading & Empty States */
-.loading, .empty {
-  text-align: center;
-  padding: 80px 20px;
+.modal.active {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border-radius: 16px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 40px auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  padding: 32px 40px 24px;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.modal-subtitle {
   color: var(--text-secondary);
+  font-size: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.spinner {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--text-secondary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 20px;
+.close-modal {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 24px;
+  color: var(--text-secondary);
+  padding: 0;
+  box-shadow: none;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.close-modal:hover {
+  background: var(--hover-bg);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: rotate(90deg);
 }
 
-.empty-icon {
-  font-size: 72px;
-  margin-bottom: 20px;
-  opacity: 0.5;
+.modal-body {
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Split Screen Layout */
+.modal-split-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+
+.modal-left-panel,
+.modal-right-panel {
+  padding: 32px 40px;
+  overflow-y: auto;
+}
+
+.modal-left-panel {
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.modal-right-panel {
+  background: var(--bg-card);
+}
+
+.modal-section {
+  margin-bottom: 28px;
+}
+
+.modal-section:last-child {
+  margin-bottom: 0;
+}
+
+.modal-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.problem-description {
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.problem-description h2 {
+  font-size: 20px;
+  margin: 20px 0 12px;
+  color: var(--text-primary);
+}
+
+.problem-description p {
+  margin: 12px 0;
+}
+
+.problem-description code {
+  background: var(--code-bg);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  border: 1px solid var(--border-color);
+}
+
+.problem-description pre {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Code Container */
+.code-container {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.code-language {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.copy-btn {
+  padding: 8px 16px;
+  font-size: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.code-block {
+  padding: 20px;
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.code-block pre {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* Info Banner */
 .info-banner {
-  background: rgba(255, 161, 22, 0.1);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  border-radius: 16px;
-  padding: 16px 20px; /* slightly tighter */
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  animation: fadeIn 0.4s ease-out;
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
   font-weight: 600;
-  backdrop-filter: blur(10px);
+  font-size: 14px;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 400px;
+  align-items: center;
+  gap: 12px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .info-banner.success {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  border-color: #28a745;
+  color: #28a745;
+  background: #f0fdf4;
 }
 
 .info-banner.error {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  border-color: #dc3545;
+  color: #dc3545;
+  background: #fef2f2;
 }
 
-.info-banner.info {
+.info-banner.warning {
+  border-color: var(--accent-primary);
+  color: var(--accent-secondary);
+  background: #fff7ed;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 80px 40px;
   color: var(--text-secondary);
 }
 
-/* Responsive */
-@media (max-width: 968px) {
-  .stats {
-    display: none;
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty div {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .modal-split-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-left-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
   }
   
   .header {
     flex-direction: column;
     text-align: center;
+    padding: 24px;
   }
   
-  .controls {
-    flex-direction: column;
+  .header img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .header-info h1 {
+    font-size: 28px;
+  }
+  
+  .stats {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
   }
   
   .search-section {
@@ -935,80 +808,74 @@ tr:last-child td {
     width: 100%;
   }
   
-  select, button {
+  .filter-controls {
     width: 100%;
+    justify-content: stretch;
   }
   
-  table {
-    font-size: 13px;
+  .filter-controls select,
+  .filter-controls button {
+    flex: 1;
+    min-width: 0;
   }
   
   th, td {
-    padding: 16px 12px;
+    padding: 12px 16px;
+    font-size: 13px;
   }
-
-  .modal-split-container {
-    flex-direction: column;
+  
+  .modal-content {
+    margin: 20px auto;
   }
-
-  .modal-left-panel {
-    border-right: none;
-    border-bottom: 2px solid var(--border-color);
-    max-height: 40%;
-  }
-
-  .modal-right-panel {
-    flex: 1;
-  }
-
-  .modal-header h2 {
-    font-size: 16px;
-  }
-
-  .modal-section {
+  
+  .modal-header {
     padding: 20px;
   }
-
-  .github-contributions h2 {
-    flex-direction: column;
-    align-items: flex-start;
+  
+  .modal-title {
+    font-size: 20px;
   }
-
-  .github-link {
-    margin-left: 0;
+  
+  .modal-left-panel,
+  .modal-right-panel {
+    padding: 20px;
+  }
+  
+  .code-block {
+    max-height: 400px;
   }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+/* Loading Spinner */
+.loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 161, 22, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent-primary);
+  animation: spin 0.8s linear infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
 </head>
 
 <body>
 <div class="container">
+  <!-- Info Banner -->
+  <div id="infoBanner" class="info-banner"></div>
 
   <!-- Header -->
   <div class="header">
-    <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
+    <img src="https://avatars.githubusercontent.com/u/127088402?v=4" alt="Profile">
     <div class="header-info">
       <h1>Vikas Bhaskar Vooradi</h1>
-      <p>A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.</p>
+      <p>📊 Data Analyst & SQL Developer | DATIX Portfolio</p>
     </div>
     <div class="stats">
       <div class="stat-item">
@@ -1016,8 +883,8 @@ tr:last-child td {
         <div class="stat-label">Questions</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" id="platformCount">0</div>
-        <div class="stat-label">Platforms</div>
+        <div class="stat-number" id="platformCount">1</div>
+        <div class="stat-label">Platform</div>
       </div>
     </div>
   </div>
@@ -1025,63 +892,43 @@ tr:last-child td {
   <!-- GitHub Contributions -->
   <div class="github-contributions">
     <h2>
-      🔥 GitHub Contributions
-      <a href="https://github.com/vikasvooradi" target="_blank" class="github-link">
-        View Profile →
-      </a>
+      <span>📈 GitHub Activity</span>
+      <a href="https://github.com/vikasvooradi" target="_blank" class="github-link">View Profile →</a>
     </h2>
     <div class="contributions-container">
-      <div class="contributions-embed" id="contributionsEmbed">
-        <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
+      <div class="contributions-embed">
+        <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions">
       </div>
     </div>
   </div>
-
-  <!-- Info Banner -->
-  <div id="infoBanner" style="display:none"></div>
 
   <!-- Controls -->
   <div class="controls">
     <div class="search-section">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search by title, platform, or database type...">
+        <input type="text" id="searchInput" placeholder="Search questions by title...">
       </div>
     </div>
     
     <div class="filter-controls">
       <select id="platformFilter">
         <option value="all">All Platforms</option>
+        <option value="DATIX">DATIX</option>
       </select>
-      <select id="sortBy">
-        <option value="title-asc">Title (A-Z)</option>
-        <option value="title-desc">Title (Z-A)</option>
-        <option value="platform-asc">Platform (A-Z)</option>
-      </select>
-      <select id="perPageSelect">
-        <option value="10">10 per page</option>
-        <option value="25" selected>25 per page</option>
-        <option value="50">50 per page</option>
-        <option value="100">100 per page</option>
-      </select>
-      <button class="secondary toggle-advanced" onclick="toggleAdvancedFilters()">
-        🔧 Advanced Filters
-      </button>
-      <button onclick="refreshData()">🔄 Refresh</button>
-    </div>
-
-    <!-- Advanced Filters -->
-    <div class="advanced-filters" id="advancedFilters">
-      <div class="filter-group">
-        <div class="filter-group-title">Filter by Database Type</div>
-        <div class="tag-filters" id="tagFilters"></div>
-      </div>
       
-      <div class="filter-group">
-        <div class="filter-group-title">Active Filters</div>
-        <div class="active-filters" id="activeFilters">
-          <span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>
-        </div>
-      </div>
+      <select id="sortBy">
+        <option value="title-asc">Title (A → Z)</option>
+        <option value="title-desc">Title (Z → A)</option>
+      </select>
+      
+      <select id="perPageSelect">
+        <option value="25">Show 25</option>
+        <option value="50">Show 50</option>
+        <option value="100">Show 100</option>
+        <option value="9999">Show All</option>
+      </select>
+      
+      <button onclick="refreshData()">🔄 Refresh</button>
     </div>
   </div>
 
@@ -1091,204 +938,110 @@ tr:last-child td {
       <thead>
         <tr>
           <th style="width: 60px">#</th>
-          <th style="width: 160px">Platform</th>
-          <th>Title</th>
-          <th style="width: 200px">Database</th>
-          <th style="width: 160px; text-align: center">Action</th>
+          <th style="width: 120px">PLATFORM</th>
+          <th>TITLE</th>
+          <th style="width: 200px">DATABASE</th>
+          <th style="width: 120px; text-align: center">ACTION</th>
         </tr>
       </thead>
       <tbody id="tableBody">
         <tr>
           <td colspan="5">
-            <div class="loading">
-              <div class="spinner"></div>
+            <div class="empty">
+              <div class="empty-icon"><span class="loader"></span></div>
               <div>Loading questions...</div>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+    
+    <div id="pagination" class="pagination"></div>
   </div>
-
-  <!-- Pagination -->
-  <div class="pagination" id="pagination"></div>
-
 </div>
 
-<!-- Enhanced Modal -->
-<div class="modal" id="modal">
+<!-- Modal -->
+<div id="modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <div class="modal-title-section">
-        <h2 id="modalTitle">Question Details</h2>
-        <div class="modal-subtitle" id="modalSubtitle"></div>
-      </div>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body" id="modalBody">
-      <div class="loading">
-        <div class="spinner"></div>
-        <div>Loading content...</div>
-      </div>
-    </div>
+    <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
 
 <script>
-// ==================== CONFIGURATION ====================
-const CONFIG = {
-  dataFile: 'questions.json',
-  username: 'vikasvooradi',
-  itemsPerPage: 25
-};
-
 // ==================== STATE ====================
 let allQuestions = [];
 let filteredQuestions = [];
 let currentPage = 1;
-let itemsPerPage = CONFIG.itemsPerPage;
-let activeTagFilters = new Set();
+let itemsPerPage = 25;
 
 // ==================== DATA LOADING ====================
 async function loadAllData() {
   try {
-    showBanner('Loading questions...', 'info');
-    
-    const response = await fetch(CONFIG.dataFile + '?t=' + Date.now());
+    const response = await fetch('questions.json');
     
     if (!response.ok) {
-      throw new Error('Failed to load questions');
+      throw new Error(`Failed to load data: ${response.status}`);
     }
     
     allQuestions = await response.json();
     
-    if (allQuestions.length === 0) {
-      showBanner('❌ No questions found', 'error');
-      showEmptyState('No SQL questions available');
+    if (!allQuestions || allQuestions.length === 0) {
+      showEmptyState('No questions available. Please run the data generation script.');
       return;
     }
     
-    allQuestions = allQuestions.map(q => {
-      if (q.tags && Array.isArray(q.tags)) {
-        q.tags = q.tags.filter(tag => 
-          tag.toUpperCase() !== 'DATABASE'
-        );
-      }
-      return q;
-    });
+    // Ensure all questions have DATIX as platform
+    allQuestions = allQuestions.map(q => ({
+      ...q,
+      platform: 'DATIX'
+    }));
     
-    showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
+    console.log(`✅ Loaded ${allQuestions.length} questions from DATIX`);
+    
+    filteredQuestions = [...allQuestions];
     initializeFilters();
-    applyFilters();
+    updateStats();
+    renderTable();
+    renderPagination();
     
   } catch (error) {
     console.error('Error loading data:', error);
-    showBanner('❌ Error loading questions. Please refresh the page.', 'error');
-    showEmptyState('Failed to load questions. Please try again.');
+    showBanner('Failed to load questions. Please check the console for details.', 'error');
+    showEmptyState('Failed to load questions. Please ensure questions.json exists and is valid.');
   }
 }
 
-// ==================== FILTERS ====================
 function initializeFilters() {
-  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
   const platformFilter = document.getElementById('platformFilter');
   
-  platforms.forEach(platform => {
-    const option = document.createElement('option');
-    option.value = platform;
-    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
-    platformFilter.appendChild(option);
-  });
-  
-  const allTags = new Set();
-  allQuestions.forEach(q => {
-    if (q.tags) {
-      q.tags.forEach(tag => allTags.add(tag));
-    }
-  });
-  
-  const tagFilters = document.getElementById('tagFilters');
-  
-  if (allTags.size === 0) {
-    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
-  } else {
-    [...allTags].sort().forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'tag-filter-btn';
-      btn.textContent = tag;
-      btn.onclick = () => toggleTagFilter(tag, btn);
-      tagFilters.appendChild(btn);
-    });
-  }
+  // Since we only have DATIX now, simplify the filter
+  platformFilter.innerHTML = `
+    <option value="all">All Platforms</option>
+    <option value="DATIX">DATIX</option>
+  `;
 }
 
-function toggleTagFilter(tag, button) {
-  if (activeTagFilters.has(tag)) {
-    activeTagFilters.delete(tag);
-    button.classList.remove('active');
-  } else {
-    activeTagFilters.add(tag);
-    button.classList.add('active');
-  }
-  updateActiveFiltersDisplay();
-  applyFilters();
-}
-
-function updateActiveFiltersDisplay() {
-  const container = document.getElementById('activeFilters');
-  
-  if (activeTagFilters.size === 0) {
-    container.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>';
-    return;
-  }
-  
-  container.innerHTML = '';
-  activeTagFilters.forEach(tag => {
-    const chip = document.createElement('div');
-    chip.className = 'active-filter-chip';
-    chip.innerHTML = `
-      ${tag}
-      <button onclick="removeTagFilter('${tag}')">&times;</button>
-    `;
-    container.appendChild(chip);
-  });
-}
-
-function removeTagFilter(tag) {
-  activeTagFilters.delete(tag);
-  const buttons = document.querySelectorAll('.tag-filter-btn');
-  buttons.forEach(btn => {
-    if (btn.textContent === tag) {
-      btn.classList.remove('active');
-    }
-  });
-  updateActiveFiltersDisplay();
-  applyFilters();
-}
-
-function toggleAdvancedFilters() {
-  const filters = document.getElementById('advancedFilters');
-  filters.classList.toggle('active');
-}
-
+// ==================== FILTERING ====================
 function applyFilters() {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const platform = document.getElementById('platformFilter').value;
+  const platformFilter = document.getElementById('platformFilter').value;
   const sortBy = document.getElementById('sortBy').value;
 
   filteredQuestions = allQuestions.filter(q => {
-    const matchesPlatform = platform === 'all' || q.platform === platform;
+    const matchesPlatform = platformFilter === 'all' || q.platform === platformFilter;
+    const matchesSearch = q.title.toLowerCase().includes(searchTerm);
     
-    const matchesSearch = searchTerm === '' || 
-      q.title.toLowerCase().includes(searchTerm) ||
-      q.platform.toLowerCase().includes(searchTerm) ||
-      (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
-    
-    const matchesTags = activeTagFilters.size === 0 || 
-      (q.tags && [...activeTagFilters].every(filterTag => 
-        q.tags.some(qTag => qTag === filterTag)
-      ));
-    
+    const matchesTags = !searchTerm || (
+      q.tags && q.tags.some(tag => 
+        tag.toLowerCase().includes(searchTerm)
+      )
+    );
+  
     return matchesPlatform && matchesSearch && matchesTags;
   });
 
@@ -1298,8 +1051,6 @@ function applyFilters() {
         return a.title.localeCompare(b.title);
       case 'title-desc':
         return b.title.localeCompare(a.title);
-      case 'platform-asc':
-        return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
       default:
         return 0;
     }
@@ -1397,9 +1148,7 @@ function renderPagination() {
   pagination.innerHTML = html;
 }
 
-// ==================== REPLACE THIS FUNCTION IN YOUR index.html ====================
-// Find the "async function openQuestion(index)" and replace it entirely with this:
-
+// ==================== MODAL ====================
 async function openQuestion(index) {
   const question = filteredQuestions[index];
   const modal = document.getElementById('modal');
@@ -1528,8 +1277,8 @@ function changePage(page) {
 
 function updateStats() {
   document.getElementById('totalCount').textContent = filteredQuestions.length;
-  const platforms = new Set(filteredQuestions.map(q => q.platform));
-  document.getElementById('platformCount').textContent = platforms.size;
+  // Always 1 platform (DATIX)
+  document.getElementById('platformCount').textContent = '1';
 }
 
 function showBanner(message, type = 'info', duration = 0) {
