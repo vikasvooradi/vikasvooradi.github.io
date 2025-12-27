@@ -646,6 +646,7 @@ tr:last-child td {
   flex: 1;
   display: flex;
   height: 100%;
+  min-height: 0; /* CRITICAL FIX: Prevents flex item from exceeding parent */
 }
 
 .modal-split-container {
@@ -653,6 +654,7 @@ tr:last-child td {
   width: 100%;
   height: 100%;
   gap: 0;
+  min-height: 0; /* CRITICAL FIX: Prevents flex item from exceeding parent */
 }
 
 .modal-left-panel {
@@ -660,14 +662,18 @@ tr:last-child td {
   overflow-y: auto;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
-  padding: 16px; /* reduced from 24px */
+  padding: 16px;
+  min-height: 0; /* CRITICAL FIX: Allows proper scrolling */
 }
 
 .modal-right-panel {
   flex: 1;
   overflow-y: auto;
   background: var(--bg-card);
-  padding: 16px; /* reduced from 24px */
+  padding: 16px;
+  min-height: 0; /* CRITICAL FIX: Allows proper scrolling */
+  display: flex; /* ADDED: Make this a flex container */
+  flex-direction: column; /* ADDED: Stack children vertically */
 }
 
 .modal-section {
@@ -684,7 +690,6 @@ tr:last-child td {
   font-size: 15px;
 }
 
-/* tighter vertical rhythm inside description */
 .problem-description h1,
 .problem-description h2,
 .problem-description h3,
@@ -738,7 +743,8 @@ tr:last-child td {
   background: transparent;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100%; /* ADDED: Fill parent height */
+  min-height: 0; /* CRITICAL FIX: Allows proper flex behavior */
 }
 
 .code-container {
@@ -749,8 +755,8 @@ tr:last-child td {
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 2px solid var(--border-color);
-  min-height: 200px;
-  height: 100%; /* ADDED: Fill available space */
+  flex: 1; /* ADDED: Take available space */
+  min-height: 0; /* CRITICAL FIX: Allows proper flex behavior */
 }
 
 .code-header {
@@ -794,13 +800,13 @@ tr:last-child td {
 .code-block {
   background: var(--code-bg);
   padding: 24px;
-  overflow: auto; /* ✅ FIXED: Changed from 'visible' to 'auto' for scrolling */
+  overflow: auto;
   font-size: 14px;
   line-height: 1.8;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
-  flex: 1; /* ✅ ADDED: Take remaining space */
-  max-height: calc(100vh - 300px); /* ✅ ADDED: Limit height to prevent overflow */
+  flex: 1;
+  min-height: 0; /* CRITICAL FIX: Allows proper scrolling */
 }
 
 .code-block pre {
@@ -808,8 +814,8 @@ tr:last-child td {
   padding: 0;
   background: none;
   border: none;
-  white-space: pre; /* ✅ FIXED: Preserve code formatting and enable horizontal scroll */
-  overflow-x: auto; /* ✅ ADDED: Horizontal scroll for long lines */
+  white-space: pre;
+  overflow-x: auto;
 }
 
 /* Pagination */
@@ -893,7 +899,7 @@ tr:last-child td {
   background: rgba(255, 161, 22, 0.1);
   border: 1px solid rgba(0, 240, 255, 0.3);
   border-radius: 16px;
-  padding: 16px 20px; /* slightly tighter */
+  padding: 16px 20px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -1404,9 +1410,7 @@ function renderPagination() {
   pagination.innerHTML = html;
 }
 
-// ==================== REPLACE THIS FUNCTION IN YOUR index.html ====================
-// Find the "async function openQuestion(index)" and replace it entirely with this:
-
+// ==================== MODAL ====================
 async function openQuestion(index) {
   const question = filteredQuestions[index];
   const modal = document.getElementById('modal');
@@ -1429,7 +1433,7 @@ async function openQuestion(index) {
   
   modalSubtitle.innerHTML = tagsDisplay;
   
-  // Read embedded content (NO API CALLS!)
+  // Read embedded content
   const sqlContent = question.sqlCode || 'No SQL code available';
   const readmeContent = question.description || '';
 
@@ -1458,7 +1462,6 @@ async function openQuestion(index) {
   modalHTML += '<div class="modal-right-panel">';
   modalHTML += `
     <div class="modal-section solution-section">
-      <h3>💻 Code</h3>
       <div class="code-container">
         <div class="code-header">
           <span class="code-language">SQL</span>
@@ -1474,7 +1477,7 @@ async function openQuestion(index) {
   `;
   modalHTML += '</div>';
 
-  modalHTML += '</div>'; // Close split-container
+  modalHTML += '</div>';
 
   modalBody.innerHTML = modalHTML;
 }
@@ -1494,10 +1497,8 @@ function copyCode(code) {
 }
 
 function formatProblemDescription(content) {
-  // Process HTML content to make it readable
   let formatted = content;
   
-  // Convert common HTML patterns to readable format
   formatted = formatted
     .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '<h2 style="font-size: 18px; font-weight: 700; margin: 10px 0 6px 0; color: var(--text-primary);">$1</h2>')
     .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '<h3 style="font-size: 15px; font-weight: 600; margin: 8px 0 4px 0; color: var(--text-primary);">$1</h3>')
@@ -1507,7 +1508,6 @@ function formatProblemDescription(content) {
     .replace(/<pre[^>]*>(.*?)<\/pre>/gis, '<pre style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; font-family: \'JetBrains Mono\', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap;">$1</pre>')
     .replace(/\n/g, '<br>');
   
-  // Wrap in a styled container with tighter padding
   return `<div style="background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); line-height: 1.6;">${formatted}</div>`;
 }
 
@@ -1534,7 +1534,6 @@ function changePage(page) {
 }
 
 function updateStats() {
-  // Always show total count, not filtered count
   document.getElementById('totalCount').textContent = allQuestions.length;
   const platforms = new Set(allQuestions.map(q => q.platform));
   document.getElementById('platformCount').textContent = platforms.size;
@@ -1597,3 +1596,5 @@ loadAllData();
 
 </body>
 </html>
+
+
