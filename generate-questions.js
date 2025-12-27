@@ -3,6 +3,7 @@
 /**
  * Generate questions.json with FULL CONTENT embedded
  * This eliminates runtime GitHub API calls entirely
+ * Updated to use DATIX repository
  */
 
 const https = require('https');
@@ -10,10 +11,10 @@ const fs = require('fs');
 
 const CONFIG = {
   username: process.env.GITHUB_REPOSITORY_OWNER || 'vikasvooradi',
-  platforms: ['leetcode', 'hackerrank', 'codechef', 'codewars', 'lintcode', 'datalemur'],
+  // Only look for datix repository
+  targetRepo: 'datix',
   sqlKeywords: ['sql', 'oracle', 'mysql', 'postgresql', 'postgres'],
   outputFile: 'questions.json',
-  requireSqlInName: false,
   rateLimitDelay: 100,
   batchSize: 10,
 };
@@ -124,7 +125,7 @@ function formatTitle(dirName) {
 }
 
 async function generateQuestions() {
-  console.log('🚀 Starting question generation with full content embedding...');
+  console.log('🚀 Starting question generation from DATIX repository...');
   console.log(`📦 Fetching repositories for user: ${CONFIG.username}`);
 
   try {
@@ -135,124 +136,103 @@ async function generateQuestions() {
       process.exit(1);
     }
 
-    console.log(`✓ Found ${repos.length} repositories`);
+    console.log(`✔ Found ${repos.length} repositories`);
 
-    const relevantRepos = repos.filter(repo => {
-      const repoLower = repo.name.toLowerCase();
-      const hasPlatform = CONFIG.platforms.some(platform => repoLower.includes(platform));
-      const hasSQLKeyword = CONFIG.sqlKeywords.some(keyword => repoLower.includes(keyword));
-      
-      if (CONFIG.requireSqlInName) {
-        return hasPlatform && hasSQLKeyword;
-      } else {
-        return hasPlatform || hasSQLKeyword;
-      }
-    });
+    // Find the datix repository
+    const datixRepo = repos.find(repo => repo.name.toLowerCase() === CONFIG.targetRepo.toLowerCase());
 
-    console.log(`\n✓ Selected ${relevantRepos.length} SQL practice repositories`);
-    relevantRepos.forEach(repo => console.log(`  • ${repo.name}`));
-
-    if (relevantRepos.length === 0) {
-      console.error('❌ No SQL repositories found');
+    if (!datixRepo) {
+      console.error(`❌ DATIX repository not found. Looking for: ${CONFIG.targetRepo}`);
+      console.log('Available repositories:', repos.map(r => r.name).join(', '));
       process.exit(1);
     }
+
+    console.log(`\n✔ Found DATIX repository: ${datixRepo.name}`);
 
     const questions = [];
     let totalApiCalls = 0;
 
-    for (const repo of relevantRepos) {
-      let platform = CONFIG.platforms.find(p => 
-        repo.name.toLowerCase().includes(p)
-      );
+    console.log(`\n📂 Processing ${datixRepo.name}...`);
+
+    await sleep(CONFIG.rateLimitDelay);
+    totalApiCalls++;
+
+    try {
+      const contents = await fetchGitHub(`/repos/${CONFIG.username}/${datixRepo.name}/contents`);
       
-      if (!platform) {
-        platform = 'sql';
+      if (!contents) {
+        console.log(`  ⚠️  Could not fetch contents`);
+        process.exit(1);
       }
 
-      console.log(`\n📂 Processing ${repo.name} (platform: ${platform})...`);
+      const dirs = contents.filter(item => item.type === 'dir');
+      console.log(`  ✔ Found ${dirs.length} directories`);
 
-      await sleep(CONFIG.rateLimitDelay);
-      totalApiCalls++;
-
-      try {
-        const contents = await fetchGitHub(`/repos/${CONFIG.username}/${repo.name}/contents`);
+      for (let i = 0; i < dirs.length; i += CONFIG.batchSize) {
+        const batch = dirs.slice(i, i + CONFIG.batchSize);
         
-        if (!contents) {
-          console.log(`  ⚠️  Could not fetch contents`);
-          continue;
-        }
+        for (const dir of batch) {
+          await sleep(CONFIG.rateLimitDelay);
+          totalApiCalls++;
 
-        const dirs = contents.filter(item => item.type === 'dir');
-        console.log(`  ✓ Found ${dirs.length} directories`);
+          try {
+            const files = await fetchGitHub(
+              `/repos/${CONFIG.username}/${datixRepo.name}/contents/${dir.name}`
+            );
 
-        for (let i = 0; i < dirs.length; i += CONFIG.batchSize) {
-          const batch = dirs.slice(i, i + CONFIG.batchSize);
-          
-          for (const dir of batch) {
-            await sleep(CONFIG.rateLimitDelay);
-            totalApiCalls++;
+            if (!files) continue;
 
-            try {
-              const files = await fetchGitHub(
-                `/repos/${CONFIG.username}/${repo.name}/contents/${dir.name}`
+            const sqlFile = files.find(f => 
+              f.name.toLowerCase().endsWith('.sql')
+            );
+
+            if (sqlFile) {
+              const readmeFile = files.find(f => 
+                f.name.toLowerCase() === 'read.me' || 
+                f.name.toLowerCase() === 'readme.md'
               );
 
-              if (!files) continue;
+              console.log(`    📥 Fetching content for ${dir.name}...`);
+              
+              const [sqlContent, readmeContent] = await Promise.all([
+                fetchRawContent(sqlFile.download_url),
+                readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
+              ]);
 
-              const sqlFile = files.find(f => 
-                f.name.toLowerCase().endsWith('.sql')
-              );
+              const question = {
+                platform: 'DATIX', // Always use DATIX as platform
+                title: formatTitle(dir.name),
+                repo: datixRepo.name,
+                path: dir.name,
+                sqlCode: sqlContent,
+                description: readmeContent,
+                tags: ['ORACLE']
+              };
 
-              if (sqlFile) {
-                const readmeFile = files.find(f => 
-                  f.name.toLowerCase() === 'read.me' || 
-                  f.name.toLowerCase() === 'readme.md'
-                );
-
-                console.log(`    📥 Fetching content for ${dir.name}...`);
-                
-                const [sqlContent, readmeContent] = await Promise.all([
-                  fetchRawContent(sqlFile.download_url),
-                  readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
-                ]);
-
-                const question = {
-                  platform: platform,
-                  title: formatTitle(dir.name),
-                  repo: repo.name,
-                  path: dir.name,
-                  sqlCode: sqlContent,
-                  description: readmeContent,
-                  tags: ['ORACLE']
-                };
-
-                questions.push(question);
-                console.log(`    ✓ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
-              }
-            } catch (error) {
-              console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
+              questions.push(question);
+              console.log(`    ✔ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
             }
-          }
-
-          if (i + CONFIG.batchSize < dirs.length) {
-            await sleep(500);
+          } catch (error) {
+            console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
           }
         }
-      } catch (error) {
-        console.log(`  ⚠️  Error processing repo: ${error.message}`);
-      }
-    }
 
-    if (questions.length === 0) {
-      console.error('\n❌ No SQL questions found');
+        if (i + CONFIG.batchSize < dirs.length) {
+          await sleep(500);
+        }
+      }
+    } catch (error) {
+      console.log(`  ⚠️  Error processing repo: ${error.message}`);
       process.exit(1);
     }
 
-    questions.sort((a, b) => {
-      const platformCompare = a.platform.localeCompare(b.platform);
-      if (platformCompare !== 0) return platformCompare;
-      return a.title.localeCompare(b.title);
-    });
+    if (questions.length === 0) {
+      console.error('\n❌ No SQL questions found in DATIX repository');
+      process.exit(1);
+    }
+
+    // Sort by title
+    questions.sort((a, b) => a.title.localeCompare(b.title));
 
     fs.writeFileSync(
       CONFIG.outputFile,
@@ -264,7 +244,8 @@ async function generateQuestions() {
     console.log(`\n✅ Success! Generated ${CONFIG.outputFile}`);
     console.log(`📊 Statistics:`);
     console.log(`   • Questions: ${questions.length}`);
-    console.log(`   • Platforms: ${[...new Set(questions.map(q => q.platform))].join(', ')}`);
+    console.log(`   • Platform: DATIX`);
+    console.log(`   • Repository: ${datixRepo.name}`);
     console.log(`   • File size: ${(fileSize / 1024).toFixed(2)} KB`);
     console.log(`   • Total API calls: ${totalApiCalls}`);
     console.log(`   • Avg content per question: ${(fileSize / questions.length / 1024).toFixed(2)} KB`);
