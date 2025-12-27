@@ -539,7 +539,7 @@ tr:last-child td {
   box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
-/* Enhanced Modal - ABSOLUTE POSITIONING WITH CSS GRID */
+/* Enhanced Modal - Full Screen */
 .modal {
   display: none;
   position: fixed;
@@ -549,15 +549,20 @@ tr:last-child td {
   height: 100%;
   background: var(--bg-secondary);
   z-index: 1000;
+  overflow: hidden;
 }
 
 .modal.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
+  background: var(--bg-card);
   width: 100%;
   height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -623,43 +628,60 @@ tr:last-child td {
   transform: rotate(90deg);
 }
 
-/* CRITICAL: Absolute positioning for split layout */
+/* CRITICAL: Modal Body with CSS Grid Layout - BULLETPROOF */
 .modal-body {
-  position: relative;
   flex: 1;
+  min-height: 0;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  grid-template-rows: 1fr !important;
+  gap: 0 !important;
   overflow: hidden;
 }
 
-.modal-split-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
 .modal-left-panel {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
   padding: 16px;
 }
 
 .modal-right-panel {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--bg-card);
   padding: 16px;
   display: flex;
   flex-direction: column;
 }
 
+.modal-section {
+  padding: 0;
+}
+
+.modal-section h3 {
+  display: none;
+}
+
 /* Problem Description Styling */
 .problem-description {
   line-height: 1.6;
   font-size: 15px;
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.problem-description * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .problem-description h1,
@@ -686,13 +708,17 @@ tr:last-child td {
   white-space: pre-wrap;
   word-wrap: break-word;
   margin: 8px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 }
 
 .problem-description table {
   border-collapse: collapse;
   width: 100%;
+  max-width: 100%;
   margin: 8px 0;
   font-size: 14px;
+  display: block;
+  overflow-x: auto;
 }
 
 .problem-description table th,
@@ -710,18 +736,23 @@ tr:last-child td {
 
 /* Solution Code Styling */
 .solution-section {
+  background: transparent;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  height: 100%;
+  min-height: 0;
 }
 
 .code-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 2px solid var(--border-color);
   flex: 1;
+  min-height: 0;
 }
 
 .code-header {
@@ -771,6 +802,7 @@ tr:last-child td {
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
   flex: 1;
+  min-height: 0;
 }
 
 .code-block pre {
@@ -779,6 +811,7 @@ tr:last-child td {
   background: none;
   border: none;
   white-space: pre;
+  overflow-x: auto;
 }
 
 /* Pagination */
@@ -791,6 +824,7 @@ tr:last-child td {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 20px;
+  backdrop-filter: blur(10px);
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
 }
 
@@ -812,6 +846,7 @@ tr:last-child td {
 .page-btn:hover:not(:disabled) {
   border-color: var(--text-secondary);
   color: var(--text-secondary);
+  background: rgba(0, 240, 255, 0.05);
   transform: translateY(-2px);
 }
 
@@ -867,6 +902,7 @@ tr:last-child td {
   gap: 16px;
   animation: fadeIn 0.4s ease-out;
   font-weight: 600;
+  backdrop-filter: blur(10px);
 }
 
 .info-banner.success {
@@ -920,14 +956,22 @@ tr:last-child td {
     padding: 16px 12px;
   }
 
-  .modal-split-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 40% 1fr;
+  .modal-body {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto 1fr !important;
   }
 
   .modal-left-panel {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
     border-right: none;
     border-bottom: 2px solid var(--border-color);
+    max-height: 40vh;
+  }
+
+  .modal-right-panel {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
   }
 
   .modal-header h2 {
@@ -994,7 +1038,7 @@ tr:last-child td {
       </a>
     </h2>
     <div class="contributions-container">
-      <div class="contributions-embed">
+      <div class="contributions-embed" id="contributionsEmbed">
         <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
       </div>
     </div>
@@ -1374,24 +1418,22 @@ async function openQuestion(index) {
   const readmeContent = question.description || '';
 
   modalBody.innerHTML = `
-    <div class="modal-split-container">
-      <div class="modal-left-panel">
-        <div class="problem-description">
-          ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary);">No description available</p>'}
-        </div>
+    <div class="modal-left-panel">
+      <div class="problem-description">
+        ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary);">No description available</p>'}
       </div>
-      <div class="modal-right-panel">
-        <div class="solution-section">
-          <div class="code-container">
-            <div class="code-header">
-              <span class="code-language">SQL</span>
-              <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
-                📋 Copy Code
-              </button>
-            </div>
-            <div class="code-block">
-              <pre>${escapeHtml(sqlContent)}</pre>
-            </div>
+    </div>
+    <div class="modal-right-panel">
+      <div class="solution-section">
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-language">SQL</span>
+            <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="code-block">
+            <pre>${escapeHtml(sqlContent)}</pre>
           </div>
         </div>
       </div>
@@ -1417,15 +1459,15 @@ function formatProblemDescription(content) {
   let formatted = content;
   
   formatted = formatted
-    .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '<h2 style="font-size: 18px; font-weight: 700; margin: 10px 0 6px 0; color: var(--text-primary);">$1</h2>')
-    .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '<h3 style="font-size: 15px; font-weight: 600; margin: 8px 0 4px 0; color: var(--text-primary);">$1</h3>')
-    .replace(/<p[^>]*>(.*?)<\/p>/gi, '<p style="margin: 6px 0; line-height: 1.6;">$1</p>')
+    .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '<h2 style="font-size: 18px; font-weight: 700; margin: 10px 0 6px 0; color: var(--text-primary); word-wrap: break-word;">$1</h2>')
+    .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '<h3 style="font-size: 15px; font-weight: 600; margin: 8px 0 4px 0; color: var(--text-primary); word-wrap: break-word;">$1</h3>')
+    .replace(/<p[^>]*>(.*?)<\/p>/gi, '<p style="margin: 6px 0; line-height: 1.6; word-wrap: break-word;">$1</p>')
     .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '<strong style="font-weight: 700; color: var(--text-primary);">$1</strong>')
-    .replace(/<code[^>]*>(.*?)<\/code>/gi, '<code style="background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: \'JetBrains Mono\', monospace; font-size: 13px; border: 1px solid var(--border-color);">$1</code>')
-    .replace(/<pre[^>]*>(.*?)<\/pre>/gis, '<pre style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; font-family: \'JetBrains Mono\', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap;">$1</pre>')
+    .replace(/<code[^>]*>(.*?)<\/code>/gi, '<code style="background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: \'JetBrains Mono\', monospace; font-size: 13px; border: 1px solid var(--border-color); word-wrap: break-word;">$1</code>')
+    .replace(/<pre[^>]*>(.*?)<\/pre>/gis, '<pre style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; font-family: \'JetBrains Mono\', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; max-width: 100%;">$1</pre>')
     .replace(/\n/g, '<br>');
   
-  return `<div style="background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); line-height: 1.6;">${formatted}</div>`;
+  return `<div style="background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); line-height: 1.6; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word;">${formatted}</div>`;
 }
 
 document.getElementById('modal').addEventListener('click', function(e) {
