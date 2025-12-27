@@ -16,14 +16,6 @@ Visit my live portfolio: **[vikasvooradi.github.io](https://vikasvooradi.github.
 
 **To develop your skills, you need to visit their respective websites and solve their problem sets.** This portfolio only showcases my personal solutions and learning journey.
 
-### Legal Notice
-
-- ⚖️ **I am not responsible for any illegal usage of content from these platforms**
-- 📝 **I am sharing my knowledge and solutions which I personally invested time in learning**
-- 🎓 **All credits go to the respective website holders** who share these questions on their platforms and help developers prepare for interviews
-- 🙏 **This is educational content** - Please respect the intellectual property of these platforms
-- ✅ **Use this for learning purposes only** - Always solve problems on the original platforms
-
 ### Fair Use Statement
 
 This portfolio is created under the principles of fair use for:
