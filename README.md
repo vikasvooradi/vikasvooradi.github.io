@@ -31,12 +31,6 @@ This portfolio is created under the principles of fair use for:
 - Portfolio demonstration
 - Learning and skill development
 
-**Please support the original platforms by:**
-- Creating accounts on their websites
-- Solving problems directly on their platforms
-- Considering their premium subscriptions
-- Respecting their terms of service
-
 ## 📈 My Learning Journey
 
 I believe in consistent, daily practice. Every solution in this portfolio represents:
@@ -54,14 +48,6 @@ Through these SQL problems, I've developed expertise in:
 - Subqueries and nested queries
 - Aggregate functions
 - Data manipulation (INSERT, UPDATE, DELETE)
-
-
-## 📄 License
-
-This portfolio and its code are licensed under the MIT License. However:
-- **Problem statements** belong to their respective platforms
-- **My solutions** are my own work and shared for educational purposes
-- **Platform content** must be used according to their terms of service
 
 ## 🌟 Support
 
