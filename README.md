@@ -62,7 +62,7 @@ This portfolio is actively maintained and automatically updates:
 
 ### 💪 Keep Learning, Keep Growing
 
-*"Growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day."*
+*"Growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day." *
 
 **Built with ❤️ by Vikas Vooradi**
 
