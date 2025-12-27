@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Vikas Bhaskar Vooradi</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
 
 <style>
 * {
@@ -646,7 +648,7 @@ tr:last-child td {
   overflow-x: hidden;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
-  padding: 16px;
+  padding: 24px;
 }
 
 .modal-right-panel {
@@ -655,7 +657,7 @@ tr:last-child td {
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--bg-card);
-  padding: 16px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
 }
@@ -670,12 +672,13 @@ tr:last-child td {
 
 /* Problem Description Styling */
 .problem-description {
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 15px;
   width: 100%;
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  color: var(--text-primary);
 }
 
 .problem-description * {
@@ -684,54 +687,151 @@ tr:last-child td {
   overflow-wrap: break-word;
 }
 
-.problem-description h1,
-.problem-description h2,
-.problem-description h3,
+.problem-description h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 16px 0 10px 0;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.problem-description h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 14px 0 8px 0;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.problem-description h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px 0 6px 0;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
 .problem-description h4 {
-  margin: 8px 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0 5px 0;
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 .problem-description p {
+  margin: 10px 0;
+  line-height: 1.7;
+}
+
+.problem-description ul,
+.problem-description ol {
+  margin: 10px 0;
+  padding-left: 28px;
+  line-height: 1.7;
+}
+
+.problem-description li {
   margin: 6px 0;
 }
 
 .problem-description pre {
-  background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 8px;
+  padding: 16px;
   overflow-x: auto;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.6;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 8px 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  white-space: pre;
+  margin: 12px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.problem-description code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  border: 1px solid var(--code-border);
+  color: var(--text-primary);
+}
+
+.problem-description pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: 13px;
 }
 
 .problem-description table {
   border-collapse: collapse;
   width: 100%;
   max-width: 100%;
-  margin: 8px 0;
-  font-size: 14px;
-  display: block;
+  margin: 12px 0;
+  font-size: 13px;
+  display: table;
   overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
 }
 
 .problem-description table th,
 .problem-description table td {
   border: 1px solid var(--border-color);
-  padding: 8px 10px;
+  padding: 10px 12px;
   text-align: left;
 }
 
 .problem-description table th {
   background: var(--bg-secondary);
   font-weight: 600;
+  color: var(--text-primary);
+}
+
+.problem-description table td {
+  background: var(--bg-card);
+}
+
+.problem-description strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.problem-description em {
+  font-style: italic;
+}
+
+.problem-description a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+.problem-description a:hover {
+  text-decoration: underline;
+}
+
+.problem-description blockquote {
+  border-left: 4px solid var(--accent-primary);
+  padding-left: 16px;
+  margin: 12px 0;
   color: var(--text-secondary);
+  font-style: italic;
+}
+
+.problem-description-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  line-height: 1.7;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 /* Solution Code Styling */
@@ -930,10 +1030,24 @@ tr:last-child td {
   .header {
     flex-direction: column;
     text-align: center;
+    padding: 24px;
+  }
+
+  .header img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .header-info h1 {
+    font-size: 28px;
+  }
+
+  .header-info p {
+    font-size: 14px;
   }
   
   .controls {
-    flex-direction: column;
+    padding: 16px;
   }
   
   .search-section {
@@ -949,16 +1063,17 @@ tr:last-child td {
   }
   
   table {
-    font-size: 13px;
+    font-size: 12px;
   }
   
   th, td {
-    padding: 16px 12px;
+    padding: 12px 8px;
   }
 
   .modal-body {
     grid-template-columns: 1fr !important;
-    grid-template-rows: auto 1fr !important;
+    grid-template-rows: auto auto !important;
+    gap: 0 !important;
   }
 
   .modal-left-panel {
@@ -966,25 +1081,75 @@ tr:last-child td {
     grid-row: 1 / 2;
     border-right: none;
     border-bottom: 2px solid var(--border-color);
-    max-height: 40vh;
+    max-height: none;
+    padding: 20px;
   }
 
   .modal-right-panel {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+    padding: 20px;
+  }
+
+  .modal-header {
+    padding: 16px 20px;
+    flex-wrap: wrap;
   }
 
   .modal-header h2 {
     font-size: 16px;
   }
 
+  .github-contributions {
+    padding: 20px;
+  }
+
   .github-contributions h2 {
     flex-direction: column;
     align-items: flex-start;
+    font-size: 16px;
   }
 
   .github-link {
     margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .problem-description {
+    font-size: 14px;
+  }
+
+  .problem-description h1 {
+    font-size: 18px;
+  }
+
+  .problem-description h2 {
+    font-size: 16px;
+  }
+
+  .problem-description h3 {
+    font-size: 14px;
+  }
+
+  .problem-description-wrapper {
+    padding: 16px;
+  }
+
+  .code-block {
+    font-size: 12px;
+    padding: 16px;
+  }
+
+  .pagination {
+    padding: 16px;
+    gap: 4px;
+  }
+
+  .page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
 
@@ -1420,14 +1585,14 @@ async function openQuestion(index) {
   modalBody.innerHTML = `
     <div class="modal-left-panel">
       <div class="problem-description">
-        ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary);">No description available</p>'}
+        ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary); padding: 16px;">No description available</p>'}
       </div>
     </div>
     <div class="modal-right-panel">
       <div class="solution-section">
         <div class="code-container">
           <div class="code-header">
-            <span class="code-language">SQL</span>
+            <span class="code-language">SQL Solution</span>
             <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
               📋 Copy Code
             </button>
@@ -1456,18 +1621,37 @@ function copyCode(code) {
 }
 
 function formatProblemDescription(content) {
-  let formatted = content;
+  if (!content) return '<p style="color: var(--text-secondary);">No description available</p>';
   
-  formatted = formatted
-    .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '<h2 style="font-size: 18px; font-weight: 700; margin: 10px 0 6px 0; color: var(--text-primary); word-wrap: break-word;">$1</h2>')
-    .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '<h3 style="font-size: 15px; font-weight: 600; margin: 8px 0 4px 0; color: var(--text-primary); word-wrap: break-word;">$1</h3>')
-    .replace(/<p[^>]*>(.*?)<\/p>/gi, '<p style="margin: 6px 0; line-height: 1.6; word-wrap: break-word;">$1</p>')
-    .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '<strong style="font-weight: 700; color: var(--text-primary);">$1</strong>')
-    .replace(/<code[^>]*>(.*?)<\/code>/gi, '<code style="background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: \'JetBrains Mono\', monospace; font-size: 13px; border: 1px solid var(--border-color); word-wrap: break-word;">$1</code>')
-    .replace(/<pre[^>]*>(.*?)<\/pre>/gis, '<pre style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; font-family: \'JetBrains Mono\', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; max-width: 100%;">$1</pre>')
-    .replace(/\n/g, '<br>');
+  let formatted = content.trim();
   
-  return `<div style="background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); line-height: 1.6; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word;">${formatted}</div>`;
+  // Check if content is already HTML (contains HTML tags)
+  const isHTML = /<[^>]+>/.test(formatted);
+  
+  if (isHTML) {
+    // Content is HTML - sanitize and clean it up
+    formatted = DOMPurify.sanitize(formatted, {
+      ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'ul', 'ol', 'li', 'strong', 'em', 'code', 'pre', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'br', 'hr', 'blockquote', 'div', 'span'],
+      ALLOWED_ATTR: ['href', 'target', 'class', 'style']
+    });
+  } else {
+    // Content is Markdown - parse it
+    try {
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: false,
+        mangle: false
+      });
+      formatted = marked.parse(formatted);
+      formatted = DOMPurify.sanitize(formatted);
+    } catch (e) {
+      // If markdown parsing fails, treat as plain text
+      formatted = '<p>' + escapeHtml(formatted).replace(/\n/g, '<br>') + '</p>';
+    }
+  }
+  
+  return `<div class="problem-description-wrapper">${formatted}</div>`;
 }
 
 document.getElementById('modal').addEventListener('click', function(e) {
