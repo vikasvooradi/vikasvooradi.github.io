@@ -4,1012 +4,280 @@
 <meta charset="UTF-8">
 <title>Vikas Bhaskar Vooradi</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7f8fa;
-  --bg-card: #ffffff;
-  --accent-primary: #ffa116;
-  --accent-secondary: #ff6b00;
-  --text-primary: #2c3e50;
-  --text-secondary: #6c757d;
-  --border-color: #e1e4e8;
-  --hover-bg: #f6f8fa;
-  --code-bg: #f8f9fa;
-  --code-border: #e9ecef;
-}
-
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
-  padding: 20px;
-}
-
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Header */
-.header {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 40px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-  border-radius: 12px 12px 0 0;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.header img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid var(--accent-primary);
-  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.2);
-}
-
-.header-info h1 {
-  font-size: 38px;
-  font-weight: 800;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -1px;
-}
-
-.header-info p {
-  color: var(--text-secondary);
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.stats {
-  margin-left: auto;
-  display: flex;
-  gap: 40px;
-}
-
-.stat-item {
-  text-align: center;
-  padding: 12px 24px;
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-}
-
-.stat-number {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-secondary);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.stat-label {
-  font-size: 11px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-/* GitHub Contributions Chart */
-.github-contributions {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 32px;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-
-.github-contributions h2 {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-}
-
-.github-link {
-  margin-left: auto;
-  padding: 8px 16px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.github-link:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  transform: translateY(-2px);
-}
-
-.contributions-container {
-  width: 100%;
-  overflow-x: auto;
-  padding: 10px 0;
-}
-
-.contributions-embed {
-  min-width: 800px;
-  width: 100%;
-}
-
-.contributions-embed img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  background: white;
-}
-
-/* Controls */
-.controls {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.search-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.search-box {
-  flex: 1;
-  min-width: 250px;
-  position: relative;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 16px 20px 16px 52px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 15px;
-  outline: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-.search-box input:focus {
-  border-color: var(--text-secondary);
-  box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
-}
-
-.search-box::before {
-  content: "🔍";
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-}
-
-.filter-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-select {
-  padding: 16px 20px;
-  border-radius: 14px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 14px;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s;
-  font-weight: 600;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-select:hover {
-  border-color: var(--text-secondary);
-}
-
-select:focus {
-  border-color: var(--text-secondary);
-  box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.1);
-}
-
-button {
-  padding: 16px 28px;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: white;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(255, 161, 22, 0.2);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 161, 22, 0.3);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-button.secondary {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  box-shadow: none;
-  border: 1px solid var(--border-color);
-}
-
-button.secondary:hover {
-  background: var(--hover-bg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Advanced Filters */
-.advanced-filters {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
-  display: none;
-}
-
-.advanced-filters.active {
-  display: block;
-}
-
-.filter-group {
-  margin-bottom: 16px;
-}
-
-.filter-group-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.tag-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-filter-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.tag-filter-btn:hover {
-  border-color: var(--accent-primary);
-  background: rgba(255, 161, 22, 0.1);
-}
-
-.tag-filter-btn.active {
-  background: var(--accent-primary);
-  color: white;
-  border-color: var(--accent-primary);
-}
-
-.toggle-advanced {
-  padding: 12px 20px;
-  font-size: 13px;
-}
-
-.active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.active-filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: rgba(255, 161, 22, 0.15);
-  color: var(--text-primary);
-  font-size: 12px;
-  font-weight: 600;
-  border: 1px solid rgba(255, 161, 22, 0.3);
-}
-
-.active-filter-chip button {
-  padding: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
-  color: white;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: none;
-}
-
-.active-filter-chip button:hover {
-  background: rgba(0, 0, 0, 0.4);
-  transform: none;
-}
-
-/* Table */
-.table-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  background: var(--bg-secondary);
-  border-bottom: 2px solid var(--border-color);
-}
-
-th {
-  padding: 20px 24px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-td {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 15px;
-}
-
-tbody tr {
-  transition: all 0.2s;
-}
-
-tbody tr:hover {
-  background: var(--hover-bg);
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* All platforms display as DATIX with same orange color */
-.badge.leetcode,
-.badge.hackerrank,
-.badge.codechef,
-.badge.codewars,
-.badge.lintcode,
-.badge.datalemur,
-.badge.sql,
-.badge.datix,
-.badge.DATIX { 
-  background: rgba(255, 161, 22, 0.15); 
-  color: #ffa116; 
-  border: 1px solid rgba(255, 161, 22, 0.3); 
-}
-
-.tag-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  margin: 2px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 161, 22, 0.2);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.title-cell {
-  color: var(--text-primary);
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.title-cell:hover {
-  color: var(--text-secondary);
-}
-
-.action-btn {
-  padding: 10px 20px;
-  font-size: 13px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-primary);
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.action-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
-}
-
-/* Enhanced Modal - Full Screen */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-secondary);
-  z-index: 1000;
-  overflow: hidden;
-}
-
-.modal.active {
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 0.3s ease-out;
-}
-
-.modal-content {
-  background: var(--bg-card);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-@keyframes modalSlide {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-header {
-  padding: 20px 32px;
-  border-bottom: 2px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  background: var(--bg-card);
-  flex-shrink: 0;
-}
-
-.modal-title-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.modal-header h2 {
-  font-size: 20px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0;
-}
-
-.modal-subtitle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.close-btn {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 24px;
-  cursor: pointer;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.close-btn:hover {
-  background: rgba(255, 161, 22, 0.1);
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  transform: rotate(90deg);
-}
-
-.modal-body {
-  padding: 0;
-  overflow: hidden;
-  flex: 1;
-  display: flex;
-  height: 100%;
-}
-
-.modal-split-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  min-height: 70vh; /* Ensure minimum height for split view */
-  gap: 0;
-}
-
-.modal-left-panel {
-  flex: 1;
-  overflow-y: auto;
-  background: var(--bg-secondary);
-  border-right: 2px solid var(--border-color);
-  padding: 16px;
-  min-height: 400px; /* Minimum height for consistency */
-}
-
-.modal-right-panel {
-  flex: 1;
-  overflow-y: auto;
-  background: var(--bg-card);
-  padding: 16px;
-  min-height: 400px; /* Minimum height for consistency */
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-section {
-  padding: 0;
-}
-
-.modal-section h3 {
-  display: none;
-}
-
-/* Problem Description Styling - Left Panel */
-.problem-description {
-  line-height: 1.6;
-  font-size: 15px;
-}
-
-/* tighter vertical rhythm inside description */
-.problem-description h1,
-.problem-description h2,
-.problem-description h3,
-.problem-description h4 {
-  margin: 8px 0 4px 0;
-}
-
-.problem-description p {
-  margin: 6px 0;
-}
-
-.problem-description pre {
-  background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px;
-  overflow-x: auto;
-  font-size: 14px;
-  line-height: 1.7;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 8px 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-  min-height: 0;
-}
-
-.problem-description table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.problem-description table th,
-.problem-description table td {
-  border: 1px solid var(--border-color);
-  padding: 8px 10px;
-  text-align: left;
-}
-
-.problem-description table th {
-  background: var(--bg-secondary);
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-/* Solution Code Styling - Right Panel */
-.solution-section {
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  flex: 1; /* Take all available space */
-}
-
-.code-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 2px solid #2d2d2d; /* Darker border for code editor look */
-  min-height: 400px; /* Increased minimum height */
-  flex: 1; /* Fill available space */
-}
-
-.code-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 24px;
-  background: #252526; /* VS Code header color */
-  border-bottom: 2px solid #2d2d2d;
-  flex-shrink: 0;
-}
-
-.code-language {
-  font-size: 13px;
-  font-weight: 700;
-  color: #858585; /* Muted text for dark header */
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.copy-btn {
-  padding: 8px 16px;
-  font-size: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 600;
-}
-
-.copy-btn:hover {
-  background: var(--accent-primary);
-  color: white;
-  border-color: var(--accent-primary);
-  transform: none;
-}
-
-.code-block {
-  background: #1e1e1e; /* Dark editor background */
-  padding: 24px;
-  overflow: auto;
-  font-size: 14px;
-  line-height: 1.8;
-  font-family: 'JetBrains Mono', monospace;
-  color: #d4d4d4; /* Light text for dark background */
-  flex: 1;
-  max-height: calc(100vh - 300px);
-}
-
-.code-block pre {
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  white-space: pre;
-  overflow-x: auto;
-  color: #d4d4d4; /* Light text */
-}
-
-/* Pagination */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
-}
-
-.page-btn {
-  min-width: 48px;
-  height: 48px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
-.page-btn:hover:not(:disabled) {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
-  background: rgba(0, 240, 255, 0.05);
-  transform: translateY(-2px);
+:root{
+--bg-primary:#fff;
+--bg-secondary:#f6f8fa;
+--bg-card:#fff;
+--accent-primary:#ffa116;
+--accent-secondary:#ff6b00;
+--text-primary:#24292f;
+--text-secondary:#57606a;
+--border-color:#e1e4e8;
 }
 
-.page-btn.active {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-color: transparent;
-  color: var(--bg-primary);
-  box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
-}
-
-.page-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* Loading & Empty States */
-.loading, .empty {
-  text-align: center;
-  padding: 80px 20px;
-  color: var(--text-secondary);
-}
-
-.spinner {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--text-secondary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 20px;
-}
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:var(--bg-secondary);
+color:var(--text-primary);
+padding:20px;
+}
+
+.container{max-width:1400px;margin:auto}
+
+/* HEADER */
+.header{
+background:var(--bg-card);
+border:1px solid var(--border-color);
+border-radius:14px;
+padding:32px;
+display:flex;
+gap:24px;
+align-items:center;
+margin-bottom:24px;
+}
+
+.header img{
+width:90px;height:90px;border-radius:50%;
+border:3px solid var(--accent-primary)
+}
+
+.header-info h1{
+font-size:34px;
+font-weight:800;
+background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.stats{margin-left:auto;display:flex;gap:24px}
+.stat-item{text-align:center}
+.stat-number{font-size:30px;font-weight:800;font-family:'JetBrains Mono'}
+.stat-label{font-size:11px;text-transform:uppercase;color:var(--text-secondary)}
+
+/* CONTRIBUTIONS */
+.github-contributions{
+background:var(--bg-card);
+border:1px solid var(--border-color);
+border-radius:14px;
+padding:24px;
+margin-bottom:24px;
 }
 
-.empty-icon {
-  font-size: 72px;
-  margin-bottom: 20px;
-  opacity: 0.5;
-}
-
-/* Info Banner */
-.info-banner {
-  background: rgba(255, 161, 22, 0.1);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  border-radius: 16px;
-  padding: 16px 20px; /* slightly tighter */
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  animation: fadeIn 0.4s ease-out;
-  font-weight: 600;
-  backdrop-filter: blur(10px);
-}
-
-.info-banner.success {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #34d399;
-}
-
-.info-banner.error {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #f87171;
-}
+.github-contributions img{width:100%;border-radius:10px}
 
-.info-banner.info {
-  color: var(--text-secondary);
+/* CONTROLS */
+.controls{
+background:var(--bg-card);
+border:1px solid var(--border-color);
+border-radius:14px;
+padding:20px;
+margin-bottom:24px;
 }
 
-/* Responsive */
-@media (max-width: 968px) {
-  .stats {
-    display: none;
-  }
-  
-  .header {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .controls {
-    flex-direction: column;
-  }
-  
-  .search-section {
-    flex-direction: column;
-  }
-  
-  .search-box {
-    width: 100%;
-  }
-  
-  select, button {
-    width: 100%;
-  }
-  
-  table {
-    font-size: 13px;
-  }
-  
-  th, td {
-    padding: 16px 12px;
-  }
-
-  .modal-split-container {
-    flex-direction: column;
-  }
-
-  .modal-left-panel {
-    border-right: none;
-    border-bottom: 2px solid var(--border-color);
-    max-height: 40%;
-  }
-
-  .modal-right-panel {
-    flex: 1;
-  }
-
-  .modal-header h2 {
-    font-size: 16px;
-  }
-
-  .modal-section {
-    padding: 20px;
-  }
-
-  .github-contributions h2 {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .github-link {
-    margin-left: 0;
-  }
+.search-box input{
+width:100%;
+padding:14px 16px;
+border-radius:10px;
+border:1px solid var(--border-color);
+font-size:15px;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+select,button{
+padding:14px 18px;
+border-radius:10px;
+border:1px solid var(--border-color);
+font-weight:600;
+cursor:pointer;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+button{
+background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+color:white;border:none
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 6px;
+button.secondary{
+background:#fff;
+color:var(--text-primary);
+border:1px solid var(--border-color)
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
+/* TABLE */
+.table-container{
+background:var(--bg-card);
+border:1px solid var(--border-color);
+border-radius:14px;
+overflow:hidden;
+}
+
+table{width:100%;border-collapse:collapse}
+thead{background:var(--bg-secondary)}
+th,td{padding:16px 20px;border-bottom:1px solid var(--border-color)}
+th{text-transform:uppercase;font-size:12px;color:var(--text-secondary)}
+
+.badge{
+padding:6px 14px;
+border-radius:8px;
+background:rgba(255,161,22,.15);
+border:1px solid rgba(255,161,22,.3);
+color:#ffa116;
+font-family:'JetBrains Mono';
+font-size:12px;
+font-weight:700;
+}
+
+.action-btn{
+padding:10px 16px;
+border-radius:10px;
+border:1px solid var(--accent-primary);
+background:rgba(255,161,22,.1);
+font-family:'JetBrains Mono';
+font-weight:700;
+cursor:pointer;
+}
+
+.action-btn:hover{background:var(--accent-primary);color:#fff}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:var(--bg-secondary);
+z-index:1000;
+}
+
+.modal.active{display:flex;flex-direction:column}
+
+.modal-header{
+background:#fff;
+padding:16px 24px;
+border-bottom:1px solid var(--border-color);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.modal-body{flex:1;overflow:hidden}
+
+.modal-split-container{
+display:flex;
+height:100%;
+}
+
+.modal-left-panel{
+flex:1;
+overflow:auto;
+padding:16px;
+background:var(--bg-secondary);
+border-right:1px solid var(--border-color);
+}
+
+.modal-right-panel{
+flex:1;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+padding:16px;
+}
+
+/* DESCRIPTION */
+.problem-description{
+background:#fff;
+border:1px solid var(--border-color);
+border-radius:12px;
+padding:16px;
+line-height:1.6;
+}
+
+/* SOLUTION EDITOR (FIXED) */
+.solution-section{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.code-container{
+flex:1;
+display:flex;
+flex-direction:column;
+border-radius:16px;
+border:1px solid var(--border-color);
+background:#fff;
+box-shadow:0 8px 30px rgba(0,0,0,.06);
+overflow:hidden;
+}
+
+.code-header{
+padding:12px 18px;
+background:#f6f8fa;
+border-bottom:1px solid var(--border-color);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.code-language{
+font-family:'JetBrains Mono';
+font-size:12px;
+color:#57606a;
+font-weight:700;
+letter-spacing:1px;
+}
+
+.copy-btn{
+padding:6px 12px;
+border-radius:8px;
+border:1px solid var(--border-color);
+background:#fff;
+cursor:pointer;
+}
+
+.code-block{
+flex:1;
+overflow:auto;
+padding:20px;
+background:#fff;
+font-family:'JetBrains Mono';
+font-size:14px;
+line-height:1.8;
+color:#24292f;
+}
+
+.code-block pre{margin:0}
+
+/* PAGINATION */
+.pagination{
+margin-top:20px;
+display:flex;
+justify-content:center;
+gap:8px;
+}
+
+.page-btn{
+padding:10px 14px;
+border-radius:10px;
+border:1px solid var(--border-color);
+background:#fff;
+font-family:'JetBrains Mono';
+}
+
+.page-btn.active{
+background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+color:#fff;border:none;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+.modal-split-container{flex-direction:column}
+.modal-left-panel{border-right:none;border-bottom:1px solid var(--border-color)}
 }
 </style>
 </head>
@@ -1017,590 +285,120 @@ tr:last-child td {
 <body>
 <div class="container">
 
-  <!-- Header -->
-  <div class="header">
-    <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
-    <div class="header-info">
-      <h1>Vikas Bhaskar Vooradi</h1>
-      <p>A simple, curious, and continuous learner who believes that growth comes from consistent effort, honest curiosity, and the desire to improve a little more each day.</p>
-    </div>
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-number" id="totalCount">0</div>
-        <div class="stat-label">Questions</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number" id="platformCount">0</div>
-        <div class="stat-label">Platforms</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GitHub Contributions -->
-  <div class="github-contributions">
-    <h2>
-      🔥 GitHub Contributions
-      <a href="https://github.com/vikasvooradi" target="_blank" class="github-link">
-        View Profile →
-      </a>
-    </h2>
-    <div class="contributions-container">
-      <div class="contributions-embed" id="contributionsEmbed">
-        <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
-      </div>
-    </div>
-  </div>
-
-  <!-- Info Banner -->
-  <div id="infoBanner" style="display:none"></div>
-
-  <!-- Controls -->
-  <div class="controls">
-    <div class="search-section">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search by title, platform, or database type...">
-      </div>
-    </div>
-    
-    <div class="filter-controls">
-      <select id="platformFilter">
-        <option value="all">All Platforms</option>
-      </select>
-      <select id="sortBy">
-        <option value="title-asc">Title (A-Z)</option>
-        <option value="title-desc">Title (Z-A)</option>
-        <option value="platform-asc">Platform (A-Z)</option>
-      </select>
-      <select id="perPageSelect">
-        <option value="10">10 per page</option>
-        <option value="25" selected>25 per page</option>
-        <option value="50">50 per page</option>
-        <option value="100">100 per page</option>
-      </select>
-      <button class="secondary toggle-advanced" onclick="toggleAdvancedFilters()">
-        🔧 Advanced Filters
-      </button>
-      <button onclick="refreshData()">🔄 Refresh</button>
-    </div>
-
-    <!-- Advanced Filters -->
-    <div class="advanced-filters" id="advancedFilters">
-      <div class="filter-group">
-        <div class="filter-group-title">Filter by Database Type</div>
-        <div class="tag-filters" id="tagFilters"></div>
-      </div>
-      
-      <div class="filter-group">
-        <div class="filter-group-title">Active Filters</div>
-        <div class="active-filters" id="activeFilters">
-          <span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Table -->
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 60px">#</th>
-          <th style="width: 160px">Platform</th>
-          <th>Title</th>
-          <th style="width: 200px">Database</th>
-          <th style="width: 160px; text-align: center">Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr>
-          <td colspan="5">
-            <div class="loading">
-              <div class="spinner"></div>
-              <div>Loading questions...</div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Pagination -->
-  <div class="pagination" id="pagination"></div>
-
+<div class="header">
+<img src="https://github.com/vikasvooradi.png">
+<div class="header-info">
+<h1>Vikas Bhaskar Vooradi</h1>
+<p>Consistent learner focused on SQL & problem solving.</p>
+</div>
+<div class="stats">
+<div class="stat-item"><div class="stat-number" id="totalCount">0</div><div class="stat-label">Questions</div></div>
+<div class="stat-item"><div class="stat-number" id="platformCount">0</div><div class="stat-label">Platforms</div></div>
+</div>
 </div>
 
-<!-- Enhanced Modal -->
+<div class="github-contributions">
+<img src="https://ghchart.rshah.org/ffa116/vikasvooradi">
+</div>
+
+<div class="controls">
+<div class="search-box">
+<input id="searchInput" placeholder="Search questions...">
+</div>
+</div>
+
+<div class="table-container">
+<table>
+<thead>
+<tr><th>#</th><th>Platform</th><th>Title</th><th>DB</th><th>Action</th></tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div class="pagination" id="pagination"></div>
+</div>
+
+<!-- MODAL -->
 <div class="modal" id="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title-section">
-        <h2 id="modalTitle">Question Details</h2>
-        <div class="modal-subtitle" id="modalSubtitle"></div>
-      </div>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body" id="modalBody">
-      <div class="loading">
-        <div class="spinner"></div>
-        <div>Loading content...</div>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+<h2 id="modalTitle"></h2>
+<button onclick="closeModal()">✕</button>
+</div>
+<div class="modal-body" id="modalBody"></div>
 </div>
 
 <script>
-// ==================== CONFIGURATION ====================
-const CONFIG = {
-  dataFile: 'questions.json',
-  username: 'vikasvooradi',
-  itemsPerPage: 25
-};
+const CONFIG={dataFile:'questions.json',itemsPerPage:25};
+let allQuestions=[],filteredQuestions=[],currentPage=1;
 
-// ==================== STATE ====================
-let allQuestions = [];
-let filteredQuestions = [];
-let currentPage = 1;
-let itemsPerPage = CONFIG.itemsPerPage;
-let activeTagFilters = new Set();
-
-// ==================== DATA LOADING ====================
-async function loadAllData() {
-  try {
-    showBanner('Loading questions...', 'info');
-    
-    const response = await fetch(CONFIG.dataFile + '?t=' + Date.now());
-    
-    if (!response.ok) {
-      throw new Error('Failed to load questions');
-    }
-    
-    allQuestions = await response.json();
-    
-    if (allQuestions.length === 0) {
-      showBanner('❌ No questions found', 'error');
-      showEmptyState('No SQL questions available');
-      return;
-    }
-    
-    allQuestions = allQuestions.map(q => {
-      if (q.tags && Array.isArray(q.tags)) {
-        q.tags = q.tags.filter(tag => 
-          tag.toUpperCase() !== 'DATABASE'
-        );
-      }
-      return q;
-    });
-    
-    showBanner(`✓ Loaded ${allQuestions.length} questions successfully!`, 'success', 2000);
-    initializeFilters();
-    applyFilters();
-    
-  } catch (error) {
-    console.error('Error loading data:', error);
-    showBanner('❌ Error loading questions. Please refresh the page.', 'error');
-    showEmptyState('Failed to load questions. Please try again.');
-  }
+async function loadAllData(){
+allQuestions=await (await fetch(CONFIG.dataFile)).json();
+filteredQuestions=[...allQuestions];
+updateStats();renderTable();renderPagination();
 }
 
-// ==================== FILTERS ====================
-function initializeFilters() {
-  const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
-  const platformFilter = document.getElementById('platformFilter');
-  
-  platforms.forEach(platform => {
-    const option = document.createElement('option');
-    option.value = platform;
-    option.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
-    platformFilter.appendChild(option);
-  });
-  
-  const allTags = new Set();
-  allQuestions.forEach(q => {
-    if (q.tags) {
-      q.tags.forEach(tag => allTags.add(tag));
-    }
-  });
-  
-  const tagFilters = document.getElementById('tagFilters');
-  
-  if (allTags.size === 0) {
-    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
-  } else {
-    [...allTags].sort().forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'tag-filter-btn';
-      btn.textContent = tag;
-      btn.onclick = () => toggleTagFilter(tag, btn);
-      tagFilters.appendChild(btn);
-    });
-  }
+function renderTable(){
+const start=(currentPage-1)*CONFIG.itemsPerPage;
+const page=filteredQuestions.slice(start,start+CONFIG.itemsPerPage);
+document.getElementById('tableBody').innerHTML=page.map((q,i)=>`
+<tr>
+<td>${start+i+1}</td>
+<td><span class="badge">DATIX</span></td>
+<td onclick="openQuestionById('${q.id}')" style="cursor:pointer">${q.title}</td>
+<td>${(q.tags||[]).join(', ')}</td>
+<td><button class="action-btn" onclick="openQuestionById('${q.id}')">View</button></td>
+</tr>`).join('');
 }
 
-function toggleTagFilter(tag, button) {
-  if (activeTagFilters.has(tag)) {
-    activeTagFilters.delete(tag);
-    button.classList.remove('active');
-  } else {
-    activeTagFilters.add(tag);
-    button.classList.add('active');
-  }
-  updateActiveFiltersDisplay();
-  applyFilters();
+function openQuestionById(id){
+const index=filteredQuestions.findIndex(q=>q.id===id);
+if(index!==-1)openQuestion(index);
 }
 
-function updateActiveFiltersDisplay() {
-  const container = document.getElementById('activeFilters');
-  
-  if (activeTagFilters.size === 0) {
-    container.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>';
-    return;
-  }
-  
-  container.innerHTML = '';
-  activeTagFilters.forEach(tag => {
-    const chip = document.createElement('div');
-    chip.className = 'active-filter-chip';
-    chip.innerHTML = `
-      ${tag}
-      <button onclick="removeTagFilter('${tag}')">&times;</button>
-    `;
-    container.appendChild(chip);
-  });
+function openQuestion(index){
+const q=filteredQuestions[index];
+document.getElementById('modal').classList.add('active');
+document.body.style.overflow='hidden';
+document.getElementById('modalTitle').innerHTML=`<span class="badge">DATIX</span> ${q.title}`;
+document.getElementById('modalBody').innerHTML=`
+<div class="modal-split-container">
+<div class="modal-left-panel">
+<div class="problem-description">${q.description||'No description'}</div>
+</div>
+<div class="modal-right-panel">
+<div class="solution-section">
+<div class="code-container">
+<div class="code-header">
+<span class="code-language">SQL</span>
+<button class="copy-btn" onclick="navigator.clipboard.writeText(\`${q.sqlCode||''}\`)">Copy</button>
+</div>
+<div class="code-block"><pre>${q.sqlCode||''}</pre></div>
+</div>
+</div>
+</div>
+</div>`;
 }
 
-function removeTagFilter(tag) {
-  activeTagFilters.delete(tag);
-  const buttons = document.querySelectorAll('.tag-filter-btn');
-  buttons.forEach(btn => {
-    if (btn.textContent === tag) {
-      btn.classList.remove('active');
-    }
-  });
-  updateActiveFiltersDisplay();
-  applyFilters();
+function closeModal(){
+document.getElementById('modal').classList.remove('active');
+document.body.style.overflow='';
 }
 
-function toggleAdvancedFilters() {
-  const filters = document.getElementById('advancedFilters');
-  filters.classList.toggle('active');
+function renderPagination(){
+const total=Math.ceil(filteredQuestions.length/CONFIG.itemsPerPage);
+document.getElementById('pagination').innerHTML=
+Array.from({length:total},(_,i)=>`
+<button class="page-btn ${i+1===currentPage?'active':''}"
+onclick="currentPage=${i+1};renderTable();renderPagination()">${i+1}</button>`).join('');
 }
 
-function applyFilters() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const platform = document.getElementById('platformFilter').value;
-  const sortBy = document.getElementById('sortBy').value;
-
-  filteredQuestions = allQuestions.filter(q => {
-    const matchesPlatform = platform === 'all' || q.platform === platform;
-    
-    const matchesSearch = searchTerm === '' || 
-      q.title.toLowerCase().includes(searchTerm) ||
-      q.platform.toLowerCase().includes(searchTerm) ||
-      (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
-    
-    const matchesTags = activeTagFilters.size === 0 || 
-      (q.tags && [...activeTagFilters].every(filterTag => 
-        q.tags.some(qTag => qTag === filterTag)
-      ));
-    
-    return matchesPlatform && matchesSearch && matchesTags;
-  });
-
-  filteredQuestions.sort((a, b) => {
-    switch (sortBy) {
-      case 'title-asc':
-        return a.title.localeCompare(b.title);
-      case 'title-desc':
-        return b.title.localeCompare(a.title);
-      case 'platform-asc':
-        return a.platform.localeCompare(b.platform) || a.title.localeCompare(b.title);
-      default:
-        return 0;
-    }
-  });
-
-  currentPage = 1;
-  updateStats();
-  renderTable();
-  renderPagination();
+function updateStats(){
+document.getElementById('totalCount').textContent=allQuestions.length;
+document.getElementById('platformCount').textContent=new Set(allQuestions.map(q=>q.platform)).size;
 }
 
-// ==================== RENDERING ====================
-function renderTable() {
-  const tbody = document.getElementById('tableBody');
-  
-  if (filteredQuestions.length === 0) {
-    showEmptyState('No questions found. Try adjusting your filters.');
-    return;
-  }
-
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageQuestions = filteredQuestions.slice(start, end);
-
-  tbody.innerHTML = pageQuestions.map((q, index) => {
-    const displayTags = q.tags && q.tags.length > 0 
-      ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
-      : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
-    
-    return `
-      <tr>
-        <td>${start + index + 1}</td>
-        <td><span class="badge ${q.platform}">DATIX</span></td>
-        <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
-        <td>${displayTags}</td>
-        <td style="text-align: center">
-          <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function renderPagination() {
-  const pagination = document.getElementById('pagination');
-  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-
-  if (totalPages <= 1) {
-    pagination.innerHTML = '';
-    return;
-  }
-
-  let html = `
-    <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-      ← Prev
-    </button>
-  `;
-
-  const maxVisible = 7;
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-  if (endPage - startPage < maxVisible - 1) {
-    startPage = Math.max(1, endPage - maxVisible + 1);
-  }
-
-  if (startPage > 1) {
-    html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
-    if (startPage > 2) {
-      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
-    }
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    html += `
-      <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
-        ${i}
-      </button>
-    `;
-  }
-
-  if (endPage < totalPages) {
-    if (endPage < totalPages - 1) {
-      html += `<span style="color: var(--text-secondary); padding: 0 8px;">...</span>`;
-    }
-    html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
-  }
-
-  html += `
-    <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-      Next →
-    </button>
-  `;
-
-  pagination.innerHTML = html;
-}
-
-// ==================== REPLACE THIS FUNCTION IN YOUR index.html ====================
-// Find the "async function openQuestion(index)" and replace it entirely with this:
-
-async function openQuestion(index) {
-  const question = filteredQuestions[index];
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalSubtitle = document.getElementById('modalSubtitle');
-  const modalBody = document.getElementById('modalBody');
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  
-  // Set title and subtitle
-  modalTitle.innerHTML = `
-    <span class="badge ${question.platform}">DATIX</span>
-    ${escapeHtml(question.title)}
-  `;
-  
-  const tagsDisplay = question.tags && question.tags.length > 0
-    ? question.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
-    : '';
-  
-  modalSubtitle.innerHTML = tagsDisplay;
-  
-  // Read embedded content (NO API CALLS!)
-  const sqlContent = question.sqlCode || 'No SQL code available';
-  const readmeContent = question.description || '';
-
-  // Create split-screen layout
-  let modalHTML = '<div class="modal-split-container">';
-
-  // Left Panel - Problem Description
-  modalHTML += '<div class="modal-left-panel">';
-  if (readmeContent) {
-    const formattedContent = formatProblemDescription(readmeContent);
-    modalHTML += `
-      <div class="modal-section problem-description">
-        ${formattedContent}
-      </div>
-    `;
-  } else {
-    modalHTML += `
-      <div class="modal-section problem-description">
-        <p style="color: var(--text-secondary);">No description available for this question.</p>
-      </div>
-    `;
-  }
-  modalHTML += '</div>';
-
-  // Right Panel - SQL Solution
-  modalHTML += '<div class="modal-right-panel">';
-  modalHTML += `
-    <div class="modal-section solution-section">
-      <h3>💻 Code</h3>
-      <div class="code-container">
-        <div class="code-header">
-          <span class="code-language">SQL</span>
-          <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
-            📋 Copy Code
-          </button>
-        </div>
-        <div class="code-block">
-          <pre>${escapeHtml(sqlContent)}</pre>
-        </div>
-      </div>
-    </div>
-  `;
-  modalHTML += '</div>';
-
-  modalHTML += '</div>'; // Close split-container
-
-  modalBody.innerHTML = modalHTML;
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function copyCode(code) {
-  const decodedCode = decodeURIComponent(code);
-  navigator.clipboard.writeText(decodedCode).then(() => {
-    showBanner('✓ Code copied to clipboard!', 'success', 2000);
-  }).catch(() => {
-    showBanner('❌ Failed to copy code', 'error', 2000);
-  });
-}
-
-function formatProblemDescription(content) {
-  // Process HTML content to make it readable
-  let formatted = content;
-  
-  // Convert common HTML patterns to readable format
-  formatted = formatted
-    .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '<h2 style="font-size: 18px; font-weight: 700; margin: 10px 0 6px 0; color: var(--text-primary);">$1</h2>')
-    .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '<h3 style="font-size: 15px; font-weight: 600; margin: 8px 0 4px 0; color: var(--text-primary);">$1</h3>')
-    .replace(/<p[^>]*>(.*?)<\/p>/gi, '<p style="margin: 6px 0; line-height: 1.6;">$1</p>')
-    .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '<strong style="font-weight: 700; color: var(--text-primary);">$1</strong>')
-    .replace(/<code[^>]*>(.*?)<\/code>/gi, '<code style="background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: \'JetBrains Mono\', monospace; font-size: 13px; border: 1px solid var(--border-color);">$1</code>')
-    .replace(/<pre[^>]*>(.*?)<\/pre>/gis, '<pre style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; font-family: \'JetBrains Mono\', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap;">$1</pre>')
-    .replace(/\n/g, '<br>');
-  
-  // Wrap in a styled container with tighter padding
-  return `<div style="background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); line-height: 1.6;">${formatted}</div>`;
-}
-
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-});
-
-// ==================== HELPERS ====================
-function changePage(page) {
-  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderTable();
-  renderPagination();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function updateStats() {
-  // Always show total count, not filtered count
-  document.getElementById('totalCount').textContent = allQuestions.length;
-  const platforms = new Set(allQuestions.map(q => q.platform));
-  document.getElementById('platformCount').textContent = platforms.size;
-}
-
-function showBanner(message, type = 'info', duration = 0) {
-  const banner = document.getElementById('infoBanner');
-  banner.className = `info-banner ${type}`;
-  banner.textContent = message;
-  banner.style.display = 'flex';
-  
-  if (duration > 0) {
-    setTimeout(() => {
-      banner.style.display = 'none';
-    }, duration);
-  }
-}
-
-function showEmptyState(message) {
-  document.getElementById('tableBody').innerHTML = `
-    <tr>
-      <td colspan="5">
-        <div class="empty">
-          <div class="empty-icon">🔍</div>
-          <div>${escapeHtml(message)}</div>
-        </div>
-      </td>
-    </tr>
-  `;
-  document.getElementById('pagination').innerHTML = '';
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function escapeForAttribute(text) {
-  return encodeURIComponent(text);
-}
-
-function refreshData() {
-  location.reload();
-}
-
-// ==================== EVENT LISTENERS ====================
-document.getElementById('searchInput').addEventListener('input', applyFilters);
-document.getElementById('platformFilter').addEventListener('change', applyFilters);
-document.getElementById('sortBy').addEventListener('change', applyFilters);
-document.getElementById('perPageSelect').addEventListener('change', function() {
-  itemsPerPage = parseInt(this.value);
-  currentPage = 1;
-  applyFilters();
-});
-
-// ==================== INITIALIZATION ====================
 loadAllData();
 </script>
-
 </body>
 </html>
