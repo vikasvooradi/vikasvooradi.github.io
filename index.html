@@ -693,6 +693,14 @@ tr:last-child td {
 .problem-description {
   line-height: 1.6;
   font-size: 15px;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.problem-description * {
+  max-width: 100%;
 }
 
 .problem-description h1,
@@ -700,10 +708,12 @@ tr:last-child td {
 .problem-description h3,
 .problem-description h4 {
   margin: 8px 0 4px 0;
+  word-wrap: break-word;
 }
 
 .problem-description p {
   margin: 6px 0;
+  word-wrap: break-word;
 }
 
 .problem-description pre {
@@ -721,13 +731,16 @@ tr:last-child td {
   margin: 8px 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
   min-height: 0;
+  max-width: 100%;
 }
 
 .problem-description table {
   border-collapse: collapse;
   width: 100%;
+  max-width: 100%;
   margin: 8px 0;
   font-size: 14px;
+  table-layout: auto;
 }
 
 .problem-description table th,
@@ -735,6 +748,7 @@ tr:last-child td {
   border: 1px solid var(--border-color);
   padding: 8px 10px;
   text-align: left;
+  word-wrap: break-word;
 }
 
 .problem-description table th {
@@ -966,17 +980,19 @@ tr:last-child td {
   }
 
   .modal-split-container {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 
   .modal-left-panel {
     border-right: none;
     border-bottom: 2px solid var(--border-color);
     max-height: 40%;
+    max-width: 100% !important;
   }
 
   .modal-right-panel {
     flex: 1;
+    max-width: 100% !important;
   }
 
   .modal-header h2 {
@@ -994,6 +1010,28 @@ tr:last-child td {
 
   .github-link {
     margin-left: 0;
+  }
+}
+
+/* Force horizontal layout on desktop - override everything */
+@media (min-width: 969px) {
+  .modal-split-container {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  .modal-left-panel {
+    flex: 1 1 50% !important;
+    max-width: 50% !important;
+    min-width: 0 !important;
+    width: 50% !important;
+  }
+  
+  .modal-right-panel {
+    flex: 1 1 50% !important;
+    max-width: 50% !important;
+    min-width: 0 !important;
+    width: 50% !important;
   }
 }
 
