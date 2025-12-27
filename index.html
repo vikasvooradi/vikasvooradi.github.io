@@ -1534,8 +1534,9 @@ function changePage(page) {
 }
 
 function updateStats() {
-  document.getElementById('totalCount').textContent = filteredQuestions.length;
-  const platforms = new Set(filteredQuestions.map(q => q.platform));
+  // Always show total count, not filtered count
+  document.getElementById('totalCount').textContent = allQuestions.length;
+  const platforms = new Set(allQuestions.map(q => q.platform));
   document.getElementById('platformCount').textContent = platforms.size;
 }
 
