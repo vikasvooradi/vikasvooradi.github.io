@@ -479,7 +479,6 @@ tr:last-child td {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* All platforms display as DATIX with same orange color */
 .badge.leetcode,
 .badge.hackerrank,
 .badge.codechef,
@@ -540,7 +539,7 @@ tr:last-child td {
   box-shadow: 0 4px 20px rgba(255, 161, 22, 0.3);
 }
 
-/* Enhanced Modal - Full Screen */
+/* Enhanced Modal - ABSOLUTE POSITIONING WITH CSS GRID */
 .modal {
   display: none;
   position: fixed;
@@ -550,33 +549,17 @@ tr:last-child td {
   height: 100%;
   background: var(--bg-secondary);
   z-index: 1000;
-  overflow: hidden;
 }
 
 .modal.active {
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 0.3s ease-out;
+  display: block;
 }
 
 .modal-content {
-  background: var(--bg-card);
   width: 100%;
   height: 100%;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-@keyframes modalSlide {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 .modal-header {
@@ -640,67 +623,43 @@ tr:last-child td {
   transform: rotate(90deg);
 }
 
+/* CRITICAL: Absolute positioning for split layout */
 .modal-body {
-  padding: 0;
-  overflow: hidden;
+  position: relative;
   flex: 1;
-  display: flex !important;
-  height: 100%;
-  min-height: 0;
+  overflow: hidden;
 }
 
 .modal-split-container {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
-  min-height: 0;
 }
 
 .modal-left-panel {
-  flex: 1 1 50% !important;
-  min-width: 0;
-  max-width: 50%;
   overflow-y: auto;
   background: var(--bg-secondary);
   border-right: 2px solid var(--border-color);
   padding: 16px;
-  min-height: 0;
 }
 
 .modal-right-panel {
-  flex: 1 1 50% !important;
-  min-width: 0;
-  max-width: 50%;
   overflow-y: auto;
   background: var(--bg-card);
   padding: 16px;
-  min-height: 0;
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-section {
-  padding: 0;
-}
-
-.modal-section h3 {
-  display: none;
-}
-
-/* Problem Description Styling - Left Panel */
+/* Problem Description Styling */
 .problem-description {
   line-height: 1.6;
   font-size: 15px;
-  width: 100%;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-.problem-description * {
-  max-width: 100%;
 }
 
 .problem-description h1,
@@ -708,12 +667,10 @@ tr:last-child td {
 .problem-description h3,
 .problem-description h4 {
   margin: 8px 0 4px 0;
-  word-wrap: break-word;
 }
 
 .problem-description p {
   margin: 6px 0;
-  word-wrap: break-word;
 }
 
 .problem-description pre {
@@ -729,18 +686,13 @@ tr:last-child td {
   white-space: pre-wrap;
   word-wrap: break-word;
   margin: 8px 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-  min-height: 0;
-  max-width: 100%;
 }
 
 .problem-description table {
   border-collapse: collapse;
   width: 100%;
-  max-width: 100%;
   margin: 8px 0;
   font-size: 14px;
-  table-layout: auto;
 }
 
 .problem-description table th,
@@ -748,7 +700,6 @@ tr:last-child td {
   border: 1px solid var(--border-color);
   padding: 8px 10px;
   text-align: left;
-  word-wrap: break-word;
 }
 
 .problem-description table th {
@@ -757,25 +708,20 @@ tr:last-child td {
   color: var(--text-secondary);
 }
 
-/* Solution Code Styling - Right Panel */
+/* Solution Code Styling */
 .solution-section {
-  background: transparent;
   display: flex;
   flex-direction: column;
-  height: 100%; /* ADDED: Fill parent height */
-  min-height: 0; /* CRITICAL FIX: Allows proper flex behavior */
+  flex: 1;
 }
 
 .code-container {
-  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 2px solid var(--border-color);
-  flex: 1; /* ADDED: Take available space */
-  min-height: 0; /* CRITICAL FIX: Allows proper flex behavior */
+  flex: 1;
 }
 
 .code-header {
@@ -825,7 +771,6 @@ tr:last-child td {
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
   flex: 1;
-  min-height: 0; /* CRITICAL FIX: Allows proper scrolling */
 }
 
 .code-block pre {
@@ -834,7 +779,6 @@ tr:last-child td {
   background: none;
   border: none;
   white-space: pre;
-  overflow-x: auto;
 }
 
 /* Pagination */
@@ -847,7 +791,6 @@ tr:last-child td {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  backdrop-filter: blur(10px);
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
 }
 
@@ -869,7 +812,6 @@ tr:last-child td {
 .page-btn:hover:not(:disabled) {
   border-color: var(--text-secondary);
   color: var(--text-secondary);
-  background: rgba(0, 240, 255, 0.05);
   transform: translateY(-2px);
 }
 
@@ -925,7 +867,6 @@ tr:last-child td {
   gap: 16px;
   animation: fadeIn 0.4s ease-out;
   font-weight: 600;
-  backdrop-filter: blur(10px);
 }
 
 .info-banner.success {
@@ -980,27 +921,17 @@ tr:last-child td {
   }
 
   .modal-split-container {
-    flex-direction: column !important;
+    grid-template-columns: 1fr;
+    grid-template-rows: 40% 1fr;
   }
 
   .modal-left-panel {
     border-right: none;
     border-bottom: 2px solid var(--border-color);
-    max-height: 40%;
-    max-width: 100% !important;
-  }
-
-  .modal-right-panel {
-    flex: 1;
-    max-width: 100% !important;
   }
 
   .modal-header h2 {
     font-size: 16px;
-  }
-
-  .modal-section {
-    padding: 20px;
   }
 
   .github-contributions h2 {
@@ -1010,28 +941,6 @@ tr:last-child td {
 
   .github-link {
     margin-left: 0;
-  }
-}
-
-/* Force horizontal layout on desktop - override everything */
-@media (min-width: 969px) {
-  .modal-split-container {
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-  }
-  
-  .modal-left-panel {
-    flex: 1 1 50% !important;
-    max-width: 50% !important;
-    min-width: 0 !important;
-    width: 50% !important;
-  }
-  
-  .modal-right-panel {
-    flex: 1 1 50% !important;
-    max-width: 50% !important;
-    min-width: 0 !important;
-    width: 50% !important;
   }
 }
 
@@ -1059,7 +968,6 @@ tr:last-child td {
 <body>
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
     <img src="https://github.com/vikasvooradi.png" alt="Vikas Vooradi">
     <div class="header-info">
@@ -1078,7 +986,6 @@ tr:last-child td {
     </div>
   </div>
 
-  <!-- GitHub Contributions -->
   <div class="github-contributions">
     <h2>
       🔥 GitHub Contributions
@@ -1087,16 +994,14 @@ tr:last-child td {
       </a>
     </h2>
     <div class="contributions-container">
-      <div class="contributions-embed" id="contributionsEmbed">
+      <div class="contributions-embed">
         <img src="https://ghchart.rshah.org/ffa116/vikasvooradi" alt="GitHub Contributions Chart" />
       </div>
     </div>
   </div>
 
-  <!-- Info Banner -->
   <div id="infoBanner" style="display:none"></div>
 
-  <!-- Controls -->
   <div class="controls">
     <div class="search-section">
       <div class="search-box">
@@ -1125,7 +1030,6 @@ tr:last-child td {
       <button onclick="refreshData()">🔄 Refresh</button>
     </div>
 
-    <!-- Advanced Filters -->
     <div class="advanced-filters" id="advancedFilters">
       <div class="filter-group">
         <div class="filter-group-title">Filter by Database Type</div>
@@ -1141,7 +1045,6 @@ tr:last-child td {
     </div>
   </div>
 
-  <!-- Table -->
   <div class="table-container">
     <table>
       <thead>
@@ -1166,12 +1069,10 @@ tr:last-child td {
     </table>
   </div>
 
-  <!-- Pagination -->
   <div class="pagination" id="pagination"></div>
 
 </div>
 
-<!-- Enhanced Modal -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -1191,21 +1092,18 @@ tr:last-child td {
 </div>
 
 <script>
-// ==================== CONFIGURATION ====================
 const CONFIG = {
   dataFile: 'questions.json',
   username: 'vikasvooradi',
   itemsPerPage: 25
 };
 
-// ==================== STATE ====================
 let allQuestions = [];
 let filteredQuestions = [];
 let currentPage = 1;
 let itemsPerPage = CONFIG.itemsPerPage;
 let activeTagFilters = new Set();
 
-// ==================== DATA LOADING ====================
 async function loadAllData() {
   try {
     showBanner('Loading questions...', 'info');
@@ -1244,7 +1142,6 @@ async function loadAllData() {
   }
 }
 
-// ==================== FILTERS ====================
 function initializeFilters() {
   const platforms = [...new Set(allQuestions.map(q => q.platform))].sort();
   const platformFilter = document.getElementById('platformFilter');
@@ -1367,7 +1264,6 @@ function applyFilters() {
   renderPagination();
 }
 
-// ==================== RENDERING ====================
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   
@@ -1453,7 +1349,6 @@ function renderPagination() {
   pagination.innerHTML = html;
 }
 
-// ==================== MODAL ====================
 async function openQuestion(index) {
   const question = filteredQuestions[index];
   const modal = document.getElementById('modal');
@@ -1464,7 +1359,6 @@ async function openQuestion(index) {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  // Set title and subtitle
   modalTitle.innerHTML = `
     <span class="badge ${question.platform}">DATIX</span>
     ${escapeHtml(question.title)}
@@ -1476,53 +1370,33 @@ async function openQuestion(index) {
   
   modalSubtitle.innerHTML = tagsDisplay;
   
-  // Read embedded content
   const sqlContent = question.sqlCode || 'No SQL code available';
   const readmeContent = question.description || '';
 
-  // Create split-screen layout with INLINE STYLES
-  let modalHTML = '<div class="modal-split-container" style="display: flex !important; flex-direction: row !important; width: 100%; height: 100%; gap: 0; min-height: 0; flex-wrap: nowrap !important;">';
-
-  // Left Panel - Problem Description
-  modalHTML += '<div class="modal-left-panel" style="flex: 1 1 50% !important; min-width: 0 !important; max-width: 50% !important; width: 50% !important; overflow-y: auto; background: var(--bg-secondary); border-right: 2px solid var(--border-color); padding: 16px; min-height: 0;">';
-  if (readmeContent) {
-    const formattedContent = formatProblemDescription(readmeContent);
-    modalHTML += `
-      <div class="modal-section problem-description">
-        ${formattedContent}
-      </div>
-    `;
-  } else {
-    modalHTML += `
-      <div class="modal-section problem-description">
-        <p style="color: var(--text-secondary);">No description available for this question.</p>
-      </div>
-    `;
-  }
-  modalHTML += '</div>';
-
-  // Right Panel - SQL Solution
-  modalHTML += '<div class="modal-right-panel" style="flex: 1 1 50% !important; min-width: 0 !important; max-width: 50% !important; width: 50% !important; overflow-y: auto; background: var(--bg-card); padding: 16px; min-height: 0; display: flex !important; flex-direction: column !important;">';
-  modalHTML += `
-    <div class="modal-section solution-section">
-      <div class="code-container">
-        <div class="code-header">
-          <span class="code-language">SQL</span>
-          <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
-            📋 Copy Code
-          </button>
+  modalBody.innerHTML = `
+    <div class="modal-split-container">
+      <div class="modal-left-panel">
+        <div class="problem-description">
+          ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary);">No description available</p>'}
         </div>
-        <div class="code-block">
-          <pre>${escapeHtml(sqlContent)}</pre>
+      </div>
+      <div class="modal-right-panel">
+        <div class="solution-section">
+          <div class="code-container">
+            <div class="code-header">
+              <span class="code-language">SQL</span>
+              <button class="copy-btn" onclick="copyCode('${escapeForAttribute(sqlContent)}')">
+                📋 Copy Code
+              </button>
+            </div>
+            <div class="code-block">
+              <pre>${escapeHtml(sqlContent)}</pre>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   `;
-  modalHTML += '</div>';
-
-  modalHTML += '</div>';
-
-  modalBody.innerHTML = modalHTML;
 }
 
 function closeModal() {
@@ -1566,7 +1440,6 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// ==================== HELPERS ====================
 function changePage(page) {
   const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
   if (page < 1 || page > totalPages) return;
@@ -1623,7 +1496,6 @@ function refreshData() {
   location.reload();
 }
 
-// ==================== EVENT LISTENERS ====================
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 document.getElementById('platformFilter').addEventListener('change', applyFilters);
 document.getElementById('sortBy').addEventListener('change', applyFilters);
@@ -1633,7 +1505,6 @@ document.getElementById('perPageSelect').addEventListener('change', function() {
   applyFilters();
 });
 
-// ==================== INITIALIZATION ====================
 loadAllData();
 </script>
 
