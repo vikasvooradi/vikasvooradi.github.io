@@ -3,7 +3,6 @@
 /**
  * Generate questions.json with FULL CONTENT embedded
  * This eliminates runtime GitHub API calls entirely
- * Updated to use DATIX repository
  */
 
 const https = require('https');
@@ -11,10 +10,11 @@ const fs = require('fs');
 
 const CONFIG = {
   username: process.env.GITHUB_REPOSITORY_OWNER || 'vikasvooradi',
-  // Only look for datix repository
-  targetRepo: 'datix',
+  // Changed: Only look for 'datix' repository
+  targetRepoName: 'datix',
   sqlKeywords: ['sql', 'oracle', 'mysql', 'postgresql', 'postgres'],
   outputFile: 'questions.json',
+  requireSqlInName: false,
   rateLimitDelay: 100,
   batchSize: 10,
 };
@@ -125,7 +125,7 @@ function formatTitle(dirName) {
 }
 
 async function generateQuestions() {
-  console.log('🚀 Starting question generation from DATIX repository...');
+  console.log('🚀 Starting question generation with full content embedding...');
   console.log(`📦 Fetching repositories for user: ${CONFIG.username}`);
 
   try {
@@ -136,102 +136,105 @@ async function generateQuestions() {
       process.exit(1);
     }
 
-    console.log(`✔ Found ${repos.length} repositories`);
+    console.log(`✓ Found ${repos.length} repositories`);
 
-    // Find the datix repository
-    const datixRepo = repos.find(repo => repo.name.toLowerCase() === CONFIG.targetRepo.toLowerCase());
+    // Changed: Find only the 'datix' repository
+    const datixRepo = repos.find(repo => 
+      repo.name.toLowerCase() === CONFIG.targetRepoName.toLowerCase()
+    );
 
     if (!datixRepo) {
-      console.error(`❌ DATIX repository not found. Looking for: ${CONFIG.targetRepo}`);
+      console.error(`❌ Repository '${CONFIG.targetRepoName}' not found`);
       console.log('Available repositories:', repos.map(r => r.name).join(', '));
       process.exit(1);
     }
 
-    console.log(`\n✔ Found DATIX repository: ${datixRepo.name}`);
+    console.log(`\n✓ Found datix repository: ${datixRepo.name}`);
 
     const questions = [];
     let totalApiCalls = 0;
 
-    console.log(`\n📂 Processing ${datixRepo.name}...`);
+    // Changed: Process only datix repo, always use "DATIX" as platform
+    const platform = 'DATIX';
+    console.log(`\n📂 Processing ${datixRepo.name} (platform: ${platform})...`);
 
     await sleep(CONFIG.rateLimitDelay);
     totalApiCalls++;
 
     try {
       const contents = await fetchGitHub(`/repos/${CONFIG.username}/${datixRepo.name}/contents`);
-      
-      if (!contents) {
-        console.log(`  ⚠️  Could not fetch contents`);
-        process.exit(1);
-      }
-
-      const dirs = contents.filter(item => item.type === 'dir');
-      console.log(`  ✔ Found ${dirs.length} directories`);
-
-      for (let i = 0; i < dirs.length; i += CONFIG.batchSize) {
-        const batch = dirs.slice(i, i + CONFIG.batchSize);
         
-        for (const dir of batch) {
-          await sleep(CONFIG.rateLimitDelay);
-          totalApiCalls++;
+        if (!contents) {
+          console.log(`  ⚠️  Could not fetch contents`);
+          continue;
+        }
 
-          try {
-            const files = await fetchGitHub(
-              `/repos/${CONFIG.username}/${datixRepo.name}/contents/${dir.name}`
-            );
+        const dirs = contents.filter(item => item.type === 'dir');
+        console.log(`  ✓ Found ${dirs.length} directories`);
 
-            if (!files) continue;
+        for (let i = 0; i < dirs.length; i += CONFIG.batchSize) {
+          const batch = dirs.slice(i, i + CONFIG.batchSize);
+          
+          for (const dir of batch) {
+            await sleep(CONFIG.rateLimitDelay);
+            totalApiCalls++;
 
-            const sqlFile = files.find(f => 
-              f.name.toLowerCase().endsWith('.sql')
-            );
-
-            if (sqlFile) {
-              const readmeFile = files.find(f => 
-                f.name.toLowerCase() === 'read.me' || 
-                f.name.toLowerCase() === 'readme.md'
+            try {
+              const files = await fetchGitHub(
+                `/repos/${CONFIG.username}/${datixRepo.name}/contents/${dir.name}`
               );
 
-              console.log(`    📥 Fetching content for ${dir.name}...`);
-              
-              const [sqlContent, readmeContent] = await Promise.all([
-                fetchRawContent(sqlFile.download_url),
-                readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
-              ]);
+              if (!files) continue;
 
-              const question = {
-                platform: 'DATIX', // Always use DATIX as platform
-                title: formatTitle(dir.name),
-                repo: datixRepo.name,
-                path: dir.name,
-                sqlCode: sqlContent,
-                description: readmeContent,
-                tags: ['ORACLE']
-              };
+              const sqlFile = files.find(f => 
+                f.name.toLowerCase().endsWith('.sql')
+              );
 
-              questions.push(question);
-              console.log(`    ✔ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
+              if (sqlFile) {
+                const readmeFile = files.find(f => 
+                  f.name.toLowerCase() === 'read.me' || 
+                  f.name.toLowerCase() === 'readme.md'
+                );
+
+                console.log(`    📥 Fetching content for ${dir.name}...`);
+                
+                const [sqlContent, readmeContent] = await Promise.all([
+                  fetchRawContent(sqlFile.download_url),
+                  readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
+                ]);
+
+                const question = {
+                  platform: platform,
+                  title: formatTitle(dir.name),
+                  repo: datixRepo.name,
+                  path: dir.name,
+                  sqlCode: sqlContent,
+                  description: readmeContent,
+                  tags: ['ORACLE']
+                };
+
+                questions.push(question);
+                console.log(`    ✓ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
+              }
+            } catch (error) {
+              console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
             }
-          } catch (error) {
-            console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
+          }
+
+          if (i + CONFIG.batchSize < dirs.length) {
+            await sleep(500);
           }
         }
-
-        if (i + CONFIG.batchSize < dirs.length) {
-          await sleep(500);
-        }
+      } catch (error) {
+        console.log(`  ⚠️  Error processing repo: ${error.message}`);
       }
-    } catch (error) {
-      console.log(`  ⚠️  Error processing repo: ${error.message}`);
-      process.exit(1);
-    }
 
     if (questions.length === 0) {
-      console.error('\n❌ No SQL questions found in DATIX repository');
+      console.error('\n❌ No SQL questions found in datix repository');
       process.exit(1);
     }
 
-    // Sort by title
+    // Changed: Sort by title only (single platform)
     questions.sort((a, b) => a.title.localeCompare(b.title));
 
     fs.writeFileSync(
