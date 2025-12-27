@@ -165,8 +165,8 @@ async function generateQuestions() {
       const contents = await fetchGitHub(`/repos/${CONFIG.username}/${datixRepo.name}/contents`);
         
         if (!contents) {
-          console.log(`  ⚠️  Could not fetch contents`);
-          continue;
+          console.error(`  ❌ Could not fetch contents from datix repository`);
+          process.exit(1);
         }
 
         const dirs = contents.filter(item => item.type === 'dir');
