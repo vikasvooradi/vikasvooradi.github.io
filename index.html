@@ -482,6 +482,30 @@ tr:last-child td {
   font-family: 'JetBrains Mono', monospace;
 }
 
+.badge.easy { 
+  background: rgba(16, 185, 129, 0.15); 
+  color: #10b981; 
+  border: 1px solid rgba(16, 185, 129, 0.3); 
+}
+
+.badge.medium { 
+  background: rgba(251, 146, 60, 0.15); 
+  color: #fb923c; 
+  border: 1px solid rgba(251, 146, 60, 0.3); 
+}
+
+.badge.hard { 
+  background: rgba(239, 68, 68, 0.15); 
+  color: #ef4444; 
+  border: 1px solid rgba(239, 68, 68, 0.3); 
+}
+
+.badge.unknown { 
+  background: rgba(148, 163, 184, 0.15); 
+  color: #94a3b8; 
+  border: 1px solid rgba(148, 163, 184, 0.3); 
+}
+
 .badge.leetcode,
 .badge.hackerrank,
 .badge.codechef,
@@ -1254,7 +1278,7 @@ tr:last-child td {
   <div class="controls">
     <div class="search-section">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search by title, platform, or database type...">
+        <input type="text" id="searchInput" placeholder="Search by title, platform, level, or category...">
       </div>
     </div>
     
@@ -1281,7 +1305,12 @@ tr:last-child td {
 
     <div class="advanced-filters" id="advancedFilters">
       <div class="filter-group">
-        <div class="filter-group-title">Filter by Database Type</div>
+        <div class="filter-group-title">Filter by Level</div>
+        <div class="tag-filters" id="levelFilters"></div>
+      </div>
+      
+      <div class="filter-group">
+        <div class="filter-group-title">Filter by Category</div>
         <div class="tag-filters" id="tagFilters"></div>
       </div>
       
@@ -1301,13 +1330,14 @@ tr:last-child td {
           <th style="width: 60px">#</th>
           <th style="width: 160px">Platform</th>
           <th>Title</th>
-          <th style="width: 200px">Database</th>
+          <th style="width: 120px">Level</th>
+          <th style="width: 200px">Category</th>
           <th style="width: 160px; text-align: center">Action</th>
         </tr>
       </thead>
       <tbody id="tableBody">
         <tr>
-          <td colspan="5">
+          <td colspan="6">
             <div class="loading">
               <div class="spinner"></div>
               <div>Loading questions...</div>
@@ -1352,6 +1382,7 @@ let filteredQuestions = [];
 let currentPage = 1;
 let itemsPerPage = CONFIG.itemsPerPage;
 let activeTagFilters = new Set();
+let activeLevelFilters = new Set();
 
 async function loadAllData() {
   try {
@@ -1372,6 +1403,20 @@ async function loadAllData() {
     }
     
     allQuestions = allQuestions.map(q => {
+      // Extract level from description
+      if (q.description) {
+        const levelMatch = q.description.match(/<h3>(Easy|Medium|Hard)<\/h3>/i);
+        q.level = levelMatch ? levelMatch[1].toUpperCase() : 'UNKNOWN';
+      } else {
+        q.level = 'UNKNOWN';
+      }
+      
+      // Remove external links from description
+      if (q.description) {
+        q.description = q.description.replace(/<a\s+href="[^"]*"[^>]*>/gi, '<span>').replace(/<\/a>/gi, '</span>');
+      }
+      
+      // Filter out 'DATABASE' tag
       if (q.tags && Array.isArray(q.tags)) {
         q.tags = q.tags.filter(tag => 
           tag.toUpperCase() !== 'DATABASE'
@@ -1402,6 +1447,23 @@ function initializeFilters() {
     platformFilter.appendChild(option);
   });
   
+  // Initialize level filters
+  const allLevels = [...new Set(allQuestions.map(q => q.level))].sort();
+  const levelFilters = document.getElementById('levelFilters');
+  
+  if (allLevels.length === 0) {
+    levelFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No level filters available</span>';
+  } else {
+    allLevels.forEach(level => {
+      const btn = document.createElement('button');
+      btn.className = 'tag-filter-btn';
+      btn.textContent = level;
+      btn.onclick = () => toggleLevelFilter(level, btn);
+      levelFilters.appendChild(btn);
+    });
+  }
+  
+  // Initialize category filters
   const allTags = new Set();
   allQuestions.forEach(q => {
     if (q.tags) {
@@ -1412,7 +1474,7 @@ function initializeFilters() {
   const tagFilters = document.getElementById('tagFilters');
   
   if (allTags.size === 0) {
-    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No database filters available</span>';
+    tagFilters.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No category filters available</span>';
   } else {
     [...allTags].sort().forEach(tag => {
       const btn = document.createElement('button');
@@ -1422,6 +1484,18 @@ function initializeFilters() {
       tagFilters.appendChild(btn);
     });
   }
+}
+
+function toggleLevelFilter(level, button) {
+  if (activeLevelFilters.has(level)) {
+    activeLevelFilters.delete(level);
+    button.classList.remove('active');
+  } else {
+    activeLevelFilters.add(level);
+    button.classList.add('active');
+  }
+  updateActiveFiltersDisplay();
+  applyFilters();
 }
 
 function toggleTagFilter(tag, button) {
@@ -1439,12 +1513,23 @@ function toggleTagFilter(tag, button) {
 function updateActiveFiltersDisplay() {
   const container = document.getElementById('activeFilters');
   
-  if (activeTagFilters.size === 0) {
+  if (activeTagFilters.size === 0 && activeLevelFilters.size === 0) {
     container.innerHTML = '<span style="color: var(--text-secondary); font-size: 13px;">No active filters</span>';
     return;
   }
   
   container.innerHTML = '';
+  
+  activeLevelFilters.forEach(level => {
+    const chip = document.createElement('div');
+    chip.className = 'active-filter-chip';
+    chip.innerHTML = `
+      Level: ${level}
+      <button onclick="removeLevelFilter('${level}')">&times;</button>
+    `;
+    container.appendChild(chip);
+  });
+  
   activeTagFilters.forEach(tag => {
     const chip = document.createElement('div');
     chip.className = 'active-filter-chip';
@@ -1454,6 +1539,18 @@ function updateActiveFiltersDisplay() {
     `;
     container.appendChild(chip);
   });
+}
+
+function removeLevelFilter(level) {
+  activeLevelFilters.delete(level);
+  const buttons = document.querySelectorAll('.tag-filter-btn');
+  buttons.forEach(btn => {
+    if (btn.textContent === level) {
+      btn.classList.remove('active');
+    }
+  });
+  updateActiveFiltersDisplay();
+  applyFilters();
 }
 
 function removeTagFilter(tag) {
@@ -1484,6 +1581,7 @@ function applyFilters() {
     const matchesSearch = searchTerm === '' || 
       q.title.toLowerCase().includes(searchTerm) ||
       q.platform.toLowerCase().includes(searchTerm) ||
+      (q.level && q.level.toLowerCase().includes(searchTerm)) ||
       (q.tags && q.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
     
     const matchesTags = activeTagFilters.size === 0 || 
@@ -1491,7 +1589,10 @@ function applyFilters() {
         q.tags.some(qTag => qTag === filterTag)
       ));
     
-    return matchesPlatform && matchesSearch && matchesTags;
+    const matchesLevel = activeLevelFilters.size === 0 || 
+      (q.level && activeLevelFilters.has(q.level));
+    
+    return matchesPlatform && matchesSearch && matchesTags && matchesLevel;
   });
 
   filteredQuestions.sort((a, b) => {
@@ -1530,11 +1631,15 @@ function renderTable() {
       ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
       : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
     
+    const levelClass = q.level ? q.level.toLowerCase() : 'unknown';
+    const levelDisplay = q.level || 'UNKNOWN';
+    
     return `
       <tr>
         <td>${start + index + 1}</td>
         <td><span class="badge ${q.platform}">DATIX</span></td>
         <td class="title-cell" onclick="openQuestion(${start + index})">${escapeHtml(q.title)}</td>
+        <td><span class="badge ${levelClass}">${levelDisplay}</span></td>
         <td>${displayTags}</td>
         <td style="text-align: center">
           <button class="action-btn" onclick="openQuestion(${start + index})">View →</button>
@@ -1740,7 +1845,7 @@ function showBanner(message, type = 'info', duration = 0) {
 function showEmptyState(message) {
   document.getElementById('tableBody').innerHTML = `
     <tr>
-      <td colspan="5">
+      <td colspan="6">
         <div class="empty">
           <div class="empty-icon">🔍</div>
           <div>${escapeHtml(message)}</div>
