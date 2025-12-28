@@ -631,36 +631,75 @@ tr:last-child td {
   transform: rotate(90deg);
 }
 
-/* CRITICAL: Modal Body with CSS Grid Layout - BULLETPROOF */
+/* CRITICAL: Modal Body with Resizable Panels Layout */
 .modal-body {
   flex: 1;
   min-height: 0;
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  grid-template-rows: 1fr !important;
-  gap: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
   overflow: hidden;
+  position: relative;
 }
 
 .modal-left-panel {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+  flex: 0 0 50%;
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--bg-secondary);
-  border-right: 2px solid var(--border-color);
   padding: 24px;
+  min-width: 200px;
 }
 
 .modal-right-panel {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--bg-card);
   padding: 24px;
   display: flex;
   flex-direction: column;
+  min-width: 200px;
+}
+
+/* Resizable Divider */
+.resize-divider {
+  width: 8px;
+  background: var(--border-color);
+  cursor: col-resize;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+  z-index: 10;
+}
+
+.resize-divider:hover {
+  background: var(--accent-primary);
+}
+
+.resize-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 40px;
+  background: var(--bg-card);
+  border-radius: 2px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.resize-divider:hover::before {
+  opacity: 1;
+}
+
+.resize-divider.dragging {
+  background: var(--accent-secondary);
+}
+
+.resize-divider.dragging::before {
+  opacity: 1;
 }
 
 .modal-section {
@@ -1072,14 +1111,11 @@ tr:last-child td {
   }
 
   .modal-body {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto auto !important;
-    gap: 0 !important;
+    flex-direction: column !important;
   }
 
   .modal-left-panel {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
+    flex: 0 0 auto !important;
     border-right: none;
     border-bottom: 2px solid var(--border-color);
     max-height: none;
@@ -1087,9 +1123,12 @@ tr:last-child td {
   }
 
   .modal-right-panel {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
+    flex: 1 !important;
     padding: 20px;
+  }
+
+  .resize-divider {
+    display: none;
   }
 
   .modal-header {
@@ -1584,12 +1623,13 @@ async function openQuestion(index) {
   const readmeContent = question.description || '';
 
   modalBody.innerHTML = `
-    <div class="modal-left-panel">
+    <div class="modal-left-panel" id="leftPanel">
       <div class="problem-description">
         ${readmeContent ? formatProblemDescription(readmeContent) : '<p style="color: var(--text-secondary); padding: 16px;">No description available</p>'}
       </div>
     </div>
-    <div class="modal-right-panel">
+    <div class="resize-divider" id="resizeDivider"></div>
+    <div class="modal-right-panel" id="rightPanel">
       <div class="solution-section">
         <div class="code-container">
           <div class="code-header">
@@ -1605,6 +1645,8 @@ async function openQuestion(index) {
       </div>
     </div>
   `;
+  
+  initializeResizer();
 }
 
 function closeModal() {
@@ -1731,6 +1773,88 @@ document.getElementById('perPageSelect').addEventListener('change', function() {
   currentPage = 1;
   applyFilters();
 });
+
+// Resizable Panel Functionality
+function initializeResizer() {
+  const divider = document.getElementById('resizeDivider');
+  const leftPanel = document.getElementById('leftPanel');
+  const rightPanel = document.getElementById('rightPanel');
+  const modalBody = document.getElementById('modalBody');
+  
+  if (!divider || !leftPanel || !rightPanel || !modalBody) return;
+  
+  // Load saved width from localStorage
+  const savedWidth = localStorage.getItem('panelLeftWidth');
+  if (savedWidth) {
+    leftPanel.style.flexBasis = savedWidth;
+  }
+  
+  let isDragging = false;
+  let startX = 0;
+  let startWidth = 0;
+  
+  function startDrag(e) {
+    isDragging = true;
+    startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    startWidth = leftPanel.offsetWidth;
+    
+    divider.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    
+    // Prevent text selection during drag
+    e.preventDefault();
+  }
+  
+  function doDrag(e) {
+    if (!isDragging) return;
+    
+    const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const deltaX = currentX - startX;
+    const newWidth = startWidth + deltaX;
+    
+    const modalWidth = modalBody.offsetWidth;
+    const minWidth = 200; // Minimum width for each panel
+    const maxWidth = modalWidth - minWidth - 8; // 8px for divider
+    
+    // Constrain the width
+    if (newWidth >= minWidth && newWidth <= maxWidth) {
+      const percentage = (newWidth / modalWidth) * 100;
+      leftPanel.style.flexBasis = percentage + '%';
+    }
+    
+    e.preventDefault();
+  }
+  
+  function stopDrag() {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    divider.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    
+    // Save the width to localStorage
+    const percentage = (leftPanel.offsetWidth / modalBody.offsetWidth) * 100;
+    localStorage.setItem('panelLeftWidth', percentage + '%');
+  }
+  
+  // Mouse events
+  divider.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', doDrag);
+  document.addEventListener('mouseup', stopDrag);
+  
+  // Touch events for mobile
+  divider.addEventListener('touchstart', startDrag);
+  document.addEventListener('touchmove', doDrag);
+  document.addEventListener('touchend', stopDrag);
+  
+  // Double-click to reset to 50-50
+  divider.addEventListener('dblclick', function() {
+    leftPanel.style.flexBasis = '50%';
+    localStorage.setItem('panelLeftWidth', '50%');
+  });
+}
 
 loadAllData();
 </script>
