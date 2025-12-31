@@ -191,19 +191,15 @@ async function generateQuestions() {
               );
 
               if (sqlFile) {
-                const readmeFile = files.find(f => {
-                  const name = f.name.toLowerCase();
-                  return name === 'read.me' || 
-                         name === 'readme.md' || 
-                         name === 'readme.txt' ||
-                         name.startsWith('readme');
-                });
+                const mdFile = files.find(f => 
+                  f.name.toLowerCase().endsWith('.md')
+                );
 
                 console.log(`    📥 Fetching content for ${dir.name}...`);
                 
-                const [sqlContent, readmeContent] = await Promise.all([
+                const [sqlContent, mdContent] = await Promise.all([
                   fetchRawContent(sqlFile.download_url),
-                  readmeFile ? fetchRawContent(readmeFile.download_url) : Promise.resolve(null)
+                  mdFile ? fetchRawContent(mdFile.download_url) : Promise.resolve(null)
                 ]);
 
                 const question = {
@@ -212,12 +208,12 @@ async function generateQuestions() {
                   repo: datixRepo.name,
                   path: dir.name,
                   sqlCode: sqlContent,
-                  description: readmeContent,
+                  description: mdContent,
                   tags: ['ORACLE']
                 };
 
                 questions.push(question);
-                console.log(`    ✓ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${readmeContent ? readmeContent.length : 0} chars desc)`);
+                console.log(`    ✓ ${question.title} (${sqlContent ? sqlContent.length : 0} chars SQL, ${mdContent ? mdContent.length : 0} chars desc)`);
               }
             } catch (error) {
               console.log(`    ⚠️  Error processing ${dir.name}: ${error.message}`);
