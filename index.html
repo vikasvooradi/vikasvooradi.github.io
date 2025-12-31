@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Vikas Bhaskar Vooradi - SQL Coding Practice Portfolio">
-<title>Vikas Vooradi | SQL Practice Portfolio</title>
+<title>Vikas Bhaskar Vooradi </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1260,14 +1260,40 @@ async function loadAllData() {
     
     // Process questions
     allQuestions = allQuestions.map(q => {
+      // Extract level from description with multiple pattern matching
       if (q.description) {
-        const levelMatch = q.description.match(/<h3>(Easy|Medium|Hard)<\/h3>/i);
-        q.level = levelMatch ? levelMatch[1].toLowerCase() : 'unknown';
+        // Try multiple patterns to find difficulty level
+        const patterns = [
+          /<h3>\s*(Easy|Medium|Hard)\s*<\/h3>/i,
+          /<h2>\s*(Easy|Medium|Hard)\s*<\/h2>/i,
+          /<h1>\s*(Easy|Medium|Hard)\s*<\/h1>/i,
+          /\*\*\s*(Easy|Medium|Hard)\s*\*\*/i,
+          /##\s*(Easy|Medium|Hard)/i,
+          /#\s*(Easy|Medium|Hard)/i,
+          /Level:\s*(Easy|Medium|Hard)/i,
+          /Difficulty:\s*(Easy|Medium|Hard)/i,
+          /\b(Easy|Medium|Hard)\b/i
+        ];
+        
+        let levelFound = false;
+        for (const pattern of patterns) {
+          const levelMatch = q.description.match(pattern);
+          if (levelMatch) {
+            q.level = levelMatch[1].toLowerCase();
+            levelFound = true;
+            break;
+          }
+        }
+        
+        if (!levelFound) {
+          q.level = 'medium'; // Default to medium instead of unknown
+        }
         
         // Remove external links
         q.description = q.description.replace(/<a\s+href="[^"]*"[^>]*>/gi, '<span>').replace(/<\/a>/gi, '</span>');
       } else {
-        q.level = 'unknown';
+        // If no description, default to medium
+        q.level = 'medium';
       }
       
       // Filter out 'DATABASE' tag
@@ -1407,8 +1433,9 @@ function renderTable() {
       ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
       : '<span style="color: var(--text-secondary); font-size: 12px;">—</span>';
     
-    const levelClass = q.level || 'unknown';
-    const levelDisplay = q.level ? q.level.charAt(0).toUpperCase() + q.level.slice(1) : 'Unknown';
+    // Ensure level has a value, default to 'medium' if missing
+    const levelClass = q.level && q.level !== 'unknown' ? q.level : 'medium';
+    const levelDisplay = levelClass.charAt(0).toUpperCase() + levelClass.slice(1);
     
     return `
       <tr data-testid="problem-row-${start + index}">
@@ -1447,8 +1474,9 @@ function renderGrid() {
       ? q.tags.map(tag => `<span class="tag-badge">${tag}</span>`).join(' ')
       : '';
     
-    const levelClass = q.level || 'unknown';
-    const levelDisplay = q.level ? q.level.charAt(0).toUpperCase() + q.level.slice(1) : 'Unknown';
+    // Ensure level has a value, default to 'medium' if missing
+    const levelClass = q.level && q.level !== 'unknown' ? q.level : 'medium';
+    const levelDisplay = levelClass.charAt(0).toUpperCase() + levelClass.slice(1);
     
     return `
       <div class="problem-card" onclick="openQuestion(${start + index})" data-testid="problem-card-${start + index}">
@@ -1543,8 +1571,9 @@ async function openQuestion(index) {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  const levelClass = question.level || 'unknown';
-  const levelDisplay = question.level ? question.level.charAt(0).toUpperCase() + question.level.slice(1) : 'Unknown';
+  // Ensure level has a value, default to 'medium' if missing
+  const levelClass = question.level && question.level !== 'unknown' ? question.level : 'medium';
+  const levelDisplay = levelClass.charAt(0).toUpperCase() + levelClass.slice(1);
   
   modalTitle.innerHTML = `
     <span class="badge ${levelClass}">${levelDisplay}</span>
