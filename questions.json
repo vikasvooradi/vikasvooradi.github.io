@@ -4,7 +4,7 @@
     "title": "1.Staff Members Exceeding Supervisor Compensation",
     "repo": "datix",
     "path": "1.staff-members-exceeding-supervisor-compensation",
-    "sqlCode": "",
+    "sqlCode": "select * from dual;\r\n",
     "description": null,
     "tags": [
       "ORACLE"
