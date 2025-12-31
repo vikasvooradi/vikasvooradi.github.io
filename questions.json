@@ -9,5 +9,16 @@
     "tags": [
       "ORACLE"
     ]
+  },
+  {
+    "platform": "DATIX",
+    "title": "2.Recurring Contact Addresses",
+    "repo": "datix",
+    "path": "2.recurring-contact-addresses",
+    "sqlCode": "/* Write your PL/SQL query statement below */\n\nSELECT\n    address\nFROM\n    contact\nGROUP BY\n    address\nHAVING\n    COUNT(address) > 1;\n",
+    "description": "<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n<h1>2. Recurring Contact Addresses</h1>\n<h3>Level : Easy</h3><hr>\n<p>Database Schema</p>\n<p>Table: Contact</p>\n<pre>\n+-----------------+---------+\n| Column Name     | Type    |\n+-----------------+---------+\n| contact_id      | int     |\n| address         | varchar |\n+-----------------+---------+\n</pre>\n<p>contact_id serves as the primary key (unique identifier column) for this table.</p>\n<p>Every record in this table includes a contact address. All addresses are stored in lowercase format.</p>\n<p>Develop a query to identify all contact addresses that appear more than once in the dataset. The address field is guaranteed to contain valid data with no NULL values.</p>\n<p>Your result set may be returned in any sequence.</p>\n<p>The output structure is demonstrated in the example below.</p>\n<h2>Example 1:</h2>\n<p>Input: </p>\n<p>Contact table:</p>\n<pre>\n+------------+------------------+\n| contact_id | address          |\n+------------+------------------+\n| 205        | mark@tech.io     |\n| 318        | sara@venture.net |\n| 429        | mark@tech.io     |\n+------------+------------------+\n</pre>\n<p>Output: </p>\n<pre>\n+------------------+\n| Address          |\n+------------------+\n| mark@tech.io     |\n+------------------+\n</pre>\n<p>Explanation: The address mark@tech.io occurs in multiple records within the Contact table.</p>\n</body>\n</html>\n",
+    "tags": [
+      "ORACLE"
+    ]
   }
 ]
