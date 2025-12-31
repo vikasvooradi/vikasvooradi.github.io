@@ -191,10 +191,13 @@ async function generateQuestions() {
               );
 
               if (sqlFile) {
-                const readmeFile = files.find(f => 
-                  f.name.toLowerCase() === 'read.me' || 
-                  f.name.toLowerCase() === 'readme.md'
-                );
+                const readmeFile = files.find(f => {
+                  const name = f.name.toLowerCase();
+                  return name === 'read.me' || 
+                         name === 'readme.md' || 
+                         name === 'readme.txt' ||
+                         name.startsWith('readme');
+                });
 
                 console.log(`    📥 Fetching content for ${dir.name}...`);
                 
