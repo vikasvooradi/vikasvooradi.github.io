@@ -1,4 +1,4 @@
-name: Generate SQL Questions Data
+name: Generate Questions Data
 
 on:
   push:
